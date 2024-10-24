@@ -1,0 +1,351 @@
+/* Impostazioni di base */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background-image: url("C:/Users/Giulio Lazzaro/Desktop/EPC_5_0/static/images/Filingrana.png.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+
+/* Colore del testo dei <strong> */
+.scolor {
+    color: white;
+}
+
+
+
+/* Contenitore per i riquadri */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 1.875rem; /* 30px */
+}
+
+/* Stile dei Riquadri */
+.riquadro {
+    border: 0.0625rem solid #ffffff; /* 1px */
+    padding: 1.25rem; /* 20px */
+    width: calc(30% - 1.875rem); /* 30px */
+    box-shadow: 0 0.125rem 0.3125rem rgba(16, 94, 70, 0.1); /* 2px 5px */
+    margin: 0.625rem; /* 10px */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    min-height: 100rem; /* 1600px */
+    flex-grow: 1;
+}
+
+/* Stile del box rettangolare per i titoli */
+.box-titolo {
+    background-color: rgb(255, 255, 255);
+    padding: 0.9375rem 0.625rem; /* 15px 10px */
+    margin-bottom: 1.25rem; /* 20px */
+    text-align: center;
+    width: 100%;
+}
+
+/* Stile per i titoli dentro i box */
+.riquadro h2 {
+    font-size: 1.875rem; /* 30px */
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}
+
+/* Colori Personalizzati per i Riquadri */
+.riquadro1 {
+    background-color: #065fb8;
+}
+
+.riquadro2 {
+    background-color: #c91a1a;
+    display: flex;
+    overflow: hidden;
+}
+
+.riquadro3 {
+    background-color: #2b880f;
+}
+.quantocosta{
+    color: orange;
+}
+
+/* Personalizzazione per input */
+.quantocosta, .quantomaturi, .verorisparmio {
+    background-color: transparent;
+    color: white;
+    font-size: 1rem;
+    padding: 0.625rem; /* 10px */
+    border: 0.0625rem solid white; /* 1px */
+    border-radius: 0.3125rem; /* 5px */
+    margin-top: 0.3125rem; /* 5px */
+    width: 100%;
+}
+
+/* Hover per input */
+.quantocosta:hover, .quantomaturi:hover, .verorisparmio:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Stile personalizzato per i titoli specifici di ogni riquadro */
+.riquadro1 h2 {
+    color: #065fb8;
+    font-size: 1.6rem;
+}
+
+.riquadro2 h2 {
+    color: #c91a1a;
+    margin: 0;
+    display: block;
+    white-space: nowrap;
+    font-size: 1.6rem;
+}
+
+.riquadro3 h2 {
+    color: #2b880f;
+    font-size: 1.6rem;
+}
+
+/* Stile per i paragrafi generali */
+p {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 0.625rem; /* 10px */
+}
+
+p strong {
+    width: 12.5rem; /* 200px */
+    flex-shrink: 0;
+    margin-right: 6.25rem; /* 100px */
+    text-align: left;
+}
+
+p input {
+    flex-grow: 1;
+    max-width: 18.75rem; /* 300px */
+    padding: 0.625rem; /* 10px */
+    border: 0.0625rem solid #ccc; /* 1px */
+    border-radius: 0.3125rem; /* 5px */
+    box-sizing: border-box;
+}
+
+/* Stile per i box neri */
+.extra-box-costo {
+    width: 100%;
+    padding: 1.35rem; /* 25px */
+    margin-top: 1.25rem; /* 20px */
+    background-color: #000000;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    height: 5rem;
+   
+}
+
+
+
+.extra-box-costo p {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.6;
+    margin-bottom: 1rem; /* 20px */
+    text-align: justify;
+    color: #e0e0e0;
+    margin-top: 0;
+}
+
+.extra-box-costo input {
+    width: 100%;
+    max-width: 31.25rem; /* 500px */
+    margin: 0.00025rem 0; /* 10px 0 */
+    padding: 0.0055rem; /* 12px */
+    box-sizing: border-box;
+    background-color: #000000;
+    color: #ffffff;
+    border: 0.0625rem solid #000000; /* 1px */
+    border-radius: 0.3125rem; /* 5px */
+    text-align: center;
+    font-size: 1rem;
+}
+
+.extra-box-costo input::placeholder {
+    text-align: center;
+    color: rgba(0, 0, 0, 0.7);
+    font-style: italic;
+}
+
+/* Stile per il nuovo value-box */
+.value-box-1 {
+    width: 100%;
+    margin-top: 1.25rem; /* 20px */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* Stile per i paragrafi all'interno di value-box */
+.value-box-1 p {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 0.625rem; /* 10px */
+}
+
+/* Stile per strong all'interno di value-box */
+.value-box-1 p strong {
+    width: 12.5rem; /* 200px */
+    flex-shrink: 0;
+    margin-right: 1.25rem; /* 20px */
+    text-align: left;
+    color: white;
+}
+
+/* Stile per input all'interno di value-box */
+/* Stile per input all'interno di value-box */
+.value-box-1 p input {
+    flex-grow: 1;
+    max-width: 18.75rem; /* 300px */
+    padding: 0.625rem; /* 10px */
+    border: 0.0625rem solid white; /* 1px */
+    border-radius: 0.3125rem; /* 5px */
+    box-sizing: border-box;
+    background-color: transparent;
+    color: white;
+    font-size: 1rem;
+    text-align: center; /* Allinea il testo orizzontalmente al centro */
+    vertical-align: middle; /* Allinea il testo verticalmente */
+}
+
+
+.value-box-1 p input {
+    flex-grow: 1;
+    max-width: 18.75rem; /* 300px */
+    padding: 0.625rem; /* 10px */
+    border: 0.0625rem solid transparent; /* 1px */
+    border-radius: 0.3125rem; /* 5px */
+    box-sizing: border-box;
+    background-color: transparent;
+    color: white;
+    font-size: 1rem;
+}
+
+
+
+
+.extra-box-costo a:hover {
+    text-decoration: underline;
+}
+
+/* Sovrascrive le regole globali per i paragrafi all'interno di .extra-box-costo */
+.extra-box-costo p, .extra-box-costo h2 {
+    display: block;
+    width: 100%;
+    max-width: 31.25rem; /* 500px */
+    margin: 0.625rem auto; /* 10px */
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Stile per i box grigi */
+.extra-box-variabili-nonallineati {
+    width: 100%;
+    padding: 0.9375rem; /* 15px */
+    margin-top: 1.25rem; /* 20px */
+    background-color: #cecece;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+}
+
+.extra-box-variabili-nonallineati  p {
+    font-size: 1rem;
+    color: #000000;
+    margin-bottom: 0.9375rem; /* 15px */
+    text-align: center;
+}
+
+/* Stile per allineare gli elementi nella classe specifica .extra-box-variabili.extra-box-3 */
+.extra-box-variabili.extra-box-3 {
+    display: flex;  /* Usa flexbox per l'allineamento orizzontale */
+    align-items: center;  /* Allinea verticalmente al centro */
+    justify-content: space-between;  /* Distribuisce spazio tra label e input */
+    margin-bottom: 1rem;  /* Spazio tra le righe */
+}
+
+/* Stile per strong all'interno di .extra-box-variabili.extra-box-3 */
+.extra-box-variabili.extra-box-3 strong {
+    flex-shrink: 0;  /* Evita che il testo si restringa */
+    margin-right: 1rem;  /* Spazio tra il testo e l'input */
+    color: white;
+}
+
+/* Stile per input all'interno di .extra-box-variabili.extra-box-3 */
+.extra-box-variabili.extra-box-3 input {
+    flex-grow: 1;  /* L'input occupa tutto lo spazio rimanente */
+    padding: 0.625rem;  /* Spazio interno dell'input */
+    border: 0.0625rem solid white;  /* Bordo bianco */
+    border-radius: 0.3125rem;  /* Angoli arrotondati */
+    background-color: transparent;
+    color: white;
+    font-size: 1rem;
+    box-sizing: border-box;  /* Assicura che padding e bordo siano inclusi nella larghezza totale */
+}
+
+
+.extra-box-variabili input {
+    width: 100%;
+    max-width: 31.25rem; /* 500px */
+    margin: 0.625rem 0; /* 10px */
+    padding: 0.75rem; /* 12px */
+    box-sizing: border-box;
+    background-color: #ffffff;
+    color: #000000;
+    border: 0.0625rem solid #cccccc; /* 1px */
+    border-radius: 0.3125rem; /* 5px */
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Pulsante Salva Modifiche */
+button {
+    background-color: #4c90af;
+    color: white;
+    padding: 0.625rem 0.9375rem; /* 10px 15px */
+    border: none;
+    border-radius: 0.3125rem; /* 5px */
+    cursor: pointer;
+    font-size: 1rem;
+    display: block;
+    width: 100%;
+    margin-top: 1.25rem; /* 20px */
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Stile per l'input con classe 'centrale' */
+.centrale {
+    display: block;
+    width: 100%;
+    margin-top: 0.625rem; /* 10px */
+    padding: 0.625rem; /* 10px */
+    box-sizing: border-box;
+}
+
+/* Stile del Footer */
+.footer {
+    margin-top: 1.25rem; /* 20px */
+    text-align: center;
+    font-size: 0.875rem; /* 14px */
+    color: #666;
+}

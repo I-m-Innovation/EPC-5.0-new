@@ -1,0 +1,216 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modulo Commerciale - Impianto Fotovoltaico</title>
+    <link rel="stylesheet" href="{% static 'elaborazione/styles.css' %}"> <!-- Collegamento al CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
+
+</head>
+<body>
+    <form method="POST" action="{% url 'salva_modifiche' %}">
+        {% csrf_token %}
+        <div class="container">
+            <!-- Riquadro 1 -->
+            <div class="riquadro riquadro1" id="riquadro1">
+                <div class="box-titolo">
+                    <h2>QUANTO COSTA?</h2>
+                </div>
+
+                <!-- Inizio del value-box -->
+                <div class="value-box-1">
+                    <p>
+                        <strong class="scolor">IMPIANTO FOTOVOLTAICO</strong>
+                        <input class="quantocosta" type="text" name="costoImpianto" value="POTENZA INSTALLATA PER COSTO MASSIMO COPERTO(POTENZA IMPIANTO) ">
+                    </p>
+                    <p>
+                        <strong class="scolor">POTENZA INSTALLATA:</strong>
+                        <input class="quantocosta" type="text" name="potenzaInstallata" value="DA PM">
+                    </p>
+                    <p>
+                        <strong class="scolor">BENE TRAINANTE:</strong>
+                        <input class="quantocosta" type="text" name="beneTrainante1" value="DA CLIENTE">
+                    </p>
+                </div>
+                <!-- Fine del value-box -->
+
+                <!-- Box aggiuntivo 1 per Riquadro 1 con stile unico -->
+                <div class="extra-box-costo extra-box-1">
+                    <h4>COSTO IMPIANTO FOTOVOLTAICO+STORAGE</h4>
+                    <input class="quantocosta centrale" type="text" name="costoTotaleImpianto" value="POTENZA INSTALLATA X COSTO COPERTO MAX(POTENZA IMPIANTO)">
+                </div>
+
+                <!-- Box aggiuntivo 2 per Riquadro 1 con stile unico -->
+                <div class="extra-box-variabili extra-box-2">
+                    <p><strong>POTENZA INSTALLATA </strong></p>
+                    <input class="quantocosta" type="text" name="nuovoCampo2" value="DA PM">
+                </div>
+
+                <div class="extra-box-variabili extra-box-2">
+                    <p><strong>STORAGE INSTALLATO</strong></p>
+                    <input class="quantocosta" type="text" name="nuovoCampo2" value="DA PM">
+                </div>
+
+                <div class="extra-box-variabili extra-box-2">
+                    <p><strong>PRODUZIONE ANNUA</strong></p>
+                    <input class="quantocosta" type="text" name="nuovoCampo2" value="DA PM">
+                </div>
+
+            </div>
+
+            <!-- Riquadro 2 -->
+            <div class="riquadro riquadro2" id="riquadro2">
+                <div class="box-titolo">
+                    <h2>QUANTO MATURI COME CREDITO?</h2>
+                </div>
+
+                <!-- Inizio del value-box -->
+                <div class="value-box-1">
+                    <p>
+                        <strong class="scolor">A CONTRIBUTO</strong>
+                        <input class="quantomaturi" type="text" name="creditoContributo" value="1.182.600 €">
+                    </p>
+                    <p>
+                        <strong class="scolor">STORAGE</strong>
+                        <input class="quantomaturi" type="text" name="storage" value="413.362,5 kWh/kWp">
+                    </p>
+                    <p>
+                        <strong class="scolor">BENE TRAINANTE:</strong>
+                        <input class="quantomaturi" type="text" name="beneTrainante2" value="Descrizione Bene">
+                    </p>
+                </div>
+                <!-- Fine del value-box -->
+
+                <!-- Box aggiuntivo 1 per Riquadro 2 con stile unico -->
+                <div class="extra-box-costo extra-box-1">
+                    <h4>CREDITO FISCALE MATURATO CON 5.0</h4>
+                    <input class="quantomaturi centrale" type="text" name="creditoFiscale5_0" value="1.756.765 €">
+                </div>
+
+                <!-- Box aggiuntivo 2 per Riquadro 2 con stile unico -->
+                <div class="extra-box-variabili extra-box-2">
+                    <p><strong>COSTO TRAINANTE</strong></p>
+                    <input class="quantomaturi" type="text" name="nuovoCampo4" value="DA CLIENTE">
+                </div>
+
+                <div class="extra-box-variabili extra-box-2">
+                    <p><strong>RISPARMIO ENERGETICO</strong></p>
+                    <input class="quantomaturi" type="text" name="nuovoCampo4" value="da CLIENTE">
+                </div>
+
+                <div class="extra-box-variabili extra-box-2">
+                    <p><strong>ALIQUITA CONCESSA</strong></p>
+                    <input class="quantomaturi" type="text" name="TABELLA RISPARMIO ENERGETIO VS COSTO TRAINANTE" value="TABELLA RISPARMIO ENERGETIO VS COSTO TRAINANTE">
+                </div>
+
+                {% comment %} <div class="extra-box-variabili extra-box-2"> {% endcomment %}
+                    {% comment %} <p><strong>DATA OTTENIMENTO CREDITO</strong></p> {% endcomment %}
+                    {% comment %} <input class="quantomaturi" type="text" name="nuovoCampo4" value="Nuovo Valore 2"> {% endcomment %}
+                {% comment %} </div> {% endcomment %}
+
+            </div>
+
+            <!-- Riquadro 3 -->
+            <div class="riquadro riquadro3" id="riquadro3">
+                <div class="box-titolo">
+                    <h2>IL TUO VERO RISPARMIO</h2>
+                </div>
+
+                <!-- Inizio del value-box -->
+                <div class="value-box-1">
+                    <p>
+                        <strong class="scolor">CREDITO FISCALE</strong>
+                        <input class="verorisparmio" type="text" name="creditoFiscale" value="786.880,94 €">
+                    </p>
+                    <p>
+                        <strong class="scolor">RISPARMIO IN BOLLETTA</strong>
+                        <input class="verorisparmio" type="text" name="risparmioEnergetico" value="15%">
+                    </p>
+
+                    <p>
+                        <strong class="scolor"></strong>
+                        <input class="value-box-1-oscurare" type="text" name="" value="">
+                    </p>
+
+                </div>
+                <!-- Fine del value-box -->
+
+                <!-- Box aggiuntivo 1 per Riquadro 3 con stile unico -->
+                <div class="extra-box-costo extra-box-3">
+                    <h4>RISPARMIO PRIMO</h4>
+                    <input class="verorisparmio centrale" type="text" name="risparmioPrimo" value="1.756.765 €">
+                </div>
+
+                <!-- Box aggiuntivo 2 per Riquadro 3 con stile unico -->
+                <div class="extra-box-variabili extra-box-3">
+                    <p><strong>RISPARMIO 2° ANNO</strong></p>
+                    <input class="verorisparmio" type="text" name="nuovoCampo6" value="Nuovo Valore 2">
+                </div>
+
+                <div class="extra-box-variabili extra-box-3">
+                    <p><strong>RISPARMIO 3° ANNO</strong></p>
+                    <input class="verorisparmio" type="text" name="nuovoCampo6" value="Nuovo Valore 2">
+                </div>
+
+                <div class="extra-box-variabili extra-box-3">
+                    <p><strong>RISPARMIO 4° ANNO</strong></p>
+                    <input class="verorisparmio" type="text" name="nuovoCampo6" value="Nuovo Valore 2">
+                </div>
+
+                <div class="extra-box-variabili extra-box-3">
+                    <p><strong>RISPARMIO 5° ANNO</strong></p>
+                    <input class="verorisparmio" type="text" name="nuovoCampo6" value="Nuovo Valore 2">
+                </div>
+
+                <div class="extra-box-variabili extra-box-3">
+                    <p><strong>RISPARMIO 6° ANNO</strong></p>
+                    <input class="verorisparmio" type="text" name="nuovoCampo6" value="Nuovo Valore 2">
+                </div>
+
+                <div class="extra-box-variabili extra-box-3">
+                    <p><strong>RISPARMIO 7° ANNO</strong></p>
+                    <input class="verorisparmio" type="text" name="nuovoCampo6" value="Nuovo Valore 2">
+                </div>
+
+                <div class="extra-box-variabili extra-box-3">
+                    <p><strong>RISPARMIO 8° ANNO</strong></p>
+                    <input class="verorisparmio" type="text" name="nuovoCampo6" value="Nuovo Valore 2">
+                </div>
+
+                <div class="extra-box-variabili extra-box-3">
+                    <p><strong>RISPARMIO 9° ANNO:</strong></p>
+                    <input class="verorisparmio" type="text" name="nuovoCampo6" value="Nuovo Valore 2">
+                </div>
+
+                <div class="extra-box-variabili extra-box-3">
+                    <p><strong>RISPARMIO 10° ANNO:</strong></p>
+                    <input class="verorisparmio" type="text" name="nuovoCampo6" value="Nuovo Valore 2">
+                </div>
+
+                <div class="extra-box-variabili extra-box-3">
+                    <p><strong>+ decadimento Impianto stimato da tabella</strong></p>
+                    <input class="verorisparmio" type="text" name="nuovoCampo6" value="Nuovo Valore 2">
+                </div>
+
+                <div class="extra-box-variabili extra-box-3">
+                    <p><strong>TOTALE RISPARMIO IN  10 ANNI</strong></p>
+                    <input class="verorisparmio" type="text" name="nuovoCampo6" value="Nuovo Valore 2">
+                </div>
+
+                
+                
+
+            </div>
+        </div>
+
+        <button type="submit">SCARICA IN VERSIONE PDF </button>
+    </form>
+
+    <div class="footer">
+        <p>© 2024 EPC_5_0. Tutti i diritti riservati.</p>
+    </div>
+</body>
+</html>
