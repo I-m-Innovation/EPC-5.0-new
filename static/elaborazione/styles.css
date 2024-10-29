@@ -1,19 +1,83 @@
 /* Impostazioni di base */
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Ariel', sans-serif;
     margin: 0;
-    background-image: url("C:/Users/Giulio Lazzaro/Desktop/EPC_5_0/static/images/Filingrana.png.png");
+    background-image: url("/static/images/Filingrana.png.png");
+
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     height: 100vh;
 }
 
-/* Colore del testo dei <strong> */
-.scolor {
-    color: white;
+.main-container {
+    width: 100%; /* Rende il contenitore largo come lo schermo */
+    
 }
 
+/* Importa il font Playfair Display */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+
+
+.riquadro h2 {
+    font-size: 1.875rem; /* 30px */
+    font-weight: bold;
+    color: white;
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Stile personalizzato per i titoli specifici di ogni riquadro */
+.riquadro1 h2, .riquadro2 h2, .riquadro3 h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+}
+
+
+/* Stile per il contenitore che contiene i box */
+.draggable-container {
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente i box */
+    flex-wrap: wrap; /* Permette di andare a capo se necessario */
+    gap: 1rem; /* Spazio tra i box */
+    margin-bottom: 1.25rem; /* Margine inferiore */
+    text-align: center;
+    margin-top: 10rem;
+}
+
+/* Stile per i box all'interno del contenitore */
+.draggable-box {
+    display: flex;
+    justify-content: center; 
+    flex-direction: column; /* Dispone gli elementi in colonna, uno sotto l'altro */
+    align-items: center; /* Centra gli elementi orizzontalmente */
+    background-color: #f0f0f0;
+    border: 0.0625rem solid #ccc;
+    padding: 0.9375rem;
+    width: 45%; /* Larghezza dei box */
+    margin-bottom: 1.25rem;
+    border-radius: 0.3125rem;
+    margin-top: 2rem;
+}
+
+/* Gestisce il layout del strong e dell'input */
+.draggable-box strong {
+    margin-bottom: 0.5rem; /* Spazio tra strong e input */
+    text-align: center;
+}
+
+.draggable-box input {
+    width: 100%; /* Larghezza dell'input */
+    padding: 0.5rem;
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.3125rem;
+    box-sizing: border-box;
+}
+
+/* Colore del testo dei <strong> */
+.coloretestoriquadroprincipale {
+    color: white;
+}
 
 
 /* Contenitore per i riquadri */
@@ -24,19 +88,28 @@ body {
     margin: 1.875rem; /* 30px */
 }
 
+
+
 /* Stile dei Riquadri */
 .riquadro {
     border: 0.0625rem solid #ffffff; /* 1px */
-    padding: 1.25rem; /* 20px */
-    width: calc(30% - 1.875rem); /* 30px */
+    padding: 0rem; /* 20px */
+    width: calc(32% - 1.870rem); /* 30px */
     box-shadow: 0 0.125rem 0.3125rem rgba(16, 94, 70, 0.1); /* 2px 5px */
     margin: 0.625rem; /* 10px */
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.8);
-    min-height: 100rem; /* 1600px */
-    flex-grow: 1;
+    min-height: 60rem; /* 1600px */
+    box-sizing: border-box;
+}
+.riquadrosuperiore {
+    
+    width:auto;
+    padding-top: 2rem; /* padding più contenuto per evitare overflow su schermi piccoli */
+    padding-left: 7rem;
+    padding-right: 7rem;
 }
 
 /* Stile del box rettangolare per i titoli */
@@ -58,21 +131,19 @@ body {
 
 /* Colori Personalizzati per i Riquadri */
 .riquadro1 {
-    background-color: #065fb8;
+    background-color: #207ABC;
 }
 
 .riquadro2 {
-    background-color: #c91a1a;
+    background-color: #d41c1c;
     display: flex;
     overflow: hidden;
 }
 
 .riquadro3 {
-    background-color: #2b880f;
+    background-color: #048957;
 }
-.quantocosta{
-    color: orange;
-}
+
 
 /* Personalizzazione per input */
 .quantocosta, .quantomaturi, .verorisparmio {
@@ -84,21 +155,20 @@ body {
     border-radius: 0.3125rem; /* 5px */
     margin-top: 0.3125rem; /* 5px */
     width: 100%;
+    box-sizing: border-box;
+    padding: 1.25rem;
 }
 
-/* Hover per input */
-.quantocosta:hover, .quantomaturi:hover, .verorisparmio:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
+
 
 /* Stile personalizzato per i titoli specifici di ogni riquadro */
 .riquadro1 h2 {
-    color: #065fb8;
+    color: #207ABC;
     font-size: 1.6rem;
 }
 
 .riquadro2 h2 {
-    color: #c91a1a;
+    color: #d41c1c;
     margin: 0;
     display: block;
     white-space: nowrap;
@@ -106,7 +176,7 @@ body {
 }
 
 .riquadro3 h2 {
-    color: #2b880f;
+    color: #048957;
     font-size: 1.6rem;
 }
 
@@ -135,50 +205,47 @@ p input {
 }
 
 /* Stile per i box neri */
-.extra-box-costo {
+/* Stile per i box neri */
+.boxneri {
     width: 100%;
-    padding: 1.35rem; /* 25px */
-    margin-top: 1.25rem; /* 20px */
+    height: 10rem; /* Imposta un'altezza fissa per uniformità */
+    padding: 0rem; /* Padding per distanziare il contenuto dai bordi */
+    margin-top: 1rem;
     background-color: #000000;
     color: white;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    justify-content: center; /* Allinea verticalmente il contenuto */
+    align-items: center; /* Allinea orizzontalmente il contenuto */
     text-align: center;
-    height: 5rem;
-   
 }
 
-
-
-.extra-box-costo p {
-    font-size: 1.125rem; /* 18px */
-    line-height: 1.6;
-    margin-bottom: 1rem; /* 20px */
-    text-align: justify;
-    color: #e0e0e0;
-    margin-top: 0;
+/* Colori specifici per i paragrafi nei box neri in base al colore del riquadro */
+.riquadro1 .boxneri input {
+    color: #207ABC; /* Colore del testo per riquadro1 */
 }
 
-.extra-box-costo input {
-    width: 100%;
-    max-width: 31.25rem; /* 500px */
-    margin: 0.00025rem 0; /* 10px 0 */
-    padding: 0.0055rem; /* 12px */
-    box-sizing: border-box;
+.riquadro2 .boxneri input {
+    color: #d41c1c;/* Colore del testo per riquadro2 */
+}
+
+.riquadro3 .boxneri input {
+    color: #048957; /* Colore del testo per riquadro3 */
+}
+
+/* Stile per l'input all'interno del box nero */
+.boxneri input {
+    width: 80%; /* Mantenere una larghezza fissa più piccola del box */
+    padding: 0.5rem;
     background-color: #000000;
     color: #ffffff;
-    border: 0.0625rem solid #000000; /* 1px */
-    border-radius: 0.3125rem; /* 5px */
+    border: transparent;
+    border-radius: 0.3125rem;
     text-align: center;
     font-size: 1rem;
+    box-sizing: border-box;
 }
 
-.extra-box-costo input::placeholder {
-    text-align: center;
-    color: rgba(0, 0, 0, 0.7);
-    font-style: italic;
-}
 
 /* Stile per il nuovo value-box */
 .value-box-1 {
@@ -207,28 +274,27 @@ p input {
 }
 
 /* Stile per input all'interno di value-box */
-/* Stile per input all'interno di value-box */
 .value-box-1 p input {
     flex-grow: 1;
     max-width: 18.75rem; /* 300px */
-    padding: 0.625rem; /* 10px */
-    border: 0.0625rem solid white; /* 1px */
-    border-radius: 0.3125rem; /* 5px */
+    padding: 0.625rem;
+    border: 0.0625rem solid white;
+    border-radius: 0.3125rem;
     box-sizing: border-box;
     background-color: transparent;
     color: white;
     font-size: 1rem;
-    text-align: center; /* Allinea il testo orizzontalmente al centro */
-    vertical-align: middle; /* Allinea il testo verticalmente */
+    text-align: center;
+    vertical-align: middle;
 }
 
 
 .value-box-1 p input {
     flex-grow: 1;
-    max-width: 18.75rem; /* 300px */
-    padding: 0.625rem; /* 10px */
-    border: 0.0625rem solid transparent; /* 1px */
-    border-radius: 0.3125rem; /* 5px */
+    max-width: 18.75rem;
+    padding: 0.625rem;
+    border: 0.0625rem solid transparent;
+    border-radius: 0.3125rem;
     box-sizing: border-box;
     background-color: transparent;
     color: white;
@@ -236,97 +302,164 @@ p input {
 }
 
 
-
-
-.extra-box-costo a:hover {
+.boxneri a:hover {
     text-decoration: underline;
 }
 
-/* Sovrascrive le regole globali per i paragrafi all'interno di .extra-box-costo */
-.extra-box-costo p, .extra-box-costo h2 {
+/* Sovrascrive le regole globali per i paragrafi all'interno di .boxneri */
+.boxneri p, .boxneri h2 {
     display: block;
     width: 100%;
     max-width: 31.25rem; /* 500px */
-    margin: 0.625rem auto; /* 10px */
+    margin: 0.625rem auto;
     padding: 0;
     box-sizing: border-box;
     text-align: center;
 }
 
-/* Stile per i box grigi */
-.extra-box-variabili-nonallineati {
-    width: 100%;
-    padding: 0.9375rem; /* 15px */
-    margin-top: 1.25rem; /* 20px */
-    background-color: #cecece;
-    color: black;
+/* Stile per .boxgriginonallineati: Mantieni layout verticale predefinito */
+.boxgriginonallineati {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    text-align: center;
-}
-
-.extra-box-variabili-nonallineati  p {
-    font-size: 1rem;
-    color: #000000;
-    margin-bottom: 0.9375rem; /* 15px */
-    text-align: center;
-}
-
-/* Stile per allineare gli elementi nella classe specifica .extra-box-variabili.extra-box-3 */
-.extra-box-variabili.extra-box-3 {
-    display: flex;  /* Usa flexbox per l'allineamento orizzontale */
-    align-items: center;  /* Allinea verticalmente al centro */
-    justify-content: space-between;  /* Distribuisce spazio tra label e input */
-    margin-bottom: 1rem;  /* Spazio tra le righe */
-}
-
-/* Stile per strong all'interno di .extra-box-variabili.extra-box-3 */
-.extra-box-variabili.extra-box-3 strong {
-    flex-shrink: 0;  /* Evita che il testo si restringa */
-    margin-right: 1rem;  /* Spazio tra il testo e l'input */
-    color: white;
-}
-
-/* Stile per input all'interno di .extra-box-variabili.extra-box-3 */
-.extra-box-variabili.extra-box-3 input {
-    flex-grow: 1;  /* L'input occupa tutto lo spazio rimanente */
-    padding: 0.625rem;  /* Spazio interno dell'input */
-    border: 0.0625rem solid white;  /* Bordo bianco */
-    border-radius: 0.3125rem;  /* Angoli arrotondati */
-    background-color: transparent;
-    color: white;
-    font-size: 1rem;
-    box-sizing: border-box;  /* Assicura che padding e bordo siano inclusi nella larghezza totale */
-}
-
-
-.extra-box-variabili input {
+    flex-direction: column; /* Dispone gli elementi in colonna */
+    justify-content: flex-start; /* Fa partire il contenuto dall'inizio */
+    align-items: center; /* Mantiene il contenuto centrato orizzontalmente */
+    padding: 0rem;
+    background: linear-gradient(to right, #cecece, #f0f0f0); /* Sfumatura da sinistra a destra */
+    margin: 0;
     width: 100%;
-    max-width: 31.25rem; /* 500px */
-    margin: 0.625rem 0; /* 10px */
-    padding: 0.75rem; /* 12px */
-    box-sizing: border-box;
-    background-color: #ffffff;
-    color: #000000;
-    border: 0.0625rem solid #cccccc; /* 1px */
-    border-radius: 0.3125rem; /* 5px */
     text-align: center;
-    font-size: 1rem;
+    box-sizing: border-box;
+    flex-grow: 1;
 }
+
+/* Centra il contenuto di p verticalmente e orizzontalmente */
+.boxgriginonallineati p {
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center; /* Centra verticalmente */
+    width: 100%;
+    margin: 0; /* Rimuove i margini di default */
+    height: 100%; /* Assicura che l'altezza di p sia piena */
+    text-align: center;
+    
+}
+
+/* Stile per il testo all'interno di strong, centrato rispetto a p */
+.boxgriginonallineati p strong {
+    text-align: center; /* Assicura che il testo sia centrato */
+    margin: 0; /* Rimuove margini aggiuntivi */
+    font-weight: bold;
+    color: #202127;
+    box-sizing: border-box;
+    
+}
+
+/* Stile per l'input */
+.boxgriginonallineati input {
+    display: block;
+    width: 100%;
+    border: transparent;
+    border-radius: 0.3125rem;
+    box-sizing: border-box;
+    background: linear-gradient(to right, #cecece, #f0f0f0); 
+    color: #202127;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Colori specifici per il testo e l'input di ciascun riquadro */
+.riquadro1-box {
+    background-color:#cecece;
+    color: #207ABC;
+}
+
+/* Stile per input all'interno di .boxgriginonallineati con riquadro1-color */
+.boxgriginonallineati.riquadro1-color input {
+    color: #207ABC; /* Colore del testo blu */
+   
+}
+
+
+.riquadro1-box input {
+    color: #207ABC;
+    border: transparent;
+    background-color: transparent;
+}
+
+.riquadro2-color {
+    background-color: #cecece;
+    color: #d41c1c;
+}
+
+.riquadro2-color input {
+    color: #d41c1c;
+    border: transparent;
+    background-color: transparent;
+}
+
+
+
+
+
+/* Stile per allineare gli elementi nella classe specifica .boxgrigicolonnaverde */
+.boxgrigicolonnaverde {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right, #cecece, #f0f0f0); 
+    width: 100%;
+    flex-grow: 1; /* Assicura che i box crescano per occupare lo spazio disponibile */
+}
+
+/* Stile per strong all'interno di .boxgrigicolonnaverde */
+.boxgrigicolonnaverde strong {
+    flex-shrink: 0;
+    margin-right: 4rem;
+    color:#202127;
+    margin-left: 0.5rem;
+}
+
+/* Stile per input all'interno di .boxgrigicolonnaverde */
+.boxgrigicolonnaverde input {
+    flex-grow: 1;
+    padding: 0.625rem;
+    border: transparent;
+    border-radius: 0.3125rem;
+    background-color: transparent;
+    color: green;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* Stile specifico per il riquadro "TOTALE RISPARMIO IN 10 ANNI" */
+.riquadro3-color {
+    padding-top: 2rem;
+    background-color: #cecece; /* Colore di sfondo per differenziare */
+    color: #048957; /* Colore del testo */
+    padding-bottom: 3rem;
+}
+
+
+
+.riquadro3-color input {
+    color: #048957; /* Colore del testo dell'input */
+    border: transparent; /* Bordo abbinato al testo */
+    background-color: transparent;
+}
+
 
 /* Pulsante Salva Modifiche */
 button {
     background-color: #4c90af;
     color: white;
-    padding: 0.625rem 0.9375rem; /* 10px 15px */
+    padding: 0.625rem 0.9375rem;
     border: none;
-    border-radius: 0.3125rem; /* 5px */
+    border-radius: 0.3125rem;
     cursor: pointer;
     font-size: 1rem;
     display: block;
     width: 100%;
-    margin-top: 1.25rem; /* 20px */
+    margin-top: 1.25rem;
 }
 
 button:hover {
@@ -337,15 +470,15 @@ button:hover {
 .centrale {
     display: block;
     width: 100%;
-    margin-top: 0.625rem; /* 10px */
-    padding: 0.625rem; /* 10px */
+    margin-top: 0.625rem;
+    padding: 0.625rem;
     box-sizing: border-box;
 }
 
 /* Stile del Footer */
 .footer {
-    margin-top: 1.25rem; /* 20px */
+    margin-top: 1.25rem;
     text-align: center;
-    font-size: 0.875rem; /* 14px */
+    font-size: 0.875rem;
     color: #666;
 }

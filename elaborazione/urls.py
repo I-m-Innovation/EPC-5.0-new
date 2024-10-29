@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('salva_modifiche/', views.home, name='salva_modifiche'),  # URL per salvare le modifiche
-] 
+    path('salva_modifiche/', views.calcola_somma, name='salva_modifiche'),
+]
