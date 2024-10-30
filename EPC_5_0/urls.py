@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from elaborazione import views  # Ensure views are imported from the correct app
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('elaborazione.urls')),
-    
+    path('salva_modifiche/', views.calcola_somma, name='salva_modifiche'),  # Added missing comma here
 ]
+

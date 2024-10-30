@@ -1,16 +1,7 @@
 from django.shortcuts import render
 from .models import Impianto
-import pdfkit
 from decimal import Decimal, InvalidOperation
 import pandas as pd
-from reportlab.lib.pagesizes import A4, landscape
-from reportlab.pdfgen import canvas
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-import pdfkit
 
 def home(request):
     return render(request, 'index.html')
@@ -163,25 +154,3 @@ def calcola_somma(request):
         
         'error_message': error_message,
     })
-
-
-
-
-def genera_pdf_pdfkit(request):
-    # Prepara il contenuto HTML
-    html_content = render_to_string('index.html', context={})
-
-    # Configura le opzioni di `pdfkit` per il formato A4 orizzontale
-    options = {
-        'page-size': 'A4',
-        'orientation': 'Landscape',
-        'encoding': 'UTF-8',
-    }
-
-    # Genera il PDF utilizzando pdfkit
-    pdf = pdfkit.from_string(html_content, False, options=options)
-
-    # Ritorna il PDF come risposta
-    response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="progetto.pdf"'
-    return response

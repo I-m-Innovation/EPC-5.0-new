@@ -6,6 +6,15 @@ html, body {
     height: 100%; /* Assicura che html e body occupino tutta l'altezza della finestra */
 }
 
+/* Configura il ridimensionamento per adattamento ad A4 */
+.pdf-container {
+    width: 100%;
+    transform-origin: top left;
+    margin: 0;
+    padding: 0;
+}
+
+
 
 body {
     background-image: url("/static/images/Filingrana.png.png");
