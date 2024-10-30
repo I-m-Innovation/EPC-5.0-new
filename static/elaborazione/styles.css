@@ -1,17 +1,25 @@
 /* Impostazioni di base */
-body {
-    font-family: 'Ariel', sans-serif;
+html, body {
+    font-family: 'Arial', sans-serif;
     margin: 0;
-    background-image: url("/static/images/Filingrana.png.png");
+    padding: 0;
+    height: 100%; /* Assicura che html e body occupino tutta l'altezza della finestra */
+}
 
+
+body {
+    background-image: url("/static/images/Filingrana.png.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100vh;
+    background-attachment: fixed; /* Blocca l'immagine durante lo scorrimento */
+    min-height: 100vh; /* Copre almeno l'altezza della finestra */
 }
 
 .main-container {
-    width: 100%; /* Rende il contenitore largo come lo schermo */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Rende il contenitore largo come lo schermo */
     
 }
 
@@ -132,6 +140,8 @@ body {
 /* Colori Personalizzati per i Riquadri */
 .riquadro1 {
     background-color: #207ABC;
+    display: flex;
+    overflow: hidden;
 }
 
 .riquadro2 {
@@ -142,6 +152,8 @@ body {
 
 .riquadro3 {
     background-color: #048957;
+    display: flex;
+    overflow: hidden;
 }
 
 

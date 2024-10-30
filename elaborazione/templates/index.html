@@ -55,11 +55,11 @@
                         </p>
                         <p>
                             <strong class="coloretestoriquadroprincipale">STORAGE</strong>
-                            <input class="quantocosta" type="text" name="potenzaInstallata" value="DA PM">
+                            <input class="quantocosta" type="text" name="potenzaInstallata" value="{{ storage|default:'' }}"readonly>
                         </p>
                         <p>
                             <strong class="coloretestoriquadroprincipale">BENE TRAINANTE:</strong>
-                            <input class="quantocosta" type="text" name="beneTrainante1" value="{{ beneTrainante1|default:'da inserire ' }}">
+                            <input class="quantocosta" type="text" name="beneTrainante1"value="{{ bene_trainante2|default:"da inserire" }}" readonly>
                         </p>
                         
                     </div>
@@ -150,7 +150,8 @@
                 
                 <div class="boxgriginonallineati riquadro2-color">
                     <p><strong>RISPARMIO ENERGETICO</strong></p>
-                    <input class="quantomaturi" type="text" name="nuovoCampo4" value="da CLIENTE">
+                    <input class="quantomaturi" type="text" name="risparmio_energetico" value="{{ risparmio_energetico|default:'0 €' }}">
+
                 </div>
                 
                 <div class="boxgriginonallineati riquadro2-color">

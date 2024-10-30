@@ -99,7 +99,6 @@ def calcola_somma(request):
 
             # Calcolo di "A Contributo"
             if impianto_coperto_val and aliquota_concessa_val and tipologia_pannelli_val:
-                
                 contributo_calcolato = aliquota_concessa_val * tipologia_pannelli_val*potenza_installata_val * Decimal(impianto_coperto_val)
                 credito_contributo_val = min(costo_impianto_val, contributo_calcolato)
                 credito_contributo = format_euro(credito_contributo_val)
