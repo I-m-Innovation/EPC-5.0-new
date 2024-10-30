@@ -150,14 +150,17 @@
                 
                 <div class="boxgriginonallineati riquadro2-color">
                     <p><strong>RISPARMIO ENERGETICO</strong></p>
-                    <input class="quantomaturi" type="text" name="risparmio_energetico" value="{{ risparmio_energetico|default:'0 €' }}">
-
+                    <select class="quantomaturi" name="risparmio_energetico" required>
+                        <option value="5" {% if risparmio_energetico == '5' %}selected{% endif %}>5%</option>
+                        <option value="10" {% if risparmio_energetico == '10' %}selected{% endif %}>10%</option>
+                        <option value="15" {% if risparmio_energetico == '15' %}selected{% endif %}>15%</option>
+                    </select>
                 </div>
                 
                 <div class="boxgriginonallineati riquadro2-color">
                     <p><strong>ALIQUITA CONCESSA</strong></p>
                     <input class="quantomaturi" type="text" name="aliquota_concessa" 
-                               value="{{ aliquota_concessa|default:'0' }}">
+                    value="{{ aliquota_concessa|default:'0%' }}" readonly>
                 </div>
 
                 {% comment %} <div class="extra-box-variabili extra-box-2"> {% endcomment %}
@@ -275,3 +278,6 @@
 
 </body>
 </html>
+
+
+
