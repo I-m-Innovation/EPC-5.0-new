@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Impianto
 from decimal import Decimal, InvalidOperation
 import pandas as pd
-
+#questa è la versione corrente
 def home(request):
     return render(request, 'index.html')
 
@@ -137,10 +137,10 @@ def calcola_somma(request):
             # Lettura del CSV e ricerca di impianto coperto
             df = pd.read_csv(CSV_PATH)
             impianto_coperto_row = df[df['min'] <= float(potenza_installata_val)].iloc[-1:]
-                
+    
             if not impianto_coperto_row.empty:
-                impianto_coperto_value = impianto_coperto_row['copertura'].values[0]
-                impianto_coperto_val = Decimal(int(impianto_coperto_value))
+                    impianto_coperto_value = impianto_coperto_row['copertura'].values[0]
+                    impianto_coperto_val = Decimal(int(impianto_coperto_value))
 
             else:
                 error_message = "Potenza installata non trovata nel CSV"
