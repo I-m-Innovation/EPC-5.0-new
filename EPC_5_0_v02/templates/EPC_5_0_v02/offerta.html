@@ -1,0 +1,302 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modulo Commerciale - Impianto Fotovoltaico</title>
+    <link rel="stylesheet" href="{% static 'EPC_5_0_v02/styles.css' %}"> <!-- Collegamento al CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <form method="POST">
+        {% csrf_token %}
+    <button type="submit" name="salva_modifiche">Salva modifiche</button>
+    <div class="main-container">
+         <!-- Draggable Container con i due nuovi box distinti -->
+         <div class="draggable-container">
+            <!-- Primo nuovo box -->
+            <div class="draggable-box-1">
+                <p><strong class="barracuda">CONSUMI ANNUI CLIENTE</strong></p>
+                <p> <input class="rubik" type="text" name="consumi_annui_cliente" value="{{ consumi_annui_cliente }}"></p>
+            </div>
+            
+            <!-- Secondo nuovo box -->
+            <div class="draggable-box-2">
+                <p><strong class="barracuda">COSTI ANNUI ENERGIA ELETTRICA</strong></p>
+                <p><input class="rubik" type="text" name="costi_energia_cliente" value="{{ costi_energia_cliente }}"></p>
+            </div>
+             
+             <div class="draggable-box-2">
+                <p><strong class="barracuda">Tariffa acquisto energia corrente</strong></p>
+                <p><input class="rubik" type="text" name="tariffa_corrente" value="{{ tariffa_corrente }}" readonly></p>
+            </div>
+             
+        </div>
+        <div class="container">
+        
+            <!-- Riquadro 1 -->
+            <div class="riquadro riquadro1" id="riquadro1">
+
+                <div class="riquadrosuperiore">
+                    <div class="box-titolo">
+                        <h2>QUANTO COSTA?</h2>
+                    </div>
+
+                    <!-- Inizio del value-box -->
+                    <div class="value-box-1">
+                        <p>
+                            <strong class="coloretestoriquadroprincipale">IMPIANTO FOTOVOLTAICO</strong>
+                            <input class="quantocosta" type="text" name="costo_impianto" 
+                                   value="{{ costo_impianto|default:'' }}">
+                        </p>
+                        <p>
+                            <strong class="coloretestoriquadroprincipale">STORAGE</strong>
+                            <input class="quantocosta" type="text" name="costo_storage_blu" value="{{ costo_storage_blu|default:'' }}">
+                        </p>
+                        <p>
+                            <strong class="coloretestoriquadroprincipale">BENE TRAINANTE:</strong>
+                            <input class="quantocosta" type="text" name="bene_trainante_blu" value="{{ bene_trainante_blu|default:'' }}">
+                        </p>
+                        
+                    </div>
+                </div>    
+                <!-- Fine del value-box -->
+                <!-- Box aggiuntivo 1 per Riquadro 1 con stile unico -->
+                <div class="boxneri">
+                    <h4>COSTO IMPIANTO FOTOVOLTAICO + STORAGE +TRAINANTE</h4>
+                    <input class="quantocostacentrale" type="text" name="costo_totale_impianto" 
+                    value="{{ costo_totale_impianto}}" readonly style="font-size: 3rem">
+                </div>
+
+                <!-- Box aggiuntivo 2 per Riquadro 1 con stile unico -->
+                <div class="boxgriginonallineati riquadro1-color">
+                    <p><strong>POTENZA INSTALLATA</strong></p>
+                    <input class="quantocosta" type="text" name="potenza_installata" value="{{potenza_installata}}">
+                </div>
+                
+                <div class="boxgriginonallineati riquadro1-color">
+                    <p><strong>STORAGE INSTALLATO</strong></p>
+                    <input class="quantocosta" type="text" name="storage_installato" value="{{ storage_installato|default:0 }}">
+                </div>
+                
+                                <!-- Campo di input per PRODUZIONE ANNUA -->
+                <div class="boxgriginonallineati riquadro1-color">
+                    <p><strong>PRODUCIBILITA' SPECIFICA</strong></p>
+                    <input class="rubik" type="text" name="producibilit" value="{{ producibilit }}">
+                </div>
+            
+                <div class="boxgriginonallineati riquadro1-color">
+                    <p><strong>PRODUZIONE ANNUA</strong></p>
+                    <input class="rubik" type="text" name="produzione_annua" value="{{ produzione_annua }}">
+                </div>
+
+                <!-- Menu a tendina per TIPOLOGIA PANELLI -->
+                <div class="boxgriginonallineati riquadro1-color">
+                    <p><strong>TIPOLOGIA MODULI FOTOVOLTAICI</strong></p>
+                    <select class="rubik" name="tipologia_pannelli">
+                        <option value="1.0" {% if tipologia_pannelli == '1.0' %}selected{% endif %}>100%</option>
+                        <option value="1.2" {% if tipologia_pannelli == '1.2' %}selected{% endif %}>120%</option>
+                        <option value="1.4" {% if tipologia_pannelli == '1.4' %}selected{% endif %}>140%</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Riquadro 2 -->
+            <div class="riquadro riquadro2" id="riquadro2">
+                <div class="riquadrosuperiore">
+                    <div class="box-titolo">
+                        <h2>QUANTO MATURI COME CREDITO?</h2>
+                    </div>
+
+                    <!-- Inizio del value-box -->
+                    <div class="value-box-1">
+                        <p>
+                            <strong class="coloretestoriquadroprincipale">CREDITI FISCALI SU IMPIANTO FOTOVOLTAICO</strong>
+                            <input class="quantomaturi" type="text" name="contributo_impianto" 
+                            value="{{ contributo_impianto|default:'0 €' }}" readonly />
+
+                        </p>
+                        <p>
+                            <strong class="coloretestoriquadroprincipale">STORAGE A CONTRIBUTO</strong>
+                            <input class="quantomaturi" type="text" name="contributo_storage" 
+                                   value="{{ contributo_storage }}" readonly >
+                        </p>
+                        <p>
+                            <strong class="coloretestoriquadroprincipale">BENE TRAINANTE:</strong>
+                            <input class="quantomaturi" type="text" name="bene_trainante_rosso" value="{{ bene_trainante_rosso }}" readonly />
+                        </p>
+                    </div>
+                </div>    
+                <!-- Fine del value-box -->
+
+                <!-- Box aggiuntivo 1 per Riquadro 2 con stile unico -->
+                <div class="boxneri">
+                    <h4>CREDITO FISCALE MATURATO CON 5.0</h4>
+                    <input class="quantomaturi centrale" type="text" name="credito_maturato" 
+                    value="{{ credito_maturato }}" readonly style="font-size: 3rem">
+                </div>
+
+                <!-- Box aggiuntivo 2 per Riquadro 2 con stile unico -->
+                <div class="boxgriginonallineati riquadro2-color">
+                    <p><strong>COSTO TRAINANTE</strong></p>
+                    <input class="quantomaturi" type="text" name="bene_trainante_rosso" value="{{ bene_trainante_blu }}" readonly>
+                </div>
+                
+                <div class="boxgriginonallineati riquadro2-color">
+                    <p><strong>RISPARMIO ENERGETICO TRAINANTE</strong></p>
+                    <select class="quantomaturi" name="risparmio_energetico_trainante">
+                        <option value="5" {% if risparmio_energetico_trainante == 0.05 %}selected{% endif %}>5%</option>
+                        <option value="10" {% if risparmio_energetico_trainante == 0.10 %}selected{% endif %}>10%</option>
+                        <option value="15" {% if risparmio_energetico_trainante == 0.15 %}selected{% endif %}>15%</option>
+                    </select>
+                </div>
+                
+                <div class="boxgriginonallineati riquadro2-color">
+                    <p><strong>ALIQUOTA CONCESSA</strong></p>
+                    <input class="quantomaturi" type="text" name="aliquota" 
+                    value="{{ aliquota }}" readonly>
+                </div>
+            </div>
+
+            <!-- Riquadro 3 -->
+            <div class="riquadro riquadro3" id="riquadro3">
+                <div class="riquadrosuperiore">
+                    <div class="box-titolo">
+                        <h2>IL TUO VERO RISPARMIO</h2>
+                    </div>
+
+                    <!-- Inizio del value-box -->
+                    <div class="value-box-1">
+                        <p>
+                            <strong class="coloretestoriquadroprincipale">CREDITO FISCALE</strong>
+                            <input class="verorisparmio" type="text" name="creditoFiscale" value="{{ credito_maturato }}" readonly>
+                        </p>
+                        <p>
+                            <strong class="coloretestoriquadroprincipale">RISPARMIO IN BOLLETTA PRIMO ANNO</strong>
+                            <input class="verorisparmio" type="text" name="bolletta_primo_anno" 
+                            value="{{ bolletta_primo_anno }}" readonly> 
+                        </p>
+
+                        <p>
+                            <strong class="coloretestoriquadroprincipale"></strong>
+                            <input class="value-box-1-oscurare" type="text" name="" value="">
+                        </p>
+                    </div>
+                </div>
+                <!-- Fine del value-box -->
+
+                <!-- Box aggiuntivo 1 per Riquadro 3 con stile unico -->
+                                
+                <div class="boxneri">
+                    <h4>RISPARMIO PRIMO ANNO </h4>
+                    <input class="verorisparmio centrale" type="text" name="risparmi_primo"   value="{{ risparmi_primo }}" readonly style="font-size: 3rem">
+                </div>
+            
+                {% for risparmio in risparmi_altri.itertuples %}
+                    <div class="boxgrigicolonnaverde">
+                        <p><strong>RISPARMIO {{  risparmio.index }}° ANNO</strong></p>
+                        <input class="verorisparmio" type="text" name="risparmi_altri" value="{{ risparmio.risparmio }}" readonly>
+                    </div>
+                {%  endfor %}
+            
+                <div class="boxgriginonallineati riquadro3-color">
+                    <p><strong>TOTALE RISPARMIO IN 10 ANNI</strong></p>
+                    <input class="verorisparmio" type="text" name="totale_risparmiato" value="{{ totale_risparmiato }}" readonly>
+                </div>
+            </div>
+        
+            <!-- Riquadro 4 -->
+            <div class="riquadro riquadro4" id="riquadro4">
+                <div class="riquadrosuperiore">
+                    <div class="box-titolo">
+                        <h2>LEASING</h2>
+                    </div>
+                    <!-- Inizio del value-box -->
+                    <div class="value-box-1">
+                        <p>
+                            <strong class="coloretestoriquadroprincipale">IMPORTO LEASING</strong>
+                            <input class="verorisparmio" type="text" name="importo_leasing" value="{{ importo_leasing }}">
+                        </p>
+                        <p>
+                            <strong class="coloretestoriquadroprincipale">ANTICIPO LEASING</strong>
+                            <input class="verorisparmio" type="text" name="Bolletta_primo_annuo" 
+                            value="{{ bolletta_primo_anno}}">
+                        </p>
+                        
+                        <p>
+                            <strong class="coloretestoriquadroprincipale">PRIMA RATA</strong>
+                            <input class="verorisparmio" type="text" name="prima_rata" 
+                            value="{{ prima_rata }}">
+                        </p>
+
+                        <p>
+                            <strong class="coloretestoriquadroprincipale"></strong>
+                            <input class="value-box-1-oscurare" type="text" name="" value="">
+                        </p>
+                    </div>
+                </div>
+                <!-- Fine del value-box -->
+
+                <!-- Box aggiuntivo 1 per Riquadro 3 con stile unico -->
+
+                <div class="boxneri">
+                    <h4>BILANCIO PRIMO ANNO</h4>
+                    <table>
+                        <tr><th>Importo</th><th>Delta</th></tr>
+                        <tr>
+                        <td>
+                            <input class="verorisparmio centrale" type="text" name="importo_leasing_primo_anno" value="{{ importo_leasing_primo_anno }}" style="font-size: 1rem" readonly>
+                        </td>
+                        <td>
+                            <input class="verorisparmio centrale" type="text" name="delta_leasing_primo_annuo" value="{{ delta_leasing_primo_annuo }}" style="font-size: 1rem" readonly>
+                        </td>
+                        </tr>
+                    </table>
+                </div>
+                    <div class="boxgrigicolonnaverde">
+
+                    <table>
+                        {% if tabella_leasing|length > 0 %}
+                            <th>ANNUALITA'</th><th>IMPORTO</th><th>DELTA</th>
+                        {% endif %}
+                        {% for piano in tabella_leasing.itertuples %}
+                            <tr>
+                                <td>
+                                    <input class="verorisparmio centrale" type="text" name="rata_{{ piano.index }}"
+                                           value="{{ piano.index }}"  style="font-size: 1rem; align-content: center" readonly>
+                                </td>
+                                <td>
+                                    <input class="verorisparmio centrale" type="text" name="valore_{{ piano.index }}"
+                                           value="{{ piano.rateizzazione }}"  style="font-size: 1rem">
+                                </td>
+                                <td>
+                                    <input class="verorisparmio centrale" type="text" name="delta_{{ piano.index }}"
+                                           value="{{ piano.rateizzazione }}"  style="font-size: 1rem" readonly>
+                                </td>
+                            </tr>
+                        {%  endfor %}
+                        <tr>
+                            <td>
+                                <button type="submit" name="aggiungi_rata">Inserisci rata</button>
+                            </td>
+                            <td>
+                                <button type="submit" name="salva_modifiche">Ok</button>
+                            </td>
+                        </tr>
+                    </table>
+                    </div>
+                </div>
+        </div>
+        
+    </div>
+    </form>
+    <div class="footer">
+    </div>
+</body>
+</html>
+
+
+
