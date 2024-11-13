@@ -5,6 +5,7 @@ from django.db import models
 
 class Offerta(models.Model):
 
+    partita_iva = models.CharField(max_length=100, null=True)
     slug = models.SlugField(db_index=True, unique=True)
 
     # box giallo
@@ -62,3 +63,5 @@ class Offerta(models.Model):
     delta_leasing_totale = models.FloatField(null=True)
     totale_check = models.FloatField(null=True)
     delta_totale_check = models.FloatField(null=True)
+
+
