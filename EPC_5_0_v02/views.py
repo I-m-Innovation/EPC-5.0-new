@@ -63,20 +63,22 @@ def calcola_risparmio(produzione_annua_val, perdita, tariffa_energia):
 
 
 def leggi_valore(stringa):
-    stringa = stringa.replace("€","").replace("kWh","").replace("kW","").replace("/p","").replace(" ","")
+    stringa = stringa.replace("€","").replace("kWh", "").replace("kW", "").replace("/p", "").replace(" ", "")
 
     if "," in stringa and "." in stringa:
-        valore = float(stringa.replace(".", "").replace(",", "."))
+        valore = float(stringa.replace(".", "").replace(",", ".")) if stringa.replace(".", "").replace(",", ".")!=''  else 0
     else:
-        valore = float(stringa.replace(",", "."))
+        valore = float(stringa.replace(",", ".")) if stringa.replace(".", "").replace(",", ".")!=''  else 0
     return valore
+
 
 def offerta_view(request, slug):
 
     if "salva_modifiche" in request.POST:
         offerta = Offerta.objects.get(slug=slug)
         consumi_cliente = request.POST['consumi_annui_cliente'].replace("kWh", "").replace(".", "").replace(",", ".")
-        offerta.consumi_cliente = leggi_valore(request.POST['consumi_annui_cliente']) if request.POST['consumi_annui_cliente'] !="" else 0
+        print(request.POST['consumi_annui_cliente'])
+        offerta.consumi_cliente = leggi_valore(request.POST['consumi_annui_cliente']) if request.POST['consumi_annui_cliente'] else 0
 
         offerta.costi_energia_cliente = leggi_valore(request.POST['costi_energia_cliente']) if request.POST['costi_energia_cliente'] != "" else 0
         # offerta.costi_energia_cliente = float(costi_energia_cliente) if costi_energia_cliente !="" else 0
@@ -154,6 +156,8 @@ def offerta_view(request, slug):
         offerta.delta_totale_check = offerta.risparmio_dieci_anni - offerta.totale_check if offerta.risparmio_dieci_anni else 0
         print(offerta.delta_totale_check)
         offerta.save()
+    elif "scarica_pdf" in request.POST:
+        print("figa")
     else:
         offerta = Offerta.objects.get(slug=slug)
 
@@ -178,20 +182,18 @@ def offerta_view(request, slug):
 
     offerta.save()
 
-
-
     data = {
         'consumi_annui_cliente': f"{round(offerta.consumi_cliente,2):,} kWh".replace(',',';').replace('.',',').replace(';','.') if offerta.consumi_cliente > 0 else 'kWh',
         'costi_energia_cliente': f"{round(offerta.costi_energia_cliente, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.costi_energia_cliente else '€',
-        'tariffa_energia_cliente': f"{round(offerta.tariffa_energia_cliente, 2):,} €/MWh".replace(',',';').replace('.',',').replace(';','.') if offerta.costi_energia_cliente else 'Inserire dati cliente',
-        'costo_fv': f"{round(offerta.costo_fv, 2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_fv else 'Inserire dato da Ingegneria',
-        'costo_storage': f"{round(offerta.costo_storage,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_storage else 'Inserire dato da Ingegneria',
-        'costo_trainante': f"{round(offerta.costo_trainante,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_trainante else 'Inserire dato da Cliente',
-        'costo_totale': f"{round(offerta.costo_totale,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_totale else 'Inserire dato da Cliente',
-        'potenza_installata': f"{round(offerta.potenza_installata,2):,} kW".replace(',',';').replace('.',',').replace(';','.') if offerta.potenza_installata else 'Inserire dato da Ingegneria',
-        'storage_installato': f"{round(offerta.storage_installato,2):,} kWh".replace(',',';').replace('.',',').replace(';','.') if offerta.storage_installato else 'Inserire dato da Ingegneria',
-        'producibilità_specifica': f"{round(offerta.producibilità_specifica,2):,} kWh/kWp".replace(',',';').replace('.',',').replace(';','.') if offerta.producibilità_specifica else 'Inserire dato da Ingegneria',
-        'produzione_annua': f"{round(offerta.produzione_annua):,} kWh".replace(',', '.') if offerta.produzione_annua else 'Inserire dato da Ingegneria',
+        'tariffa_energia_cliente': f"{round(offerta.tariffa_energia_cliente, 2):,} €/MWh".replace(',',';').replace('.',',').replace(';','.') if offerta.costi_energia_cliente else '',
+        'costo_fv': f"{round(offerta.costo_fv, 2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_fv else '',
+        'costo_storage': f"{round(offerta.costo_storage,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_storage else '',
+        'costo_trainante': f"{round(offerta.costo_trainante,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_trainante else '',
+        'costo_totale': f"{round(offerta.costo_totale,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_totale else '',
+        'potenza_installata': f"{round(offerta.potenza_installata,2):,} kW".replace(',',';').replace('.',',').replace(';','.') if offerta.potenza_installata else '',
+        'storage_installato': f"{round(offerta.storage_installato,2):,} kWh".replace(',',';').replace('.',',').replace(';','.') if offerta.storage_installato else '',
+        'producibilità_specifica': f"{round(offerta.producibilità_specifica,2):,} kWh/kWp".replace(',',';').replace('.',',').replace(';','.') if offerta.producibilità_specifica else '',
+        'produzione_annua': f"{round(offerta.produzione_annua):,} kWh".replace(',', '.') if offerta.produzione_annua else '',
         'crediti_fv': f"{round(offerta.crediti_fv, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_fv else '€',
         'crediti_storage': f"{round(offerta.crediti_storage,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_storage else '€',
         'crediti_trainante': f"{round(offerta.crediti_trainante,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_trainante else '€',
