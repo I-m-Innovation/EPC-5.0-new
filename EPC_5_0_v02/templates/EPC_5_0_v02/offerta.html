@@ -180,10 +180,7 @@
                             value="{{ risparmio_bolletta_primo_anno }}" readonly>
                         </p>
 
-                        <p>
-                            <strong class="coloretestoriquadroprincipale"></strong>
-                            <input class="value-box-1-oscurare" type="text" name="" value="">
-                        </p>
+
                     </div>
                 </div>
                 <!-- Fine del value-box -->
@@ -244,8 +241,8 @@
 
                 <div class="boxneri">
                     <h4>BILANCIO PRIMO ANNO</h4>
-                    <table>
-                        <tr><th>Importo</th><th>Delta</th></tr>
+                    <table style="font-size: 1rem"> {#OCIO!#}
+                        <tr><th>Importo leasing primo anno</th><th>Delta</th></tr>
                         <tr>
                         <td>
                             <input class="verorisparmio centrale" type="text" name="leasing_primo_anno" value="{{ leasing_primo_anno }}" style="font-size: 1rem" readonly>
@@ -258,13 +255,12 @@
                     </table>
                 </div>
                     <div class="boxgrigicolonnaverde">
-                        <table>
+                        <table style="font-size: 1rem" >
                             <th>Anno</th><th>Importo leasing</th><th>Delta</th>
                             <tr>
                                 <td>2° anno</td>
-                                <td><input class="verorisparmio centrale" type="text" name="leasing_secondo_anno" value="{{ leasing_secondo_anno }}" style="font-size: 1rem"></td>
-                                <td><input class="verorisparmio centrale" type="text" name="delta_leasing_secondo_anno" value="{{ delta_leasing_secondo_anno }}" style="font-size: 1rem" readonly></td>
-
+                                <td><input type="text" name="leasing_secondo_anno" value="{{ leasing_secondo_anno }}" style="font-size: 1rem"></td>
+                                <td><input type="text" name="delta_leasing_secondo_anno" value="{{ delta_leasing_secondo_anno }}" style="font-size: 1rem" readonly></td>
                             </tr>
                             <tr>
                                 <td>3° anno</td>
@@ -305,46 +301,20 @@
                                 <td><input class="verorisparmio centrale" type="text" name="delta_leasing_nono_anno" value="{{ delta_leasing_nono_anno }}" style="font-size: 1rem" readonly></td>
                             </tr>
                             <tr>
-                                <td>9° anno</td>
+                                <td>10° anno</td>
                                 <td><input class="verorisparmio centrale" type="text" name="leasing_decimo_anno" value="{{ leasing_decimo_anno }}" style="font-size: 1rem"></td>
                                 <td><input class="verorisparmio centrale" type="text" name="delta_leasing_decimo_anno" value="{{ delta_leasing_decimo_anno }}" style="font-size: 1rem" readonly></td>
                             </tr>
+                            <tr>
+                                <td>Totale</td>
+                                <td><input class="verorisparmio centrale" type="text" name="totale_check" value="{{ totale_check }}" style="font-size: 1rem"></td>
+                                <td><input class="verorisparmio centrale" type="text" name="delta_totale_check" value="{{ delta_totale_check }}" style="font-size: 1rem" readonly></td>
+                            </tr>
 
                         </table>
-
-{#                    <table>#}
-{#                        {% if tabella_leasing|length > 0 %}#}
-{#                            <th>ANNUALITA'</th><th>IMPORTO LEASING</th><th>DELTA</th>#}
-{#                        {% endif %}#}
-{#                        {% for piano in tabella_leasing.itertuples %}#}
-{#                            <tr>#}
-{#                                <td>#}
-{#                                    <input class="verorisparmio centrale" type="text" name="rata_{{ piano.index }}"#}
-{#                                           value="{{ piano.index }}"  style="font-size: 1rem; align-content: center" readonly>#}
-{#                                </td>#}
-{#                                <td>#}
-{#                                    <input class="verorisparmio centrale" type="text" name="valore_{{ piano.index }}"#}
-{#                                           value="{{ piano.rateizzazione }}"  style="font-size: 1rem">#}
-{#                                </td>#}
-{#                                <td>#}
-{#                                    <input class="verorisparmio centrale" type="text" name="delta_{{ piano.index }}"#}
-{#                                           value="{{ piano.rateizzazione }}"  style="font-size: 1rem" readonly>#}
-{#                                </td>#}
-{#                            </tr>#}
-{#                        {%  endfor %}#}
-{#                        <tr>#}
-{#                            <td>#}
-{#                                <button type="submit" name="aggiungi_rata">Inserisci rata</button>#}
-{#                            </td>#}
-{#                            <td>#}
-{#                                <button type="submit" name="salva_modifiche">Ok</button>#}
-{#                            </td>#}
-{#                        </tr>#}
-{#                    </table>#}
                     </div>
                 </div>
         </div>
-        
     </div>
     </form>
     <div class="footer">

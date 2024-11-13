@@ -58,3 +58,7 @@ class Offerta(models.Model):
     delta_leasing_nono_anno = models.FloatField(null=True)
     leasing_decimo_anno = models.FloatField(null=True)
     delta_leasing_decimo_anno = models.FloatField(null=True)
+
+    delta_leasing_totale = models.FloatField(null=True)
+    totale_check = models.FloatField(null=True)
+    delta_totale_check = models.FloatField(null=True)
