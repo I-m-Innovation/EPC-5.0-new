@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Offerte</title>
+</head>
+<body>
+
+    {% for offerta in offerte %}
+    <ul>
+        <li><a href="offerte/{{ offerta.slug }}">{{ offerta.nome_cliente }}</a></li>
+    </ul>
+    {% endfor %}
+
+</body>
+</html>
