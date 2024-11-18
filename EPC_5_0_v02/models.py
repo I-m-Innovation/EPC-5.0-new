@@ -5,6 +5,7 @@ from django.db import models
 
 class Offerta(models.Model):
 
+    user = models.CharField(max_length=100, null=True)
     partita_iva = models.CharField(max_length=100, null=True)
     slug = models.SlugField(db_index=True, unique=True)
 
@@ -64,4 +65,5 @@ class Offerta(models.Model):
     totale_check = models.FloatField(null=True)
     delta_totale_check = models.FloatField(null=True)
 
-
+    def __str__(self):
+        return f'{self.nome_cliente}'

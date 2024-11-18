@@ -1,14 +1,122 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.views import View
 from .forms import InserisciCliente
 from django.http import HttpResponseRedirect
 from slugify import slugify
 from .models import Offerta
 import pandas as pd
+from django.template.loader import get_template
+from django.conf import settings
+import os
+import pdfkit
+import tempfile
+from django.http import HttpResponse
+import platform
+from django.contrib.auth import authenticate, login, logout
+
+
+os_platform = platform.system()
+pdfkit_path = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"
+
+if os_platform == "Linux":
+    pdfkit_path = "/usr/bin/wkhtmltopdf"
+elif os_platform == "Darwin":
+    pdfkit_path = "/usr/local/bin/wkhtmltopdf"
+
+url = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login') # Replace 'login' with the name of your login page URL
+
+
+def login_view(request):
+
+    if request.method == 'POST':
+        try:
+            url = 'offerte/'+request.POST['url']
+        except Exception as err:
+            url = 'inizializza_offerta'
+        print(url)
+        if request.POST['username']:
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect(url)  # Replace 'home' with the name of your home page URL
+            else:
+                return render(request, 'registration/login.html', {'error': 'Invalid credentials.'})
+        else:
+            print("else")
+            return redirect(url)
+    else:
+        try:
+            url = request.GET['url']
+        except Exception as err:
+            url=''
+            # print(url)
+        data = {"url": url}
+
+        return render(request, 'registration/login.html', data)
+
+
+class GeneratePDFView(View):
+    def get(self, request, student_id, *args, **kwargs):
+        try:
+            # Fetch the Offerta based on the provided student_id
+            offerta = Offerta.objects.get(pk=student_id)
+
+            # Create a context dictionary with data specific to this student
+            context = {
+                'student_data': offerta,
+            }
+
+            # Specify the path to the wkhtmltopdf executable
+            config = pdfkit.configuration(wkhtmltopdf=url)
+
+            # Render the HTML template to a string
+            template = get_template('EPC_5_0_v02/offerta_v01.html')
+            html = template.render(context)
+
+            # Define the options for PDF generation
+            options = {
+                'page-size': 'A4',
+                'margin-top': '10mm',
+                'margin-right': '10mm',
+                'margin-bottom': '10mm',
+                'margin-left': '10mm',
+                'orientation': 'Landscape',
+                'enable-local-file-access': "",
+                'enable-smart-shrinking': '',
+            }
+
+            # Construct the filename based on student data
+            filename = f"{offerta.nome_cliente}-data.pdf"
+
+            # Generate the PDF using pdfkit and save it to a temporary file
+            pdf_file_path = 'prova.pdf' # tempfile.mktemp(suffix='.pdf')
+            css_file = 'EPC_5_0_v02/static/EPC_5_0_v02/styles_v0.css'
+            pdfkit.from_string(html, 'prova.pdf', configuration=config, options=options, css=css_file)
+
+            # Prepare the response to serve the PDF for download
+            with open(pdf_file_path, 'rb') as pdf_file:
+                response = HttpResponse(pdf_file.read(), content_type='application/pdf')
+                response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+            # Remove the temporary PDF file
+            os.remove(pdf_file_path)
+
+            return response
+        except Offerta.DoesNotExist:
+            # Handle the case where the student does not exist
+            print("Offerta non trovata")
+            return redirect(reverse('offerta'))
 
 
 def pulsanti(request, slug):
-    # print(slug)
     offerta = Offerta.objects.get(slug=slug)
     offerta.consumi_cliente = request.POST.get('consumi_annui_cliente')
     data = {}
@@ -73,216 +181,252 @@ def leggi_valore(stringa):
 
 
 def offerta_view(request, slug):
+    risparmi_bolletta = None
+    offerta = Offerta.objects.get(slug=slug)
+    print(offerta.user)
 
-    if "salva_modifiche" in request.POST:
-        offerta = Offerta.objects.get(slug=slug)
-        consumi_cliente = request.POST['consumi_annui_cliente'].replace("kWh", "").replace(".", "").replace(",", ".")
-        print(request.POST['consumi_annui_cliente'])
-        offerta.consumi_cliente = leggi_valore(request.POST['consumi_annui_cliente']) if request.POST['consumi_annui_cliente'] else 0
+    if offerta.user == request.user.username:
+        if "salva_modifiche" in request.POST:
+            consumi_cliente = request.POST['consumi_annui_cliente'].replace("kWh", "").replace(".", "").replace(",", ".")
+            print(request.POST['consumi_annui_cliente'])
+            offerta.consumi_cliente = leggi_valore(request.POST['consumi_annui_cliente']) if request.POST['consumi_annui_cliente'] else 0
 
-        offerta.costi_energia_cliente = leggi_valore(request.POST['costi_energia_cliente']) if request.POST['costi_energia_cliente'] != "" else 0
-        # offerta.costi_energia_cliente = float(costi_energia_cliente) if costi_energia_cliente !="" else 0
+            offerta.costi_energia_cliente = leggi_valore(request.POST['costi_energia_cliente']) if request.POST['costi_energia_cliente'] != "" else 0
+            # offerta.costi_energia_cliente = float(costi_energia_cliente) if costi_energia_cliente !="" else 0
 
-        offerta.tariffa_energia_cliente = 1000 * offerta.costi_energia_cliente / offerta.consumi_cliente if offerta.consumi_cliente !=0 else 0
-        offerta.costo_fv = leggi_valore(request.POST['costo_fv'])if request.POST['costo_fv'] != "Inserire dato da Ingegneria" and request.POST['costo_fv'] != "" else 0
+            offerta.tariffa_energia_cliente = 1000 * offerta.costi_energia_cliente / offerta.consumi_cliente if offerta.consumi_cliente !=0 else 0
+            offerta.costo_fv = leggi_valore(request.POST['costo_fv'])if request.POST['costo_fv'] != "Inserire dato da Ingegneria" and request.POST['costo_fv'] != "" else 0
 
-        # offerta.costo_fv = float(request.POST['costo_fv'].replace("€", "").replace(",", ".")) if request.POST['costo_fv'] != "Inserire dato da Ingegneria" and request.POST['costo_fv'] != "" else 0
-        offerta.costo_storage = leggi_valore(request.POST['costo_storage']) if request.POST['costo_storage'] != "Inserire dato da Ingegneria" else 0
-        offerta.costo_trainante = leggi_valore(request.POST['costo_trainante']) if (request.POST['costo_trainante'] != "Inserire dato da Cliente"
-                                                             and request.POST['costo_trainante'] != "") else 0
+            # offerta.costo_fv = float(request.POST['costo_fv'].replace("€", "").replace(",", ".")) if request.POST['costo_fv'] != "Inserire dato da Ingegneria" and request.POST['costo_fv'] != "" else 0
+            offerta.costo_storage = leggi_valore(request.POST['costo_storage']) if request.POST['costo_storage'] != "Inserire dato da Ingegneria" else 0
+            offerta.costo_trainante = leggi_valore(request.POST['costo_trainante']) if (request.POST['costo_trainante'] != "Inserire dato da Cliente"
+                                                                 and request.POST['costo_trainante'] != "") else 0
 
-        offerta.costo_totale = offerta.costo_fv + offerta.costo_storage + offerta.costo_trainante
-        offerta.potenza_installata = leggi_valore(request.POST['potenza_installata']) if request.POST['potenza_installata']!= "Inserire dato da Ingegneria" else 0
-        offerta.storage_installato = leggi_valore(request.POST['storage_installato']) if request.POST['storage_installato'] != "Inserire dato da Ingegneria" else 0
-        offerta.producibilità_specifica = leggi_valore(request.POST['producibilità_specifica']) if request.POST['producibilità_specifica'] else 0
-        offerta.produzione_annua = offerta.producibilità_specifica*offerta.potenza_installata if offerta.producibilità_specifica>0 and offerta.potenza_installata else 0
+            offerta.costo_totale = offerta.costo_fv + offerta.costo_storage + offerta.costo_trainante
+            offerta.potenza_installata = leggi_valore(request.POST['potenza_installata']) if request.POST['potenza_installata']!= "Inserire dato da Ingegneria" else 0
+            offerta.storage_installato = leggi_valore(request.POST['storage_installato']) if request.POST['storage_installato'] != "Inserire dato da Ingegneria" else 0
+            offerta.producibilità_specifica = leggi_valore(request.POST['producibilità_specifica']) if request.POST['producibilità_specifica'] else 0
+            offerta.produzione_annua = offerta.producibilità_specifica*offerta.potenza_installata if offerta.producibilità_specifica>0 and offerta.potenza_installata else 0
 
-        offerta.tipologia_moduli = leggi_valore(request.POST['tipologia_moduli'])
-        offerta.risparmio_energetico_trainante = leggi_valore(request.POST['risparmio_energetico_trainante'])/100 if request.POST['risparmio_energetico_trainante'] != "" else 0
+            offerta.tipologia_moduli = leggi_valore(request.POST['tipologia_moduli'])
+            print(offerta.tipologia_moduli)
+            offerta.risparmio_energetico_trainante = leggi_valore(request.POST['risparmio_energetico_trainante'])/100 if request.POST['risparmio_energetico_trainante'] != "" else 0
 
-        offerta.aliquota = calcola_aliquota(offerta.risparmio_energetico_trainante, offerta.costo_totale)
+            offerta.aliquota = calcola_aliquota(offerta.risparmio_energetico_trainante, offerta.costo_totale)
 
-        offerta.crediti_fv = offerta.tipologia_moduli * offerta.aliquota * offerta.costo_fv if offerta.costo_fv else 0
+            offerta.crediti_fv = offerta.tipologia_moduli * offerta.aliquota * offerta.costo_fv if offerta.costo_fv else 0
 
-        offerta.crediti_storage = offerta.tipologia_moduli * offerta.aliquota * min(offerta.costo_storage, offerta.storage_installato *900)
-        offerta.crediti_trainante = offerta.aliquota * offerta.costo_trainante
-        offerta.crediti_totale = offerta.crediti_fv + offerta.crediti_storage + offerta.crediti_trainante
+            offerta.crediti_storage = offerta.tipologia_moduli * offerta.aliquota * min(offerta.costo_storage, offerta.storage_installato *900)
+            offerta.crediti_trainante = offerta.aliquota * offerta.costo_trainante
+            offerta.crediti_totale = offerta.crediti_fv + offerta.crediti_storage + offerta.crediti_trainante
 
-        risparmi_bolletta = calcola_risparmio(offerta.produzione_annua, 0.005, offerta.tariffa_energia_cliente)
-        offerta.risparmi_bolletta = risparmi_bolletta
-        # offerta.risparmi_bolletta = [] if offerta.risparmi_bolletta =="[]" else offerta.risparmi_bolletta
-        offerta.risparmio_bolletta_primo_anno = risparmi_bolletta[0]
-        offerta.risparmio_totale_primo_anno = offerta.risparmio_bolletta_primo_anno + offerta.crediti_totale
-        # print(request.POST['importo_leasing'])
-        offerta.importo_leasing = leggi_valore(request.POST['importo_leasing']) if request.POST['importo_leasing'].replace("€", "").replace(".", "").replace(",", ".") else 0
-        offerta.anticipo_leasing = leggi_valore(request.POST['anticipo_leasing']) if request.POST['anticipo_leasing'].replace("€", "").replace(".", "").replace(",", ".") else 0
-        offerta.prima_rata = leggi_valore(request.POST['prima_rata']) if request.POST['prima_rata'].replace("€", "").replace(".", "").replace(",", ".") else 0
-        offerta.leasing_primo_anno =  offerta.anticipo_leasing + offerta.prima_rata
-        offerta.delta_leasing_primo_anno = offerta.risparmio_totale_primo_anno - offerta.leasing_primo_anno
-        offerta.leasing_secondo_anno = leggi_valore(request.POST['leasing_secondo_anno']) if request.POST['leasing_secondo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
-        offerta.delta_leasing_secondo_anno = - offerta.leasing_secondo_anno + risparmi_bolletta[1]
-        offerta.leasing_terzo_anno = leggi_valore(request.POST['leasing_terzo_anno']) if request.POST['leasing_terzo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            risparmi_bolletta = calcola_risparmio(offerta.produzione_annua, 0.005, offerta.tariffa_energia_cliente)
+            offerta.risparmi_bolletta = risparmi_bolletta
+            # offerta.risparmi_bolletta = [] if offerta.risparmi_bolletta =="[]" else offerta.risparmi_bolletta
+            offerta.risparmio_bolletta_primo_anno = risparmi_bolletta[0]
+            offerta.risparmio_totale_primo_anno = offerta.risparmio_bolletta_primo_anno + offerta.crediti_totale
+            # print(request.POST['importo_leasing'])
+            offerta.importo_leasing = leggi_valore(request.POST['importo_leasing']) if request.POST['importo_leasing'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.anticipo_leasing = leggi_valore(request.POST['anticipo_leasing']) if request.POST['anticipo_leasing'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.prima_rata = leggi_valore(request.POST['prima_rata']) if request.POST['prima_rata'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.leasing_primo_anno =  offerta.anticipo_leasing + offerta.prima_rata
+            offerta.delta_leasing_primo_anno = offerta.risparmio_totale_primo_anno - offerta.leasing_primo_anno
+            offerta.leasing_secondo_anno = leggi_valore(request.POST['leasing_secondo_anno']) if request.POST['leasing_secondo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.delta_leasing_secondo_anno = - offerta.leasing_secondo_anno + risparmi_bolletta[1]
+            offerta.leasing_terzo_anno = leggi_valore(request.POST['leasing_terzo_anno']) if request.POST['leasing_terzo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
 
-        offerta.delta_leasing_terzo_anno = - offerta.leasing_terzo_anno + risparmi_bolletta[2]
-        offerta.leasing_quarto_anno = leggi_valore(request.POST['leasing_quarto_anno']) if request.POST[
-            'leasing_quarto_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
-        offerta.delta_leasing_quarto_anno = - offerta.leasing_quarto_anno + risparmi_bolletta[3]
-        offerta.leasing_quinto_anno = leggi_valore(request.POST['leasing_quinto_anno']) if request.POST[
-            'leasing_quinto_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
-        offerta.delta_leasing_quinto_anno = - offerta.leasing_quinto_anno + risparmi_bolletta[4]
-        offerta.leasing_sesto_anno = leggi_valore(request.POST['leasing_sesto_anno']) if request.POST[
-            'leasing_sesto_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
-        offerta.delta_leasing_sesto_anno = - offerta.leasing_sesto_anno + risparmi_bolletta[5]
-        offerta.leasing_settimo_anno = leggi_valore(request.POST['leasing_settimo_anno']) if request.POST[
-            'leasing_settimo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
-        offerta.delta_leasing_settimo_anno = - offerta.leasing_settimo_anno + risparmi_bolletta[6]
-        offerta.leasing_ottavo_anno = leggi_valore(request.POST['leasing_ottavo_anno']) if request.POST[
-            'leasing_ottavo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
-        offerta.delta_leasing_ottavo_anno = - offerta.leasing_ottavo_anno + risparmi_bolletta[7]
-        offerta.leasing_nono_anno = leggi_valore(request.POST['leasing_nono_anno']) if request.POST[
-            'leasing_nono_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
-        offerta.delta_leasing_nono_anno = - offerta.leasing_nono_anno + risparmi_bolletta[8]
-        offerta.leasing_decimo_anno = leggi_valore(request.POST['leasing_decimo_anno']) if request.POST[
-            'leasing_decimo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
-        offerta.delta_leasing_decimo_anno = - offerta.leasing_decimo_anno + risparmi_bolletta[9]
+            offerta.delta_leasing_terzo_anno = - offerta.leasing_terzo_anno + risparmi_bolletta[2]
+            offerta.leasing_quarto_anno = leggi_valore(request.POST['leasing_quarto_anno']) if request.POST[
+                'leasing_quarto_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.delta_leasing_quarto_anno = - offerta.leasing_quarto_anno + risparmi_bolletta[3]
+            offerta.leasing_quinto_anno = leggi_valore(request.POST['leasing_quinto_anno']) if request.POST[
+                'leasing_quinto_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.delta_leasing_quinto_anno = - offerta.leasing_quinto_anno + risparmi_bolletta[4]
+            offerta.leasing_sesto_anno = leggi_valore(request.POST['leasing_sesto_anno']) if request.POST[
+                'leasing_sesto_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.delta_leasing_sesto_anno = - offerta.leasing_sesto_anno + risparmi_bolletta[5]
+            offerta.leasing_settimo_anno = leggi_valore(request.POST['leasing_settimo_anno']) if request.POST[
+                'leasing_settimo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.delta_leasing_settimo_anno = - offerta.leasing_settimo_anno + risparmi_bolletta[6]
+            offerta.leasing_ottavo_anno = leggi_valore(request.POST['leasing_ottavo_anno']) if request.POST[
+                'leasing_ottavo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.delta_leasing_ottavo_anno = - offerta.leasing_ottavo_anno + risparmi_bolletta[7]
+            offerta.leasing_nono_anno = leggi_valore(request.POST['leasing_nono_anno']) if request.POST[
+                'leasing_nono_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.delta_leasing_nono_anno = - offerta.leasing_nono_anno + risparmi_bolletta[8]
+            offerta.leasing_decimo_anno = leggi_valore(request.POST['leasing_decimo_anno']) if request.POST[
+                'leasing_decimo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.delta_leasing_decimo_anno = - offerta.leasing_decimo_anno + risparmi_bolletta[9]
 
-        offerta.delta_leasing_totale = offerta.risparmio_dieci_anni - offerta.importo_leasing if offerta.risparmio_dieci_anni else 0
-        offerta.totale_check = (offerta.leasing_primo_anno+offerta.leasing_secondo_anno + offerta.leasing_terzo_anno +
-                                offerta.leasing_quarto_anno + offerta.leasing_quinto_anno + offerta.leasing_sesto_anno +
-                                offerta.leasing_settimo_anno + offerta.leasing_ottavo_anno + offerta.leasing_nono_anno
-                                + offerta.leasing_decimo_anno) if offerta.totale_check else 0
+            offerta.delta_leasing_totale = offerta.risparmio_dieci_anni - offerta.importo_leasing if offerta.risparmio_dieci_anni else 0
+            offerta.totale_check = (offerta.leasing_primo_anno+offerta.leasing_secondo_anno + offerta.leasing_terzo_anno +
+                                    offerta.leasing_quarto_anno + offerta.leasing_quinto_anno + offerta.leasing_sesto_anno +
+                                    offerta.leasing_settimo_anno + offerta.leasing_ottavo_anno + offerta.leasing_nono_anno
+                                    + offerta.leasing_decimo_anno) if offerta.totale_check else 0
 
 
-        offerta.delta_totale_check = offerta.risparmio_dieci_anni - offerta.totale_check if offerta.risparmio_dieci_anni else 0
-        print(offerta.delta_totale_check)
+            offerta.delta_totale_check = offerta.risparmio_dieci_anni - offerta.totale_check if offerta.risparmio_dieci_anni else 0
+            print(offerta.delta_totale_check)
+            offerta.save()
+        elif "scarica_pdf" in request.POST:
+            print("figa")
+        else:
+            offerta = Offerta.objects.get(slug=slug)
+            # print(offerta.risparmi_bolletta)
+
+        if risparmi_bolletta:
+            risparmi_bolletta = [float(i) for i in risparmi_bolletta]
+
+            indexes = [int(number) for number in range(1, 11)]
+            altri_risparmi_df = pd.DataFrame(zip(indexes[1:], risparmi_bolletta[1:]), columns=["index", "valore"])
+
+            offerta.risparmio_dieci_anni = sum(risparmi_bolletta) if risparmi_bolletta else 0
+
+            risparmio_string = []
+            for risparmio in altri_risparmi_df.itertuples():
+                risparmio_string.append(f"{round(risparmio.valore):,} €".replace(",", "."))
+                altri_risparmi_df_string = pd.DataFrame(zip(indexes[1:], risparmio_string[1:]), columns=["index", "valore"])
+        else:
+            altri_risparmi_df = []
+            altri_risparmi_df_string = []
+
         offerta.save()
-    elif "scarica_pdf" in request.POST:
-        print("figa")
-    else:
-        offerta = Offerta.objects.get(slug=slug)
 
-        # print(offerta.risparmi_bolletta)
-        risparmi_bolletta = offerta.risparmi_bolletta.replace("[", "").replace("]", "").split(",") if offerta.risparmi_bolletta else None
-
-    if risparmi_bolletta:
-        risparmi_bolletta = [float(i) for i in risparmi_bolletta]
-
-        indexes = [int(number) for number in range(1, 11)]
-        altri_risparmi_df = pd.DataFrame(zip(indexes[1:], risparmi_bolletta[1:]), columns=["index", "valore"])
-
-        offerta.risparmio_dieci_anni = sum(risparmi_bolletta) if risparmi_bolletta else 0
-
-        risparmio_string = []
-        for risparmio in altri_risparmi_df.itertuples():
-            risparmio_string.append(f"{round(risparmio.valore):,} €".replace(",", "."))
-            altri_risparmi_df_string = pd.DataFrame(zip(indexes[1:], risparmio_string[1:]), columns=["index", "valore"])
-    else:
-        altri_risparmi_df = []
-        altri_risparmi_df_string = []
-
-    offerta.save()
-
-    data = {
-        'consumi_annui_cliente': f"{round(offerta.consumi_cliente,2):,} kWh".replace(',',';').replace('.',',').replace(';','.') if offerta.consumi_cliente > 0 else 'kWh',
-        'costi_energia_cliente': f"{round(offerta.costi_energia_cliente, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.costi_energia_cliente else '€',
-        'tariffa_energia_cliente': f"{round(offerta.tariffa_energia_cliente, 2):,} €/MWh".replace(',',';').replace('.',',').replace(';','.') if offerta.costi_energia_cliente else '',
-        'costo_fv': f"{round(offerta.costo_fv, 2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_fv else '',
-        'costo_storage': f"{round(offerta.costo_storage,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_storage else '',
-        'costo_trainante': f"{round(offerta.costo_trainante,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_trainante else '',
-        'costo_totale': f"{round(offerta.costo_totale,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_totale else '',
-        'potenza_installata': f"{round(offerta.potenza_installata,2):,} kW".replace(',',';').replace('.',',').replace(';','.') if offerta.potenza_installata else '',
-        'storage_installato': f"{round(offerta.storage_installato,2):,} kWh".replace(',',';').replace('.',',').replace(';','.') if offerta.storage_installato else '',
-        'producibilità_specifica': f"{round(offerta.producibilità_specifica,2):,} kWh/kWp".replace(',',';').replace('.',',').replace(';','.') if offerta.producibilità_specifica else '',
-        'produzione_annua': f"{round(offerta.produzione_annua):,} kWh".replace(',', '.') if offerta.produzione_annua else '',
-        'crediti_fv': f"{round(offerta.crediti_fv, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_fv else '€',
-        'crediti_storage': f"{round(offerta.crediti_storage,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_storage else '€',
-        'crediti_trainante': f"{round(offerta.crediti_trainante,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_trainante else '€',
-        'crediti_totale': f"{round(offerta.crediti_totale,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_totale else '€',
-        'risparmio_energetico_trainante': offerta.risparmio_energetico_trainante if offerta.risparmio_energetico_trainante else '%',
-        'aliquota': f"{round(100*offerta.aliquota)} %",
-        'risparmio_bolletta_primo_anno': f"{round(offerta.risparmio_bolletta_primo_anno, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.risparmio_bolletta_primo_anno else '€',
-        'risparmio_totale_primo_anno': f"{round(offerta.risparmio_totale_primo_anno, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.risparmio_totale_primo_anno else '€',
-        'risparmi_bolletta': altri_risparmi_df_string,
-        'risparmio_dieci_anni': f"{round(offerta.risparmio_dieci_anni,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.risparmio_dieci_anni else '€',
-        'importo_leasing': f"{round(offerta.importo_leasing, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.importo_leasing else '€',
-        'anticipo_leasing': f"{round(offerta.anticipo_leasing,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.importo_leasing else '€',
-        'prima_rata': f"{round(offerta.prima_rata,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.prima_rata else '€',
-        'leasing_primo_anno': f"{round(offerta.leasing_primo_anno,2):,} €".replace(".",";").replace(",",".").replace(";",",") if offerta.leasing_primo_anno else '€',
-        'delta_leasing_primo_anno': f"{round(offerta.delta_leasing_primo_anno,2):,} €".replace(".", ";").replace(",",".").replace(";",",") if offerta.leasing_primo_anno else '€',
-        'leasing_secondo_anno': f"{round(offerta.leasing_secondo_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
-                                                                                                              ",") if offerta.leasing_secondo_anno else '€',
-        'delta_leasing_secondo_anno': f"{round(offerta.delta_leasing_secondo_anno,2):,} €".replace(".", ";").replace(",",
-                                                                                                        ".").replace(
-            ";", ",") if offerta.delta_leasing_secondo_anno else '€',
-        'leasing_terzo_anno': f"{round(offerta.leasing_terzo_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
-                                                                                                                  ",") if offerta.leasing_terzo_anno else '€',
-        'delta_leasing_terzo_anno': f"{round(offerta.delta_leasing_terzo_anno,2):,} €".replace(".", ";").replace(",",
+        data = {
+            'nome_cliente': offerta.nome_cliente,
+            'partita_iva': offerta.partita_iva,
+            'consumi_annui_cliente': f"{round(offerta.consumi_cliente,2):,} kWh".replace(',',';').replace('.',',').replace(';','.') if offerta.consumi_cliente > 0 else 'kWh',
+            'costi_energia_cliente': f"{round(offerta.costi_energia_cliente, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.costi_energia_cliente else '€',
+            'tariffa_energia_cliente': f"{round(offerta.tariffa_energia_cliente, 2):,} €/MWh".replace(',',';').replace('.',',').replace(';','.') if offerta.costi_energia_cliente else '',
+            'costo_fv': f"{round(offerta.costo_fv, 2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_fv else '',
+            'costo_storage': f"{round(offerta.costo_storage,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_storage else '',
+            'costo_trainante': f"{round(offerta.costo_trainante,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_trainante else '',
+            'costo_totale': f"{round(offerta.costo_totale,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_totale else '',
+            'potenza_installata': f"{round(offerta.potenza_installata,2):,} kW".replace(',',';').replace('.',',').replace(';','.') if offerta.potenza_installata else '',
+            'storage_installato': f"{round(offerta.storage_installato,2):,} kWh".replace(',',';').replace('.',',').replace(';','.') if offerta.storage_installato else '',
+            'producibilità_specifica': f"{round(offerta.producibilità_specifica,2):,} kWh/kWp".replace(',',';').replace('.',',').replace(';','.') if offerta.producibilità_specifica else '',
+            'produzione_annua': f"{round(offerta.produzione_annua):,} kWh".replace(',', '.') if offerta.produzione_annua else '',
+            'crediti_fv': f"{round(offerta.crediti_fv, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_fv else '€',
+            'crediti_storage': f"{round(offerta.crediti_storage,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_storage else '€',
+            'crediti_trainante': f"{round(offerta.crediti_trainante,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_trainante else '€',
+            'crediti_totale': f"{round(offerta.crediti_totale,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_totale else '€',
+            'risparmio_energetico_trainante': offerta.risparmio_energetico_trainante if offerta.risparmio_energetico_trainante else '%',
+            'aliquota': f"{round(100*offerta.aliquota)} %",
+            'risparmio_bolletta_primo_anno': f"{round(offerta.risparmio_bolletta_primo_anno, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.risparmio_bolletta_primo_anno else '€',
+            'risparmio_totale_primo_anno': f"{round(offerta.risparmio_totale_primo_anno, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.risparmio_totale_primo_anno else '€',
+            'risparmi_bolletta': altri_risparmi_df_string,
+            'risparmio_dieci_anni': f"{round(offerta.risparmio_dieci_anni,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.risparmio_dieci_anni else '€',
+            'importo_leasing': f"{round(offerta.importo_leasing, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.importo_leasing else '€',
+            'anticipo_leasing': f"{round(offerta.anticipo_leasing,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.importo_leasing else '€',
+            'prima_rata': f"{round(offerta.prima_rata,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.prima_rata else '€',
+            'leasing_primo_anno': f"{round(offerta.leasing_primo_anno,2):,} €".replace(".",";").replace(",",".").replace(";",",") if offerta.leasing_primo_anno else '€',
+            'delta_leasing_primo_anno': f"{round(offerta.delta_leasing_primo_anno,2):,} €".replace(".", ";").replace(",",".").replace(";",",") if offerta.leasing_primo_anno else '€',
+            'leasing_secondo_anno': f"{round(offerta.leasing_secondo_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                                  ",") if offerta.leasing_secondo_anno else '€',
+            'delta_leasing_secondo_anno': f"{round(offerta.delta_leasing_secondo_anno,2):,} €".replace(".", ";").replace(",",
                                                                                                             ".").replace(
-            ";", ",") if offerta.delta_leasing_terzo_anno else '€',
-        'leasing_quarto_anno': f"{round(offerta.leasing_quarto_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
-                                                                                                              ",") if offerta.leasing_quarto_anno else '€',
-        'delta_leasing_quarto_anno': f"{round(offerta.delta_leasing_quarto_anno,2):,} €".replace(".", ";").replace(",",
-                                                                                                        ".").replace(
-            ";", ",") if offerta.delta_leasing_quarto_anno else '€',
-        'leasing_quinto_anno': f"{round(offerta.leasing_quinto_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
-                                                                                                                ",") if offerta.leasing_quinto_anno else '€',
-        'delta_leasing_quinto_anno': f"{round(offerta.delta_leasing_quinto_anno,2):,} €".replace(".", ";").replace(",",
-                                                                                                          ".").replace(
-            ";", ",") if offerta.delta_leasing_quinto_anno else '€',
-        'leasing_sesto_anno': f"{round(offerta.leasing_sesto_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
-                                                                                                                ",") if offerta.leasing_sesto_anno else '€',
-        'delta_leasing_sesto_anno': f"{round(offerta.delta_leasing_sesto_anno,2):,} €".replace(".", ";").replace(",",
-                                                                                                          ".").replace(
-            ";", ",") if offerta.delta_leasing_sesto_anno else '€',
-        'leasing_settimo_anno': f"{round(offerta.leasing_settimo_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
-                                                                                                              ",") if offerta.leasing_settimo_anno else '€',
-        'delta_leasing_settimo_anno': f"{round(offerta.delta_leasing_settimo_anno,2):,} €".replace(".", ";").replace(",",
-                                                                                                        ".").replace(
-            ";", ",") if offerta.delta_leasing_settimo_anno else '€',
-        'leasing_ottavo_anno': f"{round(offerta.leasing_ottavo_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
-                                                                                                                  ",") if offerta.leasing_ottavo_anno else '€',
-        'delta_leasing_ottavo_anno': f"{round(offerta.delta_leasing_ottavo_anno,2):,} €".replace(".", ";").replace(",",
+                ";", ",") if offerta.delta_leasing_secondo_anno else '€',
+            'leasing_terzo_anno': f"{round(offerta.leasing_terzo_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                                      ",") if offerta.leasing_terzo_anno else '€',
+            'delta_leasing_terzo_anno': f"{round(offerta.delta_leasing_terzo_anno,2):,} €".replace(".", ";").replace(",",
+                                                                                                                ".").replace(
+                ";", ",") if offerta.delta_leasing_terzo_anno else '€',
+            'leasing_quarto_anno': f"{round(offerta.leasing_quarto_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                                  ",") if offerta.leasing_quarto_anno else '€',
+            'delta_leasing_quarto_anno': f"{round(offerta.delta_leasing_quarto_anno,2):,} €".replace(".", ";").replace(",",
                                                                                                             ".").replace(
-            ";", ",") if offerta.delta_leasing_ottavo_anno else '€',
-        'leasing_nono_anno': f"{round(offerta.leasing_nono_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
-                                                                                                                ",") if offerta.leasing_nono_anno else '€',
-        'delta_leasing_nono_anno': f"{round(offerta.delta_leasing_nono_anno,2):,} €".replace(".", ";").replace(",", ".").replace(
-            ";", ",") if offerta.delta_leasing_nono_anno else '€',
-        'leasing_decimo_anno': f"{round(offerta.leasing_decimo_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
-                                                                                                            ",") if offerta.leasing_decimo_anno else '€',
-        'delta_leasing_decimo_anno': f"{round(offerta.delta_leasing_decimo_anno,2):,} €".replace(".", ";").replace(",",
-                                                                                                      ".").replace(
-            ";", ",") if offerta.delta_leasing_decimo_anno else '€',
-        'totale_check': f"{round(offerta.totale_check,2):,} €".replace(".", ";").replace(",",
-                                                                                                      ".").replace(
-            ";", ",") if offerta.delta_totale_check else '€',
-        'delta_totale_check': f"{round(offerta.delta_totale_check, 2):,} €".replace(".", ";").replace(",",
-                                                                                          ".").replace(
-            ";", ",") if offerta.delta_totale_check else '€',
-    }
+                ";", ",") if offerta.delta_leasing_quarto_anno else '€',
+            'leasing_quinto_anno': f"{round(offerta.leasing_quinto_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                                    ",") if offerta.leasing_quinto_anno else '€',
+            'delta_leasing_quinto_anno': f"{round(offerta.delta_leasing_quinto_anno,2):,} €".replace(".", ";").replace(",",
+                                                                                                              ".").replace(
+                ";", ",") if offerta.delta_leasing_quinto_anno else '€',
+            'leasing_sesto_anno': f"{round(offerta.leasing_sesto_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                                    ",") if offerta.leasing_sesto_anno else '€',
+            'delta_leasing_sesto_anno': f"{round(offerta.delta_leasing_sesto_anno,2):,} €".replace(".", ";").replace(",",
+                                                                                                              ".").replace(
+                ";", ",") if offerta.delta_leasing_sesto_anno else '€',
+            'leasing_settimo_anno': f"{round(offerta.leasing_settimo_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                                  ",") if offerta.leasing_settimo_anno else '€',
+            'delta_leasing_settimo_anno': f"{round(offerta.delta_leasing_settimo_anno,2):,} €".replace(".", ";").replace(",",
+                                                                                                            ".").replace(
+                ";", ",") if offerta.delta_leasing_settimo_anno else '€',
+            'leasing_ottavo_anno': f"{round(offerta.leasing_ottavo_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                                      ",") if offerta.leasing_ottavo_anno else '€',
+            'delta_leasing_ottavo_anno': f"{round(offerta.delta_leasing_ottavo_anno,2):,} €".replace(".", ";").replace(",",
+                                                                                                                ".").replace(
+                ";", ",") if offerta.delta_leasing_ottavo_anno else '€',
+            'leasing_nono_anno': f"{round(offerta.leasing_nono_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                                    ",") if offerta.leasing_nono_anno else '€',
+            'delta_leasing_nono_anno': f"{round(offerta.delta_leasing_nono_anno,2):,} €".replace(".", ";").replace(",", ".").replace(
+                ";", ",") if offerta.delta_leasing_nono_anno else '€',
+            'leasing_decimo_anno': f"{round(offerta.leasing_decimo_anno,2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                                ",") if offerta.leasing_decimo_anno else '€',
+            'delta_leasing_decimo_anno': f"{round(offerta.delta_leasing_decimo_anno,2):,} €".replace(".", ";").replace(",",
+                                                                                                          ".").replace(
+                ";", ",") if offerta.delta_leasing_decimo_anno else '€',
+            'totale_check': f"{round(offerta.totale_check,2):,} €".replace(".", ";").replace(",",
+                                                                                                          ".").replace(
+                ";", ",") if offerta.delta_totale_check else '€',
+            'delta_totale_check': f"{round(offerta.delta_totale_check, 2):,} €".replace(".", ";").replace(",",
+                                                                                              ".").replace(
+                ";", ",") if offerta.delta_totale_check else '€',
+            'tipologia_pannelli': str(offerta.tipologia_moduli)
+        }
 
-    return render(request, "EPC_5_0_v02/offerta.html", context=data)
+        return render(request, "EPC_5_0_v02/offerta_v01.html", context=data)
+    else:
+        data = {
+            "url": slug
+        }
+        print(slug)
+        return render(request, "registration/login.html", context=data)
 
 
 def inizializza_offerta(request):
     slug = slugify(request.POST['client_name'])
     offerta = Offerta(slug=slugify(slug))
-    offerta.save()
-
-    return slug
+    offerta.nome_cliente = request.POST['client_name']
+    offerta.partita_iva = request.POST['partita_iva']
+    offerta.user = request.user
+    try:
+        offerta.save()
+        return slug
+    except Exception as err:
+        print(err)
+        return 'err'
 
 
 # Create your views here.
 class IndexView(View):
-    def get(self, request):
+    def get(self, request, client_initial="", p_iva_initial="", message=""):
         form = InserisciCliente()
 
+        form.initial["client_name"] = client_initial
+        form.initial["partita_iva"] = p_iva_initial
+
         return render(request, "EPC_5_0_v02/index.html", {
-            "form": form
+            "form": form,
+            "message": message,
+            "url": f"{slugify(client_initial)}"
         })
 
     def post(self, request):
         form = InserisciCliente(request.POST)
         if form.is_valid():
             slug = inizializza_offerta(request)
-            return redirect(f"/{slug}")
+            client_name = request.POST["client_name"]
+            p_iva = request.POST["partita_iva"]
+            message = "Cliente già esistente."
+            if slug == 'err':
+                return IndexView.get(self, request, client_name, p_iva, message)
+            else:
+                return redirect(f"offerte/{slug}")
+
+
+def offerte(request):
+    offerte = Offerta.objects.filter(user=request.user.username)
+
+    return render(request, "EPC_5_0_v02/offerte.html", {
+        "offerte": offerte
+    })
