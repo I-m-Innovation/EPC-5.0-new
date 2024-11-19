@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='offerta',
-            name='producibilità_specifica',
+            name='producibilita_specifica',
             field=models.FloatField(null=True),
         ),
         migrations.AlterField(

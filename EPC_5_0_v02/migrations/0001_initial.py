@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('prezzo_trainante', models.FloatField()),
                 ('potenza_installata', models.FloatField()),
                 ('storage_installato', models.FloatField()),
-                ('producibilità_specifica', models.FloatField()),
+                ('producibilita_specifica', models.FloatField()),
                 ('produzione_annua', models.FloatField()),
                 ('tipologia_moduli', models.FloatField()),
             ],

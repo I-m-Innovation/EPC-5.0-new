@@ -1,16 +1,17 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Offerte</title>
+    <link rel="stylesheet" href="{% static 'EPC_5_0_v02/offerte.css' %}">
 </head>
 <body>
-
+<h1>Tutte le offerte: </h1>
     {% for offerta in offerte %}
     <ul>
-        <li><a href="offerte/{{ offerta.slug }}">{{ offerta.nome_cliente }}</a></li>
+        <li><a href="offerte/{{ offerta.slug }}">{{ offerta.date|date:"d/m/Y H:i" }} - {{ offerta.nome_cliente }}</a></li>
     </ul>
     {% endfor %}
-
 </body>
 </html>

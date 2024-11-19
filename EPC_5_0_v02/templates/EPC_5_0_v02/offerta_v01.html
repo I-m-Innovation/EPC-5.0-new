@@ -14,25 +14,21 @@
 <body>
     <form method="POST">
         {% csrf_token %}
-
     <div class="main-container">
-
-
          <!-- Draggable Container con i due nuovi box distinti -->
          <div class="draggable-container">
-
-
             <div class="magic-box">
                 <div class="unicorn-name">
                     <strong>{{ nome_cliente }}</strong>
                 </div>
                 <div class="dragon-id">
-                    <strong>{{partita_iva}}</strong>
+                    <strong>{{ partita_iva }}</strong>
                 </div>
+                <div class="dragon-id">
+                    <strong>{{ date }}</strong>
+                </div>
+
             </div>
-
-
-
 
             <!-- Primo nuovo box -->
             <div class="draggable-box-1">
@@ -53,8 +49,6 @@
 
 
         </div>
-
-
 
         <button type="submit" name="salva_modifiche" class="btn-salva">Salva modifiche</button>
 
@@ -221,11 +215,12 @@
                     <h4>RISPARMIO PRIMO ANNO </h4>
                     <input class="verorisparmio centrale" type="text" name="risparmio_totale_primo_anno"   value="{{ risparmio_totale_primo_anno }}" readonly >
                 </div>
-
                 {% for risparmio in risparmi_bolletta.itertuples %}
                     <div class="boxgrigicolonnaverde">
-                        <p><strong>RISPARMIO {{ risparmio.index }}° ANNO</strong></p>
-                        <input class="verorisparmio" type="text" value="{{ risparmio.valore }}" readonly>
+{#                        <p><strong>RISPARMIO {{ risparmio.index }}° ANNO</strong></p>#}
+{#                        <input class="verorisparmio" type="text" value="{{ risparmio.valore }}" readonly>#}
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_secondo_anno" value="{{risparmio.index}}° ANNO" readonly>
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_secondo_anno" value="{{risparmio.valore}}" readonly>
                     </div>
                 {%  endfor %}
 
@@ -284,57 +279,63 @@
                     </div>
                 </div>
 
-
-                    <div class="boxgrigiriquadro4">
-                        <div class="riquadrodelta">
-
-                            <!-- Colonna Anno -->
-                            <div class="colonna-anno">
-                                <h2>Anno</h2>
-                                <p>2° anno</p>
-                                <p>3° anno</p>
-                                <p>4° anno</p>
-                                <p>5° anno</p>
-                                <p>6° anno</p>
-                                <p>7° anno</p>
-                                <p>8° anno</p>
-                                <p>9° anno</p>
-                                <p>10° anno</p>
-                                <p>Totale</p>
-                            </div>
-
-                            <!-- Colonna Risparmio -->
-                            <div class="colonna-risparmio">
-                                <h2>Rata</h2>
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_secondo_anno" value="{{leasing_secondo_anno}}" >
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_terzo_anno" value="{{leasing_terzo_anno}}" >
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_quarto_anno" value="{{leasing_quarto_anno}}" >
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_quinto_anno" value="{{leasing_quinto_anno}}" >
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_sesto_anno" value="{{leasing_sesto_anno}}" >
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_settimo_anno" value="{{leasing_settimo_anno}}">
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_ottavo_anno" value="{{leasing_ottavo_anno}}">
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_nono_anno" value="{{leasing_nono_anno}}">
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_decimo_anno" value="{{leasing_decimo_anno}}">
-                                <input class="inputrisparmiocolonna4boxgrigi"type="text" name="totale_check" value="{{ totale_check }}">
-                            </div>
-
-                            <!-- Colonna Delta -->
-                            <div class="colonna-delta">
-                                <h2>CASSA ATTIVA</h2>
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_secondo_anno"   value="{{ delta_leasing_secondo_anno }}" readonly>
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_terzo_anno"  value="{{ delta_leasing_terzo_anno }}" readonly>
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_quarto_anno"  value="{{ delta_leasing_quarto_anno }}" readonly>
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_quinto_anno"  value="{{ delta_leasing_quinto_anno }}" readonly>
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_sesto_anno"  value="{{ delta_leasing_sesto_anno }}" readonly>
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_settimo_anno"  value="{{ delta_leasing_settimo_anno }}" readonly>
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_ottavo_anno"  value="{{ delta_leasing_ottavo_anno }}" readonly>
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_nono_anno"   value="{{ delta_leasing_nono_anno }}" readonly>
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_decimo_anno"  value="{{ delta_leasing_decimo_anno }}" readonly>
-                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_totale_check" value="{{ delta_totale_check }}"  readonly>
-                            </div>
-
-                        </div>
+                {% for leasing in leasing_tab.itertuples %}
+                    <div class="boxgrigicolonnaverde">
+{#                        <p><strong>RISPARMIO {{ risparmio.index }}° ANNO</strong></p>#}
+{#                        <input class="verorisparmio" type="text" value="{{ risparmio.valore }}" readonly>#}
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="{{leasing.index}}° ANNO" readonly>
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_{{ leasing.index_anno }}_anno" value="{{leasing.valore}}">
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_{{ leasing.index_anno }}_anno" value="{{leasing.delta}}" readonly>
                     </div>
+                {%  endfor %}
+{#                    <div class="boxgrigiriquadro4">#}
+{#                        <div class="riquadrodelta">#}
+{#                            <!-- Colonna Anno -->#}
+{#                            <div class="colonna-anno">#}
+{#                                <h2>Anno</h2>#}
+{#                                <p>2° anno</p>#}
+{#                                <p>3° anno</p>#}
+{#                                <p>4° anno</p>#}
+{#                                <p>5° anno</p>#}
+{#                                <p>6° anno</p>#}
+{#                                <p>7° anno</p>#}
+{#                                <p>8° anno</p>#}
+{#                                <p>9° anno</p>#}
+{#                                <p>10° anno</p>#}
+{#                                <p>Totale</p>#}
+{#                            </div>#}
+{#                            <!-- Colonna Risparmio -->#}
+{#                            <div class="colonna-risparmio">#}
+{#                                <h2>Rata</h2>#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_secondo_anno" value="{{leasing_secondo_anno}}" >#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_terzo_anno" value="{{leasing_terzo_anno}}" >#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_quarto_anno" value="{{leasing_quarto_anno}}" >#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_quinto_anno" value="{{leasing_quinto_anno}}" >#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_sesto_anno" value="{{leasing_sesto_anno}}" >#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_settimo_anno" value="{{leasing_settimo_anno}}">#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_ottavo_anno" value="{{leasing_ottavo_anno}}">#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_nono_anno" value="{{leasing_nono_anno}}">#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_decimo_anno" value="{{leasing_decimo_anno}}">#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi"type="text" name="totale_check" value="{{ totale_check }}">#}
+{#                            </div>#}
+{##}
+{#                            <!-- Colonna Delta -->#}
+{#                            <div class="colonna-delta">#}
+{#                                <h2>CASSA ATTIVA</h2>#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_secondo_anno"   value="{{ delta_leasing_secondo_anno }}" readonly>#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_terzo_anno"  value="{{ delta_leasing_terzo_anno }}" readonly>#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_quarto_anno"  value="{{ delta_leasing_quarto_anno }}" readonly>#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_quinto_anno"  value="{{ delta_leasing_quinto_anno }}" readonly>#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_sesto_anno"  value="{{ delta_leasing_sesto_anno }}" readonly>#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_settimo_anno"  value="{{ delta_leasing_settimo_anno }}" readonly>#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_ottavo_anno"  value="{{ delta_leasing_ottavo_anno }}" readonly>#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_nono_anno"   value="{{ delta_leasing_nono_anno }}" readonly>#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_decimo_anno"  value="{{ delta_leasing_decimo_anno }}" readonly>#}
+{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_totale_check" value="{{ delta_totale_check }}"  readonly>#}
+{#                            </div>#}
+{##}
+{#                        </div>#}
+{#                    </div>#}
 
                     </div>
                 </div>

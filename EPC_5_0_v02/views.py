@@ -1,19 +1,12 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.views import View
 from .forms import InserisciCliente
-from django.http import HttpResponseRedirect
 from slugify import slugify
 from .models import Offerta
 import pandas as pd
-from django.template.loader import get_template
-from django.conf import settings
-import os
-import pdfkit
-import tempfile
-from django.http import HttpResponse
 import platform
 from django.contrib.auth import authenticate, login, logout
-
+from datetime import datetime
 
 os_platform = platform.system()
 pdfkit_path = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"
@@ -32,13 +25,12 @@ def logout_view(request):
 
 
 def login_view(request):
-
     if request.method == 'POST':
         try:
-            url = 'offerte/'+request.POST['url']
+            url = 'offerte'
         except Exception as err:
-            url = 'inizializza_offerta'
-        print(url)
+            url = 'offerte'
+
         if request.POST['username']:
             username = request.POST['username']
             password = request.POST['password']
@@ -61,59 +53,6 @@ def login_view(request):
         data = {"url": url}
 
         return render(request, 'registration/login.html', data)
-
-
-class GeneratePDFView(View):
-    def get(self, request, student_id, *args, **kwargs):
-        try:
-            # Fetch the Offerta based on the provided student_id
-            offerta = Offerta.objects.get(pk=student_id)
-
-            # Create a context dictionary with data specific to this student
-            context = {
-                'student_data': offerta,
-            }
-
-            # Specify the path to the wkhtmltopdf executable
-            config = pdfkit.configuration(wkhtmltopdf=url)
-
-            # Render the HTML template to a string
-            template = get_template('EPC_5_0_v02/offerta_v01.html')
-            html = template.render(context)
-
-            # Define the options for PDF generation
-            options = {
-                'page-size': 'A4',
-                'margin-top': '10mm',
-                'margin-right': '10mm',
-                'margin-bottom': '10mm',
-                'margin-left': '10mm',
-                'orientation': 'Landscape',
-                'enable-local-file-access': "",
-                'enable-smart-shrinking': '',
-            }
-
-            # Construct the filename based on student data
-            filename = f"{offerta.nome_cliente}-data.pdf"
-
-            # Generate the PDF using pdfkit and save it to a temporary file
-            pdf_file_path = 'prova.pdf' # tempfile.mktemp(suffix='.pdf')
-            css_file = 'EPC_5_0_v02/static/EPC_5_0_v02/styles_v0.css'
-            pdfkit.from_string(html, 'prova.pdf', configuration=config, options=options, css=css_file)
-
-            # Prepare the response to serve the PDF for download
-            with open(pdf_file_path, 'rb') as pdf_file:
-                response = HttpResponse(pdf_file.read(), content_type='application/pdf')
-                response['Content-Disposition'] = f'attachment; filename="{filename}"'
-
-            # Remove the temporary PDF file
-            os.remove(pdf_file_path)
-
-            return response
-        except Offerta.DoesNotExist:
-            # Handle the case where the student does not exist
-            print("Offerta non trovata")
-            return redirect(reverse('offerta'))
 
 
 def pulsanti(request, slug):
@@ -183,12 +122,13 @@ def leggi_valore(stringa):
 def offerta_view(request, slug):
     risparmi_bolletta = None
     offerta = Offerta.objects.get(slug=slug)
-    print(offerta.user)
+    # print(offerta.user)
 
     if offerta.user == request.user.username:
         if "salva_modifiche" in request.POST:
+            offerta.date = datetime.now()
             consumi_cliente = request.POST['consumi_annui_cliente'].replace("kWh", "").replace(".", "").replace(",", ".")
-            print(request.POST['consumi_annui_cliente'])
+            # print(request.POST['consumi_annui_cliente'])
             offerta.consumi_cliente = leggi_valore(request.POST['consumi_annui_cliente']) if request.POST['consumi_annui_cliente'] else 0
 
             offerta.costi_energia_cliente = leggi_valore(request.POST['costi_energia_cliente']) if request.POST['costi_energia_cliente'] != "" else 0
@@ -206,10 +146,10 @@ def offerta_view(request, slug):
             offerta.potenza_installata = leggi_valore(request.POST['potenza_installata']) if request.POST['potenza_installata']!= "Inserire dato da Ingegneria" else 0
             offerta.storage_installato = leggi_valore(request.POST['storage_installato']) if request.POST['storage_installato'] != "Inserire dato da Ingegneria" else 0
             offerta.producibilità_specifica = leggi_valore(request.POST['producibilità_specifica']) if request.POST['producibilità_specifica'] else 0
-            offerta.produzione_annua = offerta.producibilità_specifica*offerta.potenza_installata if offerta.producibilità_specifica>0 and offerta.potenza_installata else 0
+            offerta.produzione_annua = offerta.producibilità_specifica * offerta.potenza_installata if offerta.producibilità_specifica > 0 and offerta.potenza_installata else 0
 
             offerta.tipologia_moduli = leggi_valore(request.POST['tipologia_moduli'])
-            print(offerta.tipologia_moduli)
+            # print(offerta.tipologia_moduli)
             offerta.risparmio_energetico_trainante = leggi_valore(request.POST['risparmio_energetico_trainante'])/100 if request.POST['risparmio_energetico_trainante'] != "" else 0
 
             offerta.aliquota = calcola_aliquota(offerta.risparmio_energetico_trainante, offerta.costo_totale)
@@ -229,7 +169,7 @@ def offerta_view(request, slug):
             offerta.importo_leasing = leggi_valore(request.POST['importo_leasing']) if request.POST['importo_leasing'].replace("€", "").replace(".", "").replace(",", ".") else 0
             offerta.anticipo_leasing = leggi_valore(request.POST['anticipo_leasing']) if request.POST['anticipo_leasing'].replace("€", "").replace(".", "").replace(",", ".") else 0
             offerta.prima_rata = leggi_valore(request.POST['prima_rata']) if request.POST['prima_rata'].replace("€", "").replace(".", "").replace(",", ".") else 0
-            offerta.leasing_primo_anno =  offerta.anticipo_leasing + offerta.prima_rata
+            offerta.leasing_primo_anno = offerta.anticipo_leasing + offerta.prima_rata
             offerta.delta_leasing_primo_anno = offerta.risparmio_totale_primo_anno - offerta.leasing_primo_anno
             offerta.leasing_secondo_anno = leggi_valore(request.POST['leasing_secondo_anno']) if request.POST['leasing_secondo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
             offerta.delta_leasing_secondo_anno = - offerta.leasing_secondo_anno + risparmi_bolletta[1]
@@ -262,11 +202,10 @@ def offerta_view(request, slug):
             offerta.totale_check = (offerta.leasing_primo_anno+offerta.leasing_secondo_anno + offerta.leasing_terzo_anno +
                                     offerta.leasing_quarto_anno + offerta.leasing_quinto_anno + offerta.leasing_sesto_anno +
                                     offerta.leasing_settimo_anno + offerta.leasing_ottavo_anno + offerta.leasing_nono_anno
-                                    + offerta.leasing_decimo_anno) if offerta.totale_check else 0
-
+                                    + offerta.leasing_decimo_anno)
 
             offerta.delta_totale_check = offerta.risparmio_dieci_anni - offerta.totale_check if offerta.risparmio_dieci_anni else 0
-            print(offerta.delta_totale_check)
+            print(offerta.leasing_secondo_anno)
             offerta.save()
         elif "scarica_pdf" in request.POST:
             print("figa")
@@ -278,9 +217,12 @@ def offerta_view(request, slug):
             risparmi_bolletta = [float(i) for i in risparmi_bolletta]
 
             indexes = [int(number) for number in range(1, 11)]
-            altri_risparmi_df = pd.DataFrame(zip(indexes[1:], risparmi_bolletta[1:]), columns=["index", "valore"])
+            # print(risparmi_bolletta)
+            altri_risparmi_df = pd.DataFrame(zip(indexes[0:], risparmi_bolletta[0:]), columns=["index", "valore"])
+            # print(risparmi_bolletta)
+            # print(offerta.crediti_totale)
 
-            offerta.risparmio_dieci_anni = sum(risparmi_bolletta) if risparmi_bolletta else 0
+            offerta.risparmio_dieci_anni = offerta.crediti_totale + sum(risparmi_bolletta) if risparmi_bolletta else 0
 
             risparmio_string = []
             for risparmio in altri_risparmi_df.itertuples():
@@ -290,7 +232,60 @@ def offerta_view(request, slug):
             altri_risparmi_df = []
             altri_risparmi_df_string = []
 
+        # print(altri_risparmi_df_string)
+
         offerta.save()
+        print(offerta.date)
+        leasing_list = [
+            f"{round(offerta.leasing_primo_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                      ",") if offerta.leasing_primo_anno else '€',
+            f"{round(offerta.leasing_secondo_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                      ",") if offerta.leasing_secondo_anno else '€',
+            f"{round(offerta.leasing_terzo_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                        ",") if offerta.leasing_terzo_anno else '€',
+            f"{round(offerta.leasing_quarto_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                      ",") if offerta.leasing_quarto_anno else '€',
+            f"{round(offerta.leasing_quinto_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                       ",") if offerta.leasing_quinto_anno else '€',
+            f"{round(offerta.leasing_sesto_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                       ",") if offerta.leasing_sesto_anno else '€',
+            f"{round(offerta.leasing_settimo_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                      ",") if offerta.leasing_settimo_anno else '€',
+            f"{round(offerta.leasing_ottavo_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                        ",") if offerta.leasing_ottavo_anno else '€',
+            f"{round(offerta.leasing_nono_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                       ",") if offerta.leasing_nono_anno else '€',
+            f"{round(offerta.leasing_decimo_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                     ",") if offerta.leasing_decimo_anno else '€',
+        ]
+
+        delta_leasing_list = [
+            f"{round(offerta.delta_leasing_primo_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                      ",") if offerta.delta_leasing_primo_anno else '€',
+            f"{round(offerta.delta_leasing_secondo_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                        ",") if offerta.delta_leasing_secondo_anno else '€',
+            f"{round(offerta.delta_leasing_terzo_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                      ",") if offerta.delta_leasing_terzo_anno else '€',
+            f"{round(offerta.delta_leasing_quarto_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                       ",") if offerta.delta_leasing_quarto_anno else '€',
+            f"{round(offerta.delta_leasing_quinto_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                       ",") if offerta.delta_leasing_quinto_anno else '€',
+            f"{round(offerta.delta_leasing_sesto_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                      ",") if offerta.delta_leasing_sesto_anno else '€',
+            f"{round(offerta.delta_leasing_settimo_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                        ",") if offerta.delta_leasing_settimo_anno else '€',
+            f"{round(offerta.delta_leasing_ottavo_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                       ",") if offerta.delta_leasing_ottavo_anno else '€',
+            f"{round(offerta.delta_leasing_nono_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                     ",") if offerta.delta_leasing_nono_anno else '€',
+            f"{round(offerta.delta_leasing_decimo_anno, 2):,} €".replace(".", ";").replace(",", ".").replace(";",
+                                                                                                       ",") if offerta.delta_leasing_decimo_anno else '€',
+        ]
+        indexes = [int(number) for number in range(1, 11)]
+        print(indexes)
+        index_anno = ['secondo', 'terzo', 'quarto', 'quinto', 'sesto', 'settimo', 'ottavo', 'nono', 'decimo']
+        leasing_tab = pd.DataFrame(zip(indexes[1:], index_anno, leasing_list[1:], delta_leasing_list[1:]), columns=["index", "index_anno", "valore","delta"])
+
 
         data = {
             'nome_cliente': offerta.nome_cliente,
@@ -304,7 +299,7 @@ def offerta_view(request, slug):
             'costo_totale': f"{round(offerta.costo_totale,2):,} €".replace(',',';').replace(',',';').replace('.',',').replace(';','.') if offerta.costo_totale else '',
             'potenza_installata': f"{round(offerta.potenza_installata,2):,} kW".replace(',',';').replace('.',',').replace(';','.') if offerta.potenza_installata else '',
             'storage_installato': f"{round(offerta.storage_installato,2):,} kWh".replace(',',';').replace('.',',').replace(';','.') if offerta.storage_installato else '',
-            'producibilità_specifica': f"{round(offerta.producibilità_specifica,2):,} kWh/kWp".replace(',',';').replace('.',',').replace(';','.') if offerta.producibilità_specifica else '',
+            'producibilità_specifica': f"{round(offerta.producibilità_specifica, 2):,} kWh/kWp".replace(',', ';').replace('.', ',').replace(';', '.') if offerta.producibilità_specifica else '',
             'produzione_annua': f"{round(offerta.produzione_annua):,} kWh".replace(',', '.') if offerta.produzione_annua else '',
             'crediti_fv': f"{round(offerta.crediti_fv, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_fv else '€',
             'crediti_storage': f"{round(offerta.crediti_storage,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.crediti_storage else '€',
@@ -315,7 +310,7 @@ def offerta_view(request, slug):
             'risparmio_bolletta_primo_anno': f"{round(offerta.risparmio_bolletta_primo_anno, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.risparmio_bolletta_primo_anno else '€',
             'risparmio_totale_primo_anno': f"{round(offerta.risparmio_totale_primo_anno, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.risparmio_totale_primo_anno else '€',
             'risparmi_bolletta': altri_risparmi_df_string,
-            'risparmio_dieci_anni': f"{round(offerta.risparmio_dieci_anni,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.risparmio_dieci_anni else '€',
+            'risparmio_dieci_anni': f"{round(offerta.risparmio_dieci_anni, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.risparmio_dieci_anni else '€',
             'importo_leasing': f"{round(offerta.importo_leasing, 2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.importo_leasing else '€',
             'anticipo_leasing': f"{round(offerta.anticipo_leasing,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.importo_leasing else '€',
             'prima_rata': f"{round(offerta.prima_rata,2):,} €".replace(',',';').replace('.',',').replace(';','.') if offerta.prima_rata else '€',
@@ -371,7 +366,9 @@ def offerta_view(request, slug):
             'delta_totale_check': f"{round(offerta.delta_totale_check, 2):,} €".replace(".", ";").replace(",",
                                                                                               ".").replace(
                 ";", ",") if offerta.delta_totale_check else '€',
-            'tipologia_pannelli': str(offerta.tipologia_moduli)
+            'tipologia_pannelli': str(offerta.tipologia_moduli),
+            'date': offerta.date.strftime("%d/%m/%Y %H:%M") if offerta.date else "",
+            'leasing_tab': leasing_tab
         }
 
         return render(request, "EPC_5_0_v02/offerta_v01.html", context=data)
@@ -425,7 +422,7 @@ class IndexView(View):
 
 
 def offerte(request):
-    offerte = Offerta.objects.filter(user=request.user.username)
+    offerte = Offerta.objects.filter(user=request.user.username).order_by('-date')
 
     return render(request, "EPC_5_0_v02/offerte.html", {
         "offerte": offerte
