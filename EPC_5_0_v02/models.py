@@ -64,6 +64,7 @@ class Offerta(models.Model):
     delta_leasing_totale = models.FloatField(null=True)
     totale_check = models.FloatField(null=True)
     delta_totale_check = models.FloatField(null=True)
+    bilancio_primo_anno = models.FloatField(null=True)
 
     def __str__(self):
         return f'{self.nome_cliente}'

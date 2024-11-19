@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="it">
@@ -50,10 +49,12 @@
 
         </div>
 
-        <button type="submit" name="salva_modifiche" class="btn-salva">Salva modifiche</button>
+         <div class="salva_modifiche">
+            <button type="submit" name="salva_modifiche" class="btn-salva">Salva modifiche</button>
+        </div>
 
+{#        <a href="{% url 'salva_modifiche' %}" class="download-button" onclick="downloadPDF()">Salva modifiche</a>#}
         <a href="{% url 'inizializza_offerta' %}" class="download-button" onclick="downloadPDF()">Nuova Offerta</a>
-
         <a  class="download-button"  href="{% url 'offerte' %}" >Tutte le offerte</a>
 
         <div class="container">
@@ -212,8 +213,13 @@
                 <!-- Box aggiuntivo 1 per Riquadro 3 con stile unico -->
 
                 <div class="boxneri">
-                    <h4>RISPARMIO PRIMO ANNO </h4>
+                    <h4>RISPARMIO PRIMO ANNO</h4>
                     <input class="verorisparmio centrale" type="text" name="risparmio_totale_primo_anno"   value="{{ risparmio_totale_primo_anno }}" readonly >
+                </div>
+
+                <div class="titoli-leasing">
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="ANNO" readonly>
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="RISPARMIO" readonly>
                 </div>
                 {% for risparmio in risparmi_bolletta.itertuples %}
                     <div class="boxgrigicolonnaverde">
@@ -249,7 +255,7 @@
                         </p>
 
                         <p>
-                            <strong class="coloretestoriquadroprincipale">PRIMA RATA</strong>
+                            <strong class="coloretestoriquadroprincipale">PRIMO ANNO</strong>
                             <input class="verorisparmio" type="text" name="prima_rata"
                             value="{{ prima_rata }}">
                         </p>
@@ -269,7 +275,7 @@
                     <div class="row">
                         <div class="column">
                             <h4>IMPORTO</h4>
-                            <h7>ANTICIPO + PRIMA RATA </h7>
+                            <h7>ANTICIPO + PRIMO ANNO </h7>
                             <input class="imputneribox4" type="text" name="leasing_primo_anno" value="{{ leasing_primo_anno }}" readonly>
                         </div>
                         <div class="column">
@@ -278,7 +284,11 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="titoli-leasing">
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="ANNO" readonly>
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="IMPORTO" readonly>
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="CASSA ATTIVA" readonly>
+                </div>
                 {% for leasing in leasing_tab.itertuples %}
                     <div class="boxgrigicolonnaverde">
 {#                        <p><strong>RISPARMIO {{ risparmio.index }}° ANNO</strong></p>#}
@@ -288,6 +298,11 @@
                     <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_{{ leasing.index_anno }}_anno" value="{{leasing.delta}}" readonly>
                     </div>
                 {%  endfor %}
+            <div class="boxgriginonallineati riquadro3-color">
+                    <p><strong>BILANCIO 10 ANNI</strong></p>
+                    <input class="verorisparmio" type="text" name="bilancio_dieci_anni" value="{{ bilancio_dieci_anni }}" readonly>
+                </div>
+
 {#                    <div class="boxgrigiriquadro4">#}
 {#                        <div class="riquadrodelta">#}
 {#                            <!-- Colonna Anno -->#}
@@ -337,8 +352,10 @@
 {#                        </div>#}
 {#                    </div>#}
 
+
                     </div>
                 </div>
+
         </div>
 
     </div>

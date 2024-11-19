@@ -1,3 +1,4 @@
+
 /* Impostazioni di base */
 html {
     font-size: 75%;
@@ -39,6 +40,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center; /* Rende il contenitore largo come lo schermo */
+    width: 100%;
 }
 
 /* Importa il font Playfair Display */
@@ -77,6 +79,7 @@ body {
 
 /* Stile personalizzato per i titoli specifici di ogni riquadro */
 .riquadro1 h2, .riquadro2 h2, .riquadro3 h2, .riquadro4 h2 {
+
     font-family: 'Playfair Display', serif;
     font-size: 1.6rem;
 }
@@ -84,13 +87,13 @@ body {
 .draggable-container {
     display: flex;
     justify-content: center; /* Centra i box orizzontalmente */
-    gap: 1rem; /* Spazio tra i box */
-    margin: 1rem auto 1.25rem auto;
+    /*gap: 1rem; !* Spazio tra i box *!*/
+    margin: 1.875rem;
     background-color: #ffcc16;
-    padding: 1%;
-    width: 90%; /* Aumenta la larghezza per fare spazio ai box su una sola riga */
+    /*padding: 1%;*/
+    width: 100%; /* Aumenta la larghezza per fare spazio ai box su una sola riga */
     align-items: center;
-    box-sizing: border-box;
+    /*box-sizing: border-box;*/
     overflow-x: auto; /* Aggiunge uno scorrimento orizzontale se necessario */
 }
 
@@ -183,40 +186,119 @@ body {
 }
 
 /* ------------------------------------------------------------------------------ */
-
-/* Button Styling */
+/* Resetta gli stili predefiniti */
+/* Resetta gli stili predefiniti */
 .btn-salva {
-    background-color: #003b75; /* Green background */
-    color: white;              /* White text color */
-    padding: 0.75rem 1.5rem;   /* Vertical and horizontal padding */
-    font-size: 1.5rem;           /* Font size for readability */
-    font-weight: bold;         /* Bold text for emphasis */
-    border: none;              /* No border */
-    border-radius: 0.3125rem;  /* Rounded corners */
-    cursor: pointer;           /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth color transition */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    flex-grow: 1;   /* Il bottone si ridimensiona riempiendo lo spazio disponibile */
-    max-width: 20%; /* Limita la larghezza massima per evitare che il bottone cresca troppo */
-    padding: 0.5rem 1rem; /* Subtle shadow for depth */
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+    box-sizing: border-box;
 }
 
-/* Hover and Active States */
+.download-button {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+/* Stili specifici */
+.btn-salva {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #003b75;
+    color: white;
+    /* padding: 20px 29px; */
+    font-size: 1.9rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 110%;
+}
+
+.download-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #003b75;
+    color: white;
+    padding: 12px 24px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Stati Hover e Active */
 .btn-salva:hover {
-    background-color: #00b009; /* Darker green on hover */
+    background-color: #003b75;
 }
 
 .btn-salva:active {
-    background-color: #00b009; /* Even darker green on click */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
-    transform: scale(0.98); /* Slight scale down on click */
+    background-color: #003b75;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
 }
 
-/* Disabled State */
+.download-button:hover {
+    background-color: #003b75;
+}
+
+.download-button:active {
+    background-color: #003b75;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
+}
+
+/* Stato Disabled */
 .btn-salva:disabled {
-    background-color: #ccc; /* Light gray for disabled state */
-    cursor: not-allowed;    /* Not-allowed cursor */
-    opacity: 0.7;           /* Slight transparency */
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.download-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Contenitore dei bottoni */
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.salva_modifiche {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #003b75;
+    color: white;
+    padding: 3px 29px;
+    font-size: 1.7rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* ---------------------------------------------------------------------------------------------------------------------------------------------- */
@@ -234,13 +316,14 @@ body {
     justify-content: center;
     margin: 1.875rem; /* 30px */
     overflow-x: auto;
+    width: 100%;
 }
 
 /* Stile dei Riquadri */
 .riquadro {
     border: 0.0625rem solid #ffffff; /* 1px */
     box-shadow: 0 0.125rem 0.3125rem rgba(16, 94, 70, 0.1); /* 2px 5px */
-    margin: 0.625rem; /* 10px */
+    /*margin: 0.625rem; !* 10px *!*/
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -277,24 +360,28 @@ body {
 
 /* Colori Personalizzati per i Riquadri */
 .riquadro1 {
+    width: 25%;
     background-color: #207ABC;
     display: flex;
     overflow: hidden;
 }
 
 .riquadro2 {
+    width: 25%;
     background-color: #d41c1c;
     display: flex;
     overflow: hidden;
 }
 
 .riquadro3 {
+    width: 25%;
     background-color: #048957;
     display: flex;
     overflow: hidden;
 }
 
 .riquadro4 {
+    width: 25%;
     background-color: #aca8a8;
     display: flex;
     overflow: hidden;
@@ -310,7 +397,7 @@ body {
     margin-top: 0.3125rem; /* Margine superiore */
     width: 100%;
     /* box-sizing: border-box; */
-    padding: 1.25rem;
+    /*padding: 1.25rem;*/
     align-content: center;
 }
 
@@ -488,8 +575,6 @@ input[type="text"][readonly] {
     box-shadow: 0 0 10px #0078d7; /* Effetto luminoso */
 }
 
-
-
 .boxneri a:hover {
     text-decoration: underline;
 }
@@ -580,10 +665,19 @@ input[type="text"][readonly] {
 }
 
 /* Stile per allineare gli elementi nella classe specifica .boxgrigicolonnaverde */
+.titoli-leasing {
+    display: flex;
+    align-items: center;
+    /*justify-content: space-between;*/
+    background: linear-gradient(to right, #cecece, #f0f0f0);
+    width: 100%;
+    flex-grow: 1; /* Assicura che i box crescano per occupare lo spazio disponibile */
+}
+
 .boxgrigicolonnaverde {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
     background: linear-gradient(to right, #cecece, #f0f0f0);
     width: 100%;
     flex-grow: 1; /* Assicura che i box crescano per occupare lo spazio disponibile */
@@ -823,7 +917,7 @@ button:hover {
     width: 100%;
     padding: 0%;
     margin: 0%;
-    background: linear-gradient(to right, #cecece, #f0f0f0); /* Aggiunge uno spazio intorno ai pulsanti */
+    background:transparent; /* Aggiunge uno spazio intorno ai pulsanti */
 }
 
 .button-container button {
@@ -932,24 +1026,16 @@ align-content: center;
     box-sizing: border-box;
 }
 
-.download-button {
-    background-color: #003b75;     /* Colore di sfondo */
-    color: white;                  /* Colore del testo */
-    padding: 15px 0;               /* Solo padding verticale */
-    font-size: 16px;               /* Dimensione del testo */
-    font-weight: bold;             /* Testo in grassetto */
-    border:black;                  /* Nessun bordo */
-    border-radius: 5px;            /* Angoli arrotondati */
-    cursor: pointer;               /* Puntatore a mano su hover */
-    transition: background-color 0.3s ease; /* Transizione morbida per il colore */
-    width: 20%;
-    margin-left: 3rem;
-    border-color: #000000;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.download-button:hover {
-    background-color: #45a049;
-}
-
 /* Centralize titles in colored boxes and add extra right margin */
+
+
+/*
+Giulio Lazzaro
+
+giulio.lazzaro@zilioenvironment.com
+www.zilioenvironment.com
+ ZILIO ENVIRONMENT Srl
+  Via Papa Giovanni Paolo II, 66 - 36022 Cassola (VI)
+
+ */
+
