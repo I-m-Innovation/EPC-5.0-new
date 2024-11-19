@@ -312,7 +312,7 @@ def offerta_view(request, slug):
                                     + offerta.leasing_decimo_anno)
 
             offerta.delta_totale_check = offerta.risparmio_dieci_anni - offerta.totale_check if offerta.risparmio_dieci_anni else 0
-            offerta.bilancio_dieci_anni = offerta.risparmio_dieci_anni - offerta.importo_leasing
+            offerta.bilancio_dieci_anni = offerta.risparmio_dieci_anni - offerta.importo_leasing if offerta.risparmio_dieci_anni else 0
 
             offerta.save()
         elif "scarica_pdf" in request.POST:
@@ -477,7 +477,7 @@ def offerta_view(request, slug):
             'tipologia_pannelli': str(offerta.tipologia_moduli),
             'date': offerta.date.strftime("%d/%m/%Y %H:%M") if offerta.date else "",
             'leasing_tab': leasing_tab,
-            'bilancio_dieci_anni': offerta.bilancio_dieci_anni
+            'bilancio_dieci_anni': offerta.bilancio_dieci_anni if offerta.bilancio_dieci_anni else 0
         }
 
         return render(request, "EPC_5_0_v02/offerta_v01.html", context=data)
