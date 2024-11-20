@@ -1,17 +1,46 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modulo Commerciale - Impianto Fotovoltaico</title>
-    <link rel="stylesheet" href="{% static 'EPC_5_0_v02/styles_v3.css' %}"> <!-- Collegamento al CSS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{% static 'EPC_5_0_v02/styles_v4.css' %}"> <!-- Collegamento al CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
      <link rel="icon" href="{% static 'EPC_5_0_v02/favicon.ico' %}" type="image/x-icon">
 </head>
 
 <body>
-    <form method="POST">
+
+ <script type="text/javascript">
+        $(document).ready(function(){
+            // Ascolta la pressione di qualsiasi tasto sulla pagina
+            $(document).keypress(function(event){
+                if(event.key === "Enter") {  // Verifica che il tasto premuto sia "Invio"
+                    // Fai una richiesta AJAX al server per eseguire la funzione
+                    $.ajax({
+                        url: "{% url 'offerta' slug %}",  // URL della vista Django
+                        method: "POST",
+                        data: {
+                            'action': 'execute_function',  // Puoi inviare qualsiasi dato al server
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'  // Token CSRF per sicurezza
+                        },
+                        success: function(response) {
+                            console.log(response);  // Visualizza la risposta dalla vista Django
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+
+<form method="POST">
         {% csrf_token %}
     <div class="main-container">
          <!-- Draggable Container con i due nuovi box distinti -->
@@ -23,10 +52,6 @@
                 <div class="dragon-id">
                     <strong>{{ partita_iva }}</strong>
                 </div>
-                <div class="dragon-id">
-                    <strong>{{ date }}</strong>
-                </div>
-
             </div>
 
             <!-- Primo nuovo box -->
@@ -45,7 +70,12 @@
                 <p><strong class="barracuda">TARIFFA ACQUISTO ENERGIA CORRENTE</strong></p>
                 <p><input class="rubik" type="text" name="tariffa_energia_cliente" value="{{ tariffa_energia_cliente }}" readonly></p>
             </div>
+            <img src="{% static 'EPC_5_0_v02/Screenshot_2024-11-20_153614_resized.png' %}" alt="Descrizione immagine">
 
+             <div class="date-id">
+                <h5>Data ultima modifica</h5>
+                <strong>{{ date }}</strong>
+            </div>
 
         </div>
 
@@ -112,7 +142,7 @@
 
                 <div class="boxgriginonallineati riquadro1-color">
                     <p><strong>PRODUZIONE ANNUA</strong></p>
-                    <input class="rubik" type="text" name="produzione_annua" value="{{ produzione_annua }}">
+                    <input class="rubik" type="text" name="produzione_annua" value="{{ produzione_annua }}" readonly>
                 </div>
 
                 <!-- Menu a tendina per TIPOLOGIA PANELLI -->
@@ -290,74 +320,26 @@
                     <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="CASSA ATTIVA" readonly>
                 </div>
                 {% for leasing in leasing_tab.itertuples %}
-                    <div class="boxgrigicolonnaverde">
+                    <div class="boxgrigicolonnagrigio">
 {#                        <p><strong>RISPARMIO {{ risparmio.index }}° ANNO</strong></p>#}
 {#                        <input class="verorisparmio" type="text" value="{{ risparmio.valore }}" readonly>#}
                     <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="{{leasing.index}}° ANNO" readonly>
-                    <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_{{ leasing.index_anno }}_anno" value="{{leasing.valore}}">
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_{{ leasing.index_anno }}_anno" value="{{leasing.valore|default:"da inserire"}}">
                     <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_{{ leasing.index_anno }}_anno" value="{{leasing.delta}}" readonly>
                     </div>
                 {%  endfor %}
             <div class="boxgriginonallineati riquadro3-color">
-                    <p><strong>BILANCIO 10 ANNI</strong></p>
+                    <p><strong>BILANCIO <br>
+                        10 ANNI</strong></p>
                     <input class="verorisparmio" type="text" name="bilancio_dieci_anni" value="{{ bilancio_dieci_anni }}" readonly>
                 </div>
 
-{#                    <div class="boxgrigiriquadro4">#}
-{#                        <div class="riquadrodelta">#}
-{#                            <!-- Colonna Anno -->#}
-{#                            <div class="colonna-anno">#}
-{#                                <h2>Anno</h2>#}
-{#                                <p>2° anno</p>#}
-{#                                <p>3° anno</p>#}
-{#                                <p>4° anno</p>#}
-{#                                <p>5° anno</p>#}
-{#                                <p>6° anno</p>#}
-{#                                <p>7° anno</p>#}
-{#                                <p>8° anno</p>#}
-{#                                <p>9° anno</p>#}
-{#                                <p>10° anno</p>#}
-{#                                <p>Totale</p>#}
-{#                            </div>#}
-{#                            <!-- Colonna Risparmio -->#}
-{#                            <div class="colonna-risparmio">#}
-{#                                <h2>Rata</h2>#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_secondo_anno" value="{{leasing_secondo_anno}}" >#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_terzo_anno" value="{{leasing_terzo_anno}}" >#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_quarto_anno" value="{{leasing_quarto_anno}}" >#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_quinto_anno" value="{{leasing_quinto_anno}}" >#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_sesto_anno" value="{{leasing_sesto_anno}}" >#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_settimo_anno" value="{{leasing_settimo_anno}}">#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_ottavo_anno" value="{{leasing_ottavo_anno}}">#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_nono_anno" value="{{leasing_nono_anno}}">#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_decimo_anno" value="{{leasing_decimo_anno}}">#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi"type="text" name="totale_check" value="{{ totale_check }}">#}
-{#                            </div>#}
-{##}
-{#                            <!-- Colonna Delta -->#}
-{#                            <div class="colonna-delta">#}
-{#                                <h2>CASSA ATTIVA</h2>#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_secondo_anno"   value="{{ delta_leasing_secondo_anno }}" readonly>#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_terzo_anno"  value="{{ delta_leasing_terzo_anno }}" readonly>#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_quarto_anno"  value="{{ delta_leasing_quarto_anno }}" readonly>#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_quinto_anno"  value="{{ delta_leasing_quinto_anno }}" readonly>#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_sesto_anno"  value="{{ delta_leasing_sesto_anno }}" readonly>#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_settimo_anno"  value="{{ delta_leasing_settimo_anno }}" readonly>#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_ottavo_anno"  value="{{ delta_leasing_ottavo_anno }}" readonly>#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_nono_anno"   value="{{ delta_leasing_nono_anno }}" readonly>#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_decimo_anno"  value="{{ delta_leasing_decimo_anno }}" readonly>#}
-{#                                <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_totale_check" value="{{ delta_totale_check }}"  readonly>#}
-{#                            </div>#}
-{##}
-{#                        </div>#}
-{#                    </div>#}
-
-
                     </div>
                 </div>
-
+            <div class="Logout">
+                <button type="submit" name="salva_modifiche" class="Log-out">Log Out</button>
+            </div>
         </div>
-
     </div>
     </form>
     <div class="footer">
