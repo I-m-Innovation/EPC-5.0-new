@@ -274,31 +274,24 @@ def offerta_view(request, slug):
             offerta.prima_rata = leggi_valore(request.POST['prima_rata']) if request.POST['prima_rata'].replace("€", "").replace(".", "").replace(",", ".") else 0
             offerta.leasing_primo_anno = offerta.anticipo_leasing + offerta.prima_rata
             offerta.delta_leasing_primo_anno = offerta.risparmio_totale_primo_anno - offerta.leasing_primo_anno
-            offerta.leasing_secondo_anno = leggi_valore(request.POST['leasing_secondo_anno']) if request.POST['leasing_secondo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.leasing_secondo_anno = leggi_valore(request.POST['leasing_secondo_anno']) if request.POST['leasing_secondo_anno']!="Inserisci valore" else 0
             offerta.delta_leasing_secondo_anno = - offerta.leasing_secondo_anno + risparmi_bolletta[1]
-            offerta.leasing_terzo_anno = leggi_valore(request.POST['leasing_terzo_anno']) if request.POST['leasing_terzo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.leasing_terzo_anno = leggi_valore(request.POST['leasing_terzo_anno']) if request.POST['leasing_terzo_anno']!="Inserisci valore" else 0
 
             offerta.delta_leasing_terzo_anno = - offerta.leasing_terzo_anno + risparmi_bolletta[2]
-            offerta.leasing_quarto_anno = leggi_valore(request.POST['leasing_quarto_anno']) if request.POST[
-                'leasing_quarto_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.leasing_quarto_anno = leggi_valore(request.POST['leasing_quarto_anno']) if request.POST['leasing_quarto_anno']!="Inserisci valore" else 0
             offerta.delta_leasing_quarto_anno = - offerta.leasing_quarto_anno + risparmi_bolletta[3]
-            offerta.leasing_quinto_anno = leggi_valore(request.POST['leasing_quinto_anno']) if request.POST[
-                'leasing_quinto_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.leasing_quinto_anno = leggi_valore(request.POST['leasing_quinto_anno']) if request.POST['leasing_quinto_anno']!="Inserisci valore" else 0
             offerta.delta_leasing_quinto_anno = - offerta.leasing_quinto_anno + risparmi_bolletta[4]
-            offerta.leasing_sesto_anno = leggi_valore(request.POST['leasing_sesto_anno']) if request.POST[
-                'leasing_sesto_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.leasing_sesto_anno = leggi_valore(request.POST['leasing_sesto_anno']) if request.POST['leasing_sesto_anno']!="Inserisci valore" else 0
             offerta.delta_leasing_sesto_anno = - offerta.leasing_sesto_anno + risparmi_bolletta[5]
-            offerta.leasing_settimo_anno = leggi_valore(request.POST['leasing_settimo_anno']) if request.POST[
-                'leasing_settimo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.leasing_settimo_anno = leggi_valore(request.POST['leasing_settimo_anno']) if request.POST['leasing_settimo_anno']!="Inserisci valore" else 0
             offerta.delta_leasing_settimo_anno = - offerta.leasing_settimo_anno + risparmi_bolletta[6]
-            offerta.leasing_ottavo_anno = leggi_valore(request.POST['leasing_ottavo_anno']) if request.POST[
-                'leasing_ottavo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.leasing_ottavo_anno = leggi_valore(request.POST['leasing_ottavo_anno']) if request.POST['leasing_ottavo_anno']!="Inserisci valore" else 0
             offerta.delta_leasing_ottavo_anno = - offerta.leasing_ottavo_anno + risparmi_bolletta[7]
-            offerta.leasing_nono_anno = leggi_valore(request.POST['leasing_nono_anno']) if request.POST[
-                'leasing_nono_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.leasing_nono_anno = leggi_valore(request.POST['leasing_nono_anno']) if request.POST['leasing_nono_anno']!="Inserisci valore" else 0
             offerta.delta_leasing_nono_anno = - offerta.leasing_nono_anno + risparmi_bolletta[8]
-            offerta.leasing_decimo_anno = leggi_valore(request.POST['leasing_decimo_anno']) if request.POST[
-                'leasing_decimo_anno'].replace("€", "").replace(".", "").replace(",", ".") else 0
+            offerta.leasing_decimo_anno = leggi_valore(request.POST['leasing_decimo_anno']) if request.POST['leasing_decimo_anno']!="Inserisci valore" else 0
             offerta.delta_leasing_decimo_anno = - offerta.leasing_decimo_anno + risparmi_bolletta[9]
 
             offerta.delta_leasing_totale = offerta.risparmio_dieci_anni - offerta.importo_leasing if offerta.risparmio_dieci_anni else 0
