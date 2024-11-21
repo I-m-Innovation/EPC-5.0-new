@@ -25,13 +25,9 @@ def logout_view(request):
 
 
 def login_view(request):
-    if request.method == 'POST':
-        try:
-            url = 'offerte'
-        except Exception as err:
-            print(err)
-            url = 'offerte'
 
+    url = 'offerte'
+    if request.method == 'POST':
         if request.POST['username']:
             username = request.POST['username']
             password = request.POST['password']
@@ -46,12 +42,6 @@ def login_view(request):
             print("else")
             return redirect(url)
     else:
-        try:
-            url = request.GET['url']
-        except Exception as err:
-            print(err)
-            url = ''
-
         data = {"url": url}
 
         return render(request, 'registration/login.html', data)
