@@ -307,6 +307,7 @@ def offerta_view(request, slug):
             offerta.save()
         elif "scarica_pdf" in request.POST:
             print("figa")
+
         else:
             offerta = Offerta.objects.get(slug=slug)
             # print(offerta.risparmi_bolletta)
