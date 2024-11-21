@@ -58,7 +58,7 @@
                 {% if not data %}
                 <!-- Se 'data' non è presente -->
                 <form action="{% url 'login' %}" method="GET" class="login__form">
-                    {% csrf_token %}
+{#                    {% csrf_token %}#}
                     <input type="hidden">
                     <button type="submit" class="login__button custom-button">Accedi</button>
                 </form>
