@@ -7,6 +7,8 @@ import pandas as pd
 import platform
 from django.contrib.auth import authenticate, login, logout
 from datetime import datetime
+from pytz import timezone
+
 
 os_platform = platform.system()
 pdfkit_path = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"
@@ -62,7 +64,6 @@ def calcola_aliquota(risparmio_energetico, spesa_totale):
             aliquota = 0.15
         else:
             aliquota = 0.05
-
     elif risparmio_energetico == 0.10:
         if spesa_totale < 2.5e6:
             aliquota = 0.40
@@ -70,7 +71,6 @@ def calcola_aliquota(risparmio_energetico, spesa_totale):
             aliquota = 0.10
         else:
             aliquota = 0.05
-
     else:
         if spesa_totale < 2.5e6:
             aliquota = 0.45
@@ -115,6 +115,9 @@ def salva_modifiche(request):
     risparmi_bolletta = None
     slug = request.META["HTTP_REFERER"].replace('http://localhost:8000/offerte/', '')
     offerta = Offerta.objects.get(slug=slug)
+
+    print(datetime.now(timezone('Europe/Rome')))
+
     offerta.date = datetime.now()
     offerta.consumi_cliente = leggi_valore(request.POST['consumi_annui_cliente']) if request.POST[
         'consumi_annui_cliente'] else 0
@@ -216,7 +219,7 @@ def salva_modifiche(request):
 
 
 def offerta_view(request, slug):
-    print("offerta view")
+
     risparmi_bolletta = None
     offerta = Offerta.objects.get(slug=slug)
     # print(offerta.user)
@@ -295,8 +298,8 @@ def offerta_view(request, slug):
             offerta.bilancio_dieci_anni = offerta.risparmio_dieci_anni - offerta.importo_leasing if offerta.risparmio_dieci_anni else 0
 
             offerta.save()
-        elif "scarica_pdf" in request.POST:
-            print("figa")
+        elif "logout" in request.POST:
+            logout(request)
 
         else:
             offerta = Offerta.objects.get(slug=slug)
