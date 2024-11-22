@@ -227,7 +227,7 @@ def offerta_view(request, slug):
 
     if offerta.user == request.user.username:
         if "salva_modifiche" in request.POST:
-            offerta.date = datetime.now()
+            offerta.date = datetime.now(timezone('Europe/Rome'))
             consumi_cliente = request.POST['consumi_annui_cliente'].replace("kWh", "").replace(".", "").replace(",", ".")
             # print(request.POST['consumi_annui_cliente'])
             offerta.consumi_cliente = leggi_valore(request.POST['consumi_annui_cliente']) if request.POST['consumi_annui_cliente'] else 0
