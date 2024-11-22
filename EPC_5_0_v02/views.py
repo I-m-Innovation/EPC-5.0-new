@@ -41,7 +41,7 @@ def login_view(request):
             else:
                 return render(request, 'registration/login.html', {'error': 'Invalid credentials.'})
         else:
-            print("else")
+            # print("else")
             return redirect(url)
     else:
         data = {"url": url}
@@ -112,13 +112,14 @@ def leggi_valore(stringa):
 
 
 def salva_modifiche(request):
+
     risparmi_bolletta = None
     slug = request.META["HTTP_REFERER"].replace('http://localhost:8000/offerte/', '')
     offerta = Offerta.objects.get(slug=slug)
 
-    print(datetime.now(timezone('Europe/Rome')))
-
-    offerta.date = datetime.now()
+    # print(datetime.now(timezone('Europe/Rome')))
+    print("FIGA")
+    offerta.date = datetime.now(timezone('Europe/Rome'))
     offerta.consumi_cliente = leggi_valore(request.POST['consumi_annui_cliente']) if request.POST[
         'consumi_annui_cliente'] else 0
 
@@ -212,7 +213,7 @@ def salva_modifiche(request):
                             + offerta.leasing_decimo_anno)
 
     offerta.delta_totale_check = offerta.risparmio_dieci_anni - offerta.totale_check if offerta.risparmio_dieci_anni else 0
-    print(offerta.leasing_secondo_anno)
+    # print(offerta.leasing_secondo_anno)
     offerta.save()
 
     return redirect(offerta_view)
@@ -294,7 +295,7 @@ def offerta_view(request, slug):
                                     + offerta.leasing_decimo_anno)
 
             offerta.delta_totale_check = offerta.risparmio_dieci_anni - offerta.totale_check if offerta.risparmio_dieci_anni else 0
-            print(offerta.risparmio_dieci_anni)
+            # print(offerta.risparmio_dieci_anni)
             offerta.bilancio_dieci_anni = offerta.risparmio_dieci_anni - offerta.importo_leasing if offerta.risparmio_dieci_anni else 0
 
             offerta.save()
@@ -375,7 +376,7 @@ def offerta_view(request, slug):
                                                                                                        ",") if offerta.delta_leasing_decimo_anno else '€',
         ]
         indexes = [int(number) for number in range(1, 11)]
-        print(indexes)
+        # print(indexes)
         index_anno = ['secondo', 'terzo', 'quarto', 'quinto', 'sesto', 'settimo', 'ottavo', 'nono', 'decimo']
         leasing_tab = pd.DataFrame(zip(indexes[1:], index_anno, leasing_list[1:], delta_leasing_list[1:]), columns=["index", "index_anno", "valore","delta"])
 
@@ -473,7 +474,7 @@ def offerta_view(request, slug):
         data = {
             "url": slug
         }
-        print(slug)
+        # print(slug)
         return render(request, "registration/login.html", context=data)
 
 
