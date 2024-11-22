@@ -97,7 +97,7 @@ body {
 .date-id strong{
     font-weight: bold; /* Testo in grassetto */
     margin-right: 0.5rem; /* Spazio tra il titolo e il valore */
-    color: #000; /* Colore del titolo */
+    color: #000;
 }
 
 /* ----------------------------------------------------------------------------------------------------------------------------------------------------- */
