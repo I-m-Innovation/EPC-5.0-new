@@ -97,12 +97,13 @@ body {
 .date-id strong{
     font-weight: bold; /* Testo in grassetto */
     margin-right: 0.5rem; /* Spazio tra il titolo e il valore */
-    color: #000;
+    color: #000; /* Colore del titolo */
 }
 
 .iminnovation{
     margin-left: 5rem ;
 }
+
 
 /* ----------------------------------------------------------------------------------------------------------------------------------------------------- */
 
@@ -530,7 +531,7 @@ p input {
 .boxgriginonallineati.riquadro1-color input[type="text"][readonly] {
     border: none; /* Rimuove il bordo */
     width: 50%;
-    color: #aaa; /* Cambia il colore del testo per indicare disabilitazione */
+    color: #207ABC; /* Cambia il colore del testo per indicare disabilitazione */
     margin-bottom: 1.5rem;/* Sfondo più chiaro */
     cursor: not-allowed; /* Cambia il cursore per indicare che non è modificabile */
 }
@@ -1143,11 +1144,3 @@ align-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transform: scale(0.98);
 }
-
-
-
-
-
-
-
-
