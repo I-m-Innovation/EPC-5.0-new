@@ -6,7 +6,7 @@ from .models import Offerta
 import pandas as pd
 import platform
 from django.contrib.auth import authenticate, login, logout
-from datetime import datetime
+from datetime import datetime, timezone
 from pytz import timezone
 
 
@@ -112,6 +112,10 @@ def leggi_valore(stringa):
 
 
 def salva_modifiche(request):
+
+
+
+    print("Local time {}".format(utc_dt.astimezone().isoformat()))
 
     risparmi_bolletta = None
     slug = request.META["HTTP_REFERER"].replace('http://localhost:8000/offerte/', '')
@@ -227,7 +231,11 @@ def offerta_view(request, slug):
 
     if offerta.user == request.user.username:
         if "salva_modifiche" in request.POST:
-            offerta.date = datetime.now(timezone('Europe/Rome'))
+            t = datetime.now()
+            t2 = t.astimezone()
+            # t3 = t2.strftime('%d/%M/%Y %H:%m')
+
+            offerta.date = t2
             consumi_cliente = request.POST['consumi_annui_cliente'].replace("kWh", "").replace(".", "").replace(",", ".")
             # print(request.POST['consumi_annui_cliente'])
             offerta.consumi_cliente = leggi_valore(request.POST['consumi_annui_cliente']) if request.POST['consumi_annui_cliente'] else 0
