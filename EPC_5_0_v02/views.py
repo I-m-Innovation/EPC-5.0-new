@@ -235,3 +235,5 @@ def offerte_view(request):
     return render(request, "EPC_5_0_v02/offerte.html", {
         "offerte": offerte
     })
+
+
