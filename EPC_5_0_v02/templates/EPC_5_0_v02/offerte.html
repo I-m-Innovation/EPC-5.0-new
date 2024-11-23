@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{% static 'EPC_5_0_v02/offerte.css' %}">
 </head>
 <body>
+
+{% if user.is_authenticated %}
 <h1>Tutte le offerte: </h1>
     {% for offerta in offerte %}
     <ul>
@@ -14,6 +16,31 @@
     </ul>
     {% endfor %}
         <a href="{% url 'inizializza_offerta' %}" class="nuovaofferta" onclick="downloadPDF()">Nuova Offerta</a>
+{% else %}
+        <div class="login container grid" id="loginAccessRegister">
+        <div class="login__access">
+            <h1 class="login__title">Login</h1>
+            <div class="login__area">
+
+                {% if not data %}
+                <!-- Se 'data' non è presente -->
+                <form action="{% url 'login' %}" method="GET" class="login__form">
+{#                    {% csrf_token %}#}
+                    <input type="hidden">
+                    <button type="submit" class="login__button custom-button">Accedi</button>
+                </form>
+                {% else %}
+                <!-- Se 'data' è presente -->
+                <form action="{% url 'login' %}" method="POST" class="login__form">
+                    {% csrf_token %}
+                    <input type="hidden" name="url" value="inizializza_offerta">
+                    <button type="submit" class="login__button custom-button">Accedi con dati</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}
 </body>
 </html>
 

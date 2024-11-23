@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from .functions.value_reader import salva_modifiche
 from .functions.computations import calcola_tabella_risparmi
 from .functions.value_writer import crea_tabella_leasing
+from django.views.decorators.cache import cache_control
 
 os_platform = platform.system()
 pdfkit_path = r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf"
@@ -45,7 +46,7 @@ def login_view(request):
 
         return render(request, 'registration/login.html', data)
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def offerta_view(request, slug):
     risparmi_bolletta = None
     offerta = Offerta.objects.get(slug=slug)
@@ -188,6 +189,7 @@ def offerta_view(request, slug):
         return render(request, "registration/login.html", context=data)
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def inizializza_offerta_view(request):
     slug = slugify(request.POST['client_name'])
     offerta = Offerta(slug=slugify(slug))
@@ -229,7 +231,7 @@ class IndexView(View):
                 return redirect(f"offerte/{slug}")
 
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def offerte_view(request):
     offerte = Offerta.objects.filter(user=request.user.username).order_by('-date')
 
