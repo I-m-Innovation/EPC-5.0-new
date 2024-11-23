@@ -1,4 +1,8 @@
+
 /* Impostazioni di base */
+html {
+    font-size: 75%;
+}
 html, body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -14,8 +18,6 @@ html, body {
     padding: 0;
 }
 
-
-
 .title {
     text-align: center; /* Centra il testo */
     font-size: 1.5rem; /* Dimensione del testo */
@@ -24,8 +26,6 @@ html, body {
     margin-bottom: 1rem; /* Spazio sotto il titolo */
     width: 100%; /* Assicura che il titolo occupi tutta la larghezza del contenitore */
 }
-
-
 
 body {
     background-image: url("texture.png");
@@ -40,115 +40,306 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center; /* Rende il contenitore largo come lo schermo */
-    
+    width: 100%;
 }
 
 /* Importa il font Playfair Display */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+/* Stile per il contenitore principale */
+/* Stile del contenitore principale */
+.magic-box {
+    display: block; /* Contenitore in stile blocco */
+
+    padding: 1rem; /* Spaziatura interna */
+    border: 0.2rem solid #ffffff; /* Bordo visibile */
+    border-radius: 0.5rem; /* Angoli arrotondati */
+
+    max-width: 50rem; /* Larghezza massima */
+
+}
+
+/* Stile per gli elementi interni */
+.unicorn-name{
+    display: block; /* Ogni div occupa una nuova riga */
+    margin: 0.5rem 0; /* Spazio tra i due div */
+    font-size: 1.7rem; /* Dimensione del testo */
+    color: #000000; /* Colore del testo */
+}
+
+.dragon-id {
+    display: block; /* Ogni div occupa una nuova riga */
+    margin: 0.5rem 0; /* Spazio tra i due div */
+    font-size: 1.1rem; /* Dimensione del testo */
+    color: #000000; /* Colore del testo */
+}
+
+/* Stile per il testo in grassetto */
+.unicorn-name strong{
+    font-weight: bold; /* Testo in grassetto */
+    margin-right: 0.5rem; /* Spazio tra il titolo e il valore */
+    color: #000; /* Colore del titolo */
+}
+
+.dragon-id strong {
+
+    margin-right: 0.5rem; /* Spazio tra il titolo e il valore */
+    color: #000; /* Colore del titolo */
+}
+
+.date-id{
+    display: block; /* Ogni div occupa una nuova riga */
+    margin: 0.5rem 0; /* Spazio tra i due div */
+    font-size: 1.3rem; /* Dimensione del testo */
+    color: #000000; /* Colore del testo */
+    margin-left: 5rem;
+}
+
+.date-id strong{
+    font-weight: bold; /* Testo in grassetto */
+    margin-right: 0.5rem; /* Spazio tra il titolo e il valore */
+    color: #000; /* Colore del titolo */
+}
+
+.iminnovation{
+    margin-left: 5rem ;
+}
 
 
+/* ----------------------------------------------------------------------------------------------------------------------------------------------------- */
 
 /* Stile personalizzato per i titoli specifici di ogni riquadro */
-.riquadro1 h2, .riquadro2 h2, .riquadro3 h2 , .riquadro4 h2 {
+.riquadro1 h2, .riquadro2 h2, .riquadro3 h2, .riquadro4 h2 {
+
     font-family: 'Playfair Display', serif;
     font-size: 1.6rem;
 }
 
-
 .draggable-container {
     display: flex;
     justify-content: center; /* Centra i box orizzontalmente */
-    flex-wrap: wrap; /* Permette ai box di andare a capo se necessario */
-    gap: 1rem; /* Spazio tra i box */
-    margin: 10rem auto 1.25rem auto; /* Margine superiore, centrale, e inferiore */
-    background-color: #eccc15;
-    padding: 1%;
-    width: 97%; /* Imposta una larghezza simmetrica e centrata */
+    /*gap: 1rem; !* Spazio tra i box *!*/
+    margin: 1.875rem;
+    background-color: #ffcc16;
+    /*padding: 1%;*/
+    width: 100%; /* Aumenta la larghezza per fare spazio ai box su una sola riga */
     align-items: center;
-    box-sizing: border-box; /* Include padding nel calcolo della larghezza */
-    
+    /*box-sizing: border-box;*/
+    overflow-x: auto; /* Aggiunge uno scorrimento orizzontale se necessario */
 }
 
-
-/* Style for the boxes inside the container */
 .draggable-box {
     display: flex;
-    justify-content: center; 
-    flex-direction: column; /* Arranges elements in a vertical column */
-    align-items: center; /* Horizontally centers the elements */
-    background-color: #f0f0f0;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(85, 6, 6);
     border: 0.0625rem solid #ccc;
     padding: 0.9375rem;
-    width: 55%; /* Width of the boxes */
+    width: 20%; /* Riduce la larghezza per adattarsi alla singola riga */
     margin-bottom: 1.25rem;
     border-radius: 0.3125rem;
     text-align: center;
-    align-items: center;
 }
 
-/* Manages layout for the <strong> and input elements */
+/* Gestisce il layout per gli elementi <strong> e input */
 .draggable-box strong {
-    margin-bottom: 0.5rem; /* Space between <strong> and input */
+    margin-bottom: 0.5rem; /* Spazio tra <strong> e input */
     text-align: center;
     align-items: center;
-   
-    
 }
 
-.barracuda{
-    
+.barracuda {
     text-align: center;
     align-items: center;
 }
 
 .draggable-box input {
-    width: 100%; /* Width of the input */
+    width: 100%; /* Larghezza dell'input */
     padding: 0.5rem;
     border: 0.0625rem solid #ccc;
     border-radius: 0.3125rem;
     box-sizing: border-box;
     align-items: center;
-
-    
 }
 
-.draggable-box-1{
+.draggable-box-1 {
     margin-right: 5rem;
     margin-left: 5rem;
+    font-size: 1.2rem;
+}
+
+/* Stile base per gli input */
+.draggable-box-1 input {
+    margin-right: 5rem;
+    font-size: 1.2rem;
+
+    border: 1px solid #ccc; /* Aggiunge un bordo predefinito */
+    transition: all 0.3s ease; /* Per un'animazione fluida */
+}
+
+/* Effetto hover */
+.draggable-box-1 input:hover {
+   /* Sfondo leggermente più chiaro */
+    border-color: #bd9b00; /* Cambia il colore del bordo */
+    box-shadow: 0 0 10px #bd9b00; /* Effetto luminoso */
+}
+
+.draggable-box-2 {
+    margin-right: 5rem;
     font-size: 1.17rem;
 }
 
-.draggable-box-1 input{
+/* Stile base per gli input */
+.draggable-box-2 input {
+    margin-right: 5rem;
+    font-size: 1.2rem;
+    background-color: #ffffff;
+    border: 1px solid #ccc; /* Bordo predefinito */
+    transition: all 0.3s ease; /* Per un'animazione fluida */
+}
+
+/* Effetto hover */
+.draggable-box-2 input:hover {
+    background-color: #f9f9f9; /* Sfondo leggermente più chiaro */
+    border-color: #bd9b00; /* Cambia il colore del bordo */
+    box-shadow: 0 0 10px #bd9b00; /* Effetto luminoso */
+}
+
+.draggable-box-3 {
+    margin-right: 5rem;
+    font-size: 1.17rem;
+}
+
+.draggable-box-3 input {
     margin-right: 5rem;
     font-size: 1.2rem;
 }
 
-.draggable-box-2{
-    margin-right: 5rem;
-    font-size: 1.17rem;
+/* ------------------------------------------------------------------------------ */
+/* Resetta gli stili predefiniti */
+/* Resetta gli stili predefiniti */
+.btn-salva {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+    box-sizing: border-box;
 }
 
-.draggable-box-2 input{
-    margin-right: 5rem;
-    font-size: 1.2rem;
+.download-button {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+    box-sizing: border-box;
 }
 
-
-.draggable-box-3{
-    margin-right: 5rem;
-    font-size: 1.17rem;
+/* Stili specifici */
+.btn-salva {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #003b75;
+    color: white;
+    /* padding: 20px 29px; */
+    font-size: 1.9rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 110%;
 }
 
-.draggable-box-3 input{
-    margin-right: 5rem;
-     font-size: 1.2rem;
+.download-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #003b75;
+    color: white;
+    padding: 12px 24px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-left: 7rem;
 }
+
+/* Stati Hover e Active */
+.btn-salva:hover {
+    background-color: #003b75;
+}
+
+.btn-salva:active {
+    background-color: #003b75;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
+}
+
+.download-button:hover {
+    background-color: #003b75;
+}
+
+.download-button:active {
+    background-color: #003b75;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
+}
+
+/* Stato Disabled */
+.btn-salva:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.download-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Contenitore dei bottoni */
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.salva_modifiche {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #003b75;
+    color: white;
+    padding: 3px 29px;
+    font-size: 1.7rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------------------------------- */
 
 /* Colore del testo dei <strong> */
 .coloretestoriquadroprincipale {
     color: white;
     font-size: 1.3rem;
 }
+
 /* Contenitore per i riquadri */
 .container {
     display: flex;
@@ -156,15 +347,14 @@ body {
     justify-content: center;
     margin: 1.875rem; /* 30px */
     overflow-x: auto;
+    width: 100%;
 }
-
-
 
 /* Stile dei Riquadri */
 .riquadro {
     border: 0.0625rem solid #ffffff; /* 1px */
     box-shadow: 0 0.125rem 0.3125rem rgba(16, 94, 70, 0.1); /* 2px 5px */
-    margin: 0.625rem; /* 10px */
+    /*margin: 0.625rem; !* 10px *!*/
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -174,11 +364,9 @@ body {
     justify-content: center;
 }
 
-
 .riquadrosuperiore {
-    
-    width:auto;
-    height: 350px;
+    width: auto;
+    height: 262.5px; /* 350px * 0.75 */
     padding-top: 2rem; /* padding più contenuto per evitare overflow su schermi piccoli */
     /* padding-left: 7rem;
     padding-right: 7rem; */
@@ -203,29 +391,32 @@ body {
 
 /* Colori Personalizzati per i Riquadri */
 .riquadro1 {
+    width: 25%;
     background-color: #207ABC;
     display: flex;
     overflow: hidden;
 }
 
 .riquadro2 {
+    width: 25%;
     background-color: #d41c1c;
     display: flex;
     overflow: hidden;
 }
 
 .riquadro3 {
+    width: 25%;
     background-color: #048957;
     display: flex;
     overflow: hidden;
 }
 
 .riquadro4 {
-    background-color: #737373;
+    width: 25%;
+    background-color: #aca8a8;
     display: flex;
     overflow: hidden;
 }
-
 
 /* Personalizzazione per input */
 .quantocosta, .quantomaturi, .verorisparmio {
@@ -236,12 +427,10 @@ body {
     border-radius: 0.3125rem; /* Angoli arrotondati */
     margin-top: 0.3125rem; /* Margine superiore */
     width: 100%;
-    box-sizing: border-box;
-    padding: 1.25rem;
+    /* box-sizing: border-box; */
+    /*padding: 1.25rem;*/
     align-content: center;
 }
-
-
 
 /* Stile personalizzato per i titoli specifici di ogni riquadro */
 .riquadro1 h2 {
@@ -292,7 +481,6 @@ p input {
 }
 
 /* Stile per i box neri */
-/* Stile per i box neri */
 .boxneri {
     width: 100%;
     height: 10rem; /* Imposta un'altezza fissa per uniformità */
@@ -313,7 +501,7 @@ p input {
 }
 
 .riquadro2 .boxneri input {
-    color: #d41c1c;/* Colore del testo per riquadro2 */
+    color: #d41c1c; /* Colore del testo per riquadro2 */
 }
 
 .riquadro3 .boxneri input {
@@ -321,23 +509,35 @@ p input {
 }
 
 .riquadro4 .boxneri input {
-    color: #fffdfd; /* Colore del testo per riquadro3 */
+    color: #fffdfd;
+    font-size: 1.5rem; /* Colore del testo per riquadro4 */
 }
 
 /* Stile per gli input readonly */
-input[type="text"][readonly] {
-    border: transparent; /* Bordo trasparente solo per gli input readonly */
-   
-     /* Colore del testo */
-}
 
 
-.boxgriginonallineati.riquadro1-color input[type="text"] {
-    border: 2px solid #207ABC; /* Bordo visibile per gli input non readonly */
+
+/* Stile base per gli input di testo */
+/* Stile base per gli input di testo non readonly */
+.boxgriginonallineati.riquadro1-color input[type="text"]:not([readonly]) {
+    border: 1.5px solid #207ABC; /* Bordo visibile adeguato */
     width: 50%;
     color: #207ABC;
     margin-bottom: 1.5rem;
+    transition: all 0.3s ease; /* Per un'animazione fluida */
 }
+
+/* Stile per gli input di testo readonly (opzionale, per chiarezza) */
+.boxgriginonallineati.riquadro1-color input[type="text"][readonly] {
+    border: none; /* Rimuove il bordo */
+    width: 50%;
+    color: #207ABC; /* Cambia il colore del testo per indicare disabilitazione */
+    margin-bottom: 1.5rem;/* Sfondo più chiaro */
+    cursor: not-allowed; /* Cambia il cursore per indicare che non è modificabile */
+}
+
+
+
 /* Stile per l'input all'interno del box nero */
 .boxneri input {
     width: 80%; /* Mantenere una larghezza fissa più piccola del box */
@@ -351,13 +551,12 @@ input[type="text"][readonly] {
     box-sizing: border-box;
 }
 
-
 /* Stile per il nuovo value-box */
 .value-box-1 {
     width: 100%;
     margin-top: 1.25rem; /* 20px */
     display: flex;
-    font-size: 1.2;
+    font-size: 1.2rem;
     flex-direction: column;
     align-items: stretch;
 }
@@ -365,7 +564,7 @@ input[type="text"][readonly] {
 /* Stile per i paragrafi all'interno di value-box */
 .value-box-1 p {
     display: flex;
-    font-size: 1.2;
+    font-size: 1.2rem;
     justify-content: flex-start;
     align-items: center;
     margin-bottom: 0.625rem; /* 10px */
@@ -375,7 +574,7 @@ input[type="text"][readonly] {
 .value-box-1 p strong {
     width: 12.5rem; /* 200px */
     flex-shrink: 0;
-    font-size: 1.2;
+    font-size: 1.2rem;
     margin-right: 1.25rem; /* 20px */
     text-align: left;
     color: white;
@@ -390,9 +589,23 @@ input[type="text"][readonly] {
     box-sizing: border-box;
     background-color: transparent;
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     text-align: center;
     vertical-align: middle;
+}
+
+.value-box-1 input:not([readonly]) {
+    background-color: transparent;
+    color: #000000;
+    border-color: white;
+    transition: all 0.3s ease; /* Per un'animazione fluida */
+}
+
+/* Aggiungi l'effetto hover */
+.value-box-1 input:not([readonly]):hover {
+    background-color: #f0f8ff; /* Un colore di sfondo più chiaro */
+    border-color: #26bdf4; /* Cambia il colore del bordo */
+    box-shadow: 0 0 10px #0078d7; /* Effetto luminoso */
 }
 
 .boxneri a:hover {
@@ -454,27 +667,21 @@ input[type="text"][readonly] {
     width: 100%;
     border-radius: 0.3125rem;
     box-sizing: border-box;
-    background: linear-gradient(to right, #cecece, #f0f0f0); 
+    background: transparent;
     color: #dddddd;
     font-size: 1.5rem;
     text-align: center;
+
 }
 
 /* Colori specifici per il testo e l'input di ciascun riquadro */
 .riquadro1-box {
-    background-color:#cecece;
-    color: #207ABC;
+    background-color: #cecece;
+    color: #ffffff;
 }
-
-/* Stile per input all'interno di .boxgriginonallineati con riquadro1-color */
-.boxgriginonallineati.riquadro1-color input {
-    color: #207ABC; /* Colore del testo blu */
-   
-}
-
 
 .riquadro1-box input {
-    color: #207ABC;
+    color: #000000;
     border: transparent;
     background-color: transparent;
 }
@@ -490,14 +697,21 @@ input[type="text"][readonly] {
     background-color: transparent;
 }
 
-
-
 /* Stile per allineare gli elementi nella classe specifica .boxgrigicolonnaverde */
+.titoli-leasing {
+    display: flex;
+    align-items: center;
+    /*justify-content: space-between;*/
+    background: linear-gradient(to right, #cecece, #f0f0f0);
+    width: 100%;
+    flex-grow: 1; /* Assicura che i box crescano per occupare lo spazio disponibile */
+}
+
 .boxgrigicolonnaverde {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(to right, #cecece, #f0f0f0); 
+    /*justify-content: space-between;*/
+    background: linear-gradient(to right, #cecece, #f0f0f0);
     width: 100%;
     flex-grow: 1; /* Assicura che i box crescano per occupare lo spazio disponibile */
 }
@@ -506,9 +720,59 @@ input[type="text"][readonly] {
 .boxgrigicolonnaverde strong {
     flex-shrink: 0;
     margin-right: 4rem;
-    color:#202127;
+    color: #202127;
     margin-left: 0.5rem;
     font-size: 1.1rem;
+}
+
+.tipologiapannelliblu option {
+    color: #000000; /* Colore del testo delle opzioni */
+    background-color: #ffffff; /* Sfondo bianco per contrastare il testo */
+    padding: 3.75px; /* 5px * 0.75 */
+}
+
+.tendinarossa strong {
+    flex-shrink: 0;
+    margin-right: 4rem;
+    color: #202127;
+    margin-left: 0.5rem;
+    font-size: 1.1rem;
+}
+
+/* Stile di base */
+.tendinarossa {
+    width: 50%; /* Larghezza completa per adattarsi al contenitore */
+    padding: 7.5px; /* 10px * 0.75 */
+    font-size: 12px; /* 16px * 0.75 */
+    color: #d41c1c;
+    background-color: transparent;
+    border: 0.75px solid #d41c1c; /* 1px * 0.75 */
+    border-radius: 3.75px; /* 5px * 0.75 */
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease; /* Per un'animazione fluida */
+}
+
+/* Effetto hover */
+.tendinarossa:hover {
+    color: #ffffff; /* Cambia il colore del testo */
+    background-color: #d41c1c; /* Cambia lo sfondo */
+    box-shadow: 0 0 10px #d41c1c; /* Effetto luminoso */
+    border-color: #ffffff; /* Cambia il colore del bordo */
+}
+
+/* Stile per le opzioni */
+.tendinarossa option {
+    color: #000000; /* Colore del testo delle opzioni */
+    background-color: #ffffff; /* Sfondo bianco per contrastare il testo */
+    padding: 3.75px; /* 5px * 0.75 */
+}
+
+/* Effetto hover per le opzioni (se necessario per personalizzazione avanzata) */
+.tendinarossa option:hover {
+    background-color: #f0f0f0; /* Cambia il colore dello sfondo al passaggio del mouse */
+    color: #d41c1c; /* Colore del testo in contrasto */
 }
 
 /* Stile per input all'interno di .boxgrigicolonnaverde */
@@ -537,27 +801,63 @@ input[type="text"][readonly] {
     color: #737373; /* Colore del testo */
     padding-bottom: 3rem;
 }
+/* ---------------------------------------------------------------------------------------------------------------------------------------------- */
 
-/* Stile per allineare gli elementi nella classe specifica .boxgrigicolonnaverde */
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+
+}
+
+.column {
+    flex: 1;
+    text-align: center;
+}
+.h3boxneri{
+    margin-bottom: 0;
+}
+
+.column h4 {
+    margin-bottom: 0;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.imputneribox4 {
+    width: 90%;
+
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.3125rem;
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    font-size: 1.3rem;
+}
+
+/* ------------------------------------------------------------------------------------------------------------------------------------------------------------ */
+
+/* Stile per allineare gli elementi nella classe specifica .boxgrigigrigi */
 .boxgrigigrigi {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(to right, #cecece, #f0f0f0); 
+    background: linear-gradient(to right, #cecece, #f0f0f0);
     width: 100%;
     flex-grow: 1; /* Assicura che i box crescano per occupare lo spazio disponibile */
 }
 
-/* Stile per strong all'interno di .boxgrigicolonnaverde */
+/* Stile per strong all'interno di .boxgrigigrigi */
 .boxgrigigrigi strong {
     flex-shrink: 0;
     margin-right: 0rem;
-    color:#202127;
+    color: #202127;
     margin-left: 0.5rem;
     font-size: 1.1rem;
 }
 
-/* Stile per input all'interno di .boxgrigicolonnaverde */
+/* Stile per input all'interno di .boxgrigigrigi */
 .boxgrigigrigi input {
     flex-grow: 1;
     padding: 0.625rem;
@@ -570,11 +870,9 @@ input[type="text"][readonly] {
     margin-right: 1rem;
 }
 
-.rateizazzioneriparimata{
+.rateizazzioneriparimata {
     margin-left: 1rem;
-    
 }
-
 
 .riquadro3-color input {
     color: #048957; /* Colore del testo dell'input */
@@ -587,7 +885,6 @@ input[type="text"][readonly] {
     border: transparent; /* Bordo abbinato al testo */
     background-color: transparent;
 }
-
 
 /* Pulsante Salva Modifiche */
 button {
@@ -629,13 +926,221 @@ button:hover {
     justify-content: center;   /* Centra orizzontalmente */
     align-items: center;       /* Centra verticalmente */
     text-align: center;        /* Centra il testo */
-    height: 100%;              /* Assicura che il contenitore occupi tutta l'altezza */
+    height: 100%;
+    width: 100%;          /* Assicura che il contenitore occupi tutta l'altezza */
     box-sizing: border-box;    /* Include il padding nel calcolo dell'altezza */
 }
 
-.riquadrodelta tr{
+.riquadrodelta tr {
     font-size: 1.5rem;
 }
-.riquadrodelta input{
+
+.riquadrodelta input {
     font-size: 1.3rem;
+}
+
+.riquadrosuperiorebox4 {
+    height: 262.5px; /* 350px * 0.75 */
+    padding-top: 2rem;
+}
+
+.button-container {
+    text-align: center;
+    align-items: center;
+    width: 100%;
+    padding: 0%;
+    margin: 0%;
+    background:transparent; /* Aggiunge uno spazio intorno ai pulsanti */
+}
+
+.button-container button {
+    border-color: #000000;
+    padding: 1rem;
+    font-size: 1.2rem; /* Dimensione testo */
+    font-family: Arial, sans-serif; /* Font di base */
+}
+
+.boxgrigiriquadro4 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right, #cecece, #f0f0f0);
+    width: 100%;
+
+    flex-grow: 1; /* Assicura che i box crescano per occupare lo spazio disponibile */
+}
+
+.strongriuadro4boxgrigi{
+    font-size: 1.2rem;
+    color: black;
+}
+
+.inputgrigiriquadro3{
+color: black;
+background-color: transparent;
+border: 1px solid #ffffff; /* Rende visibile il bordo */
+font-size: 4rem;
+border-radius: 0.3125rem; /* Angoli arrotondati */
+margin-top: 0.3125rem; /* Margine superiore */
+width: 100%;
+/* box-sizing: border-box; */
+padding: 1.25rem;
+align-content: center;
+}
+.boxgrigicolonnagrigio{
+    display: flex;
+    align-items: center;
+    /*justify-content: space-between;*/
+    background: linear-gradient(to right, #cecece, #f0f0f0);
+    width: 100%;
+    flex-grow: 1;
+}
+.boxgrigicolonnagrigio strong {
+    flex-shrink: 0;
+    margin-right: 4rem;
+    color: #202127;
+    margin-left: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.boxgrigicolonnagrigio input {
+    flex-grow: 1;
+    padding: 0.625rem;
+    border: transparent;
+    border-radius: 0.3125rem;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    font-size: 1.2rem;
+    box-sizing: border-box;
+}
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* Contenitore principale */
+
+/* Colonna base */
+.colonna-anno,
+.colonna-risparmio,
+.colonna-delta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 30%; /* Larghezza uguale per uniformità */
+}
+
+/* Stile per elementi */
+.colonna-anno p,
+.colonna-risparmio input,
+.colonna-delta input {
+    height: 2.5rem; /* Altezza uniforme per ogni elemento */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem 0;
+
+}
+/* Stile base per gli input non readonly */
+.colonna-risparmio input:not([readonly]) {
+    background-color: transparent;
+    border-color: black;
+    transition: all 0.3s ease; /* Per una transizione fluida */
+}
+
+/* Effetto hover */
+.colonna-risparmio input:not([readonly]):hover {
+    background-color: #f5f5f5; /* Sfondo leggermente più chiaro */
+    border-color: #7f7f7f; /* Cambia il colore del bordo */
+    box-shadow: 0 0 10px #7f7f7f; /* Effetto luminoso */
+}
+
+.colonna-anno p{
+    height: 2.5rem; /* Altezza uniforme per ogni elemento */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem 0;
+    font-size: 1.5rem;
+}
+
+/* Titoli delle colonne */
+.colonna-anno h2,
+.colonna-risparmio h2,
+.colonna-delta h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color:black;
+    margin-bottom: 0.55rem;
+}
+
+/* Input per Risparmio e Delta */
+.inputrisparmiocolonna4boxgrigi {
+    width: 80%;
+    color: black;
+    background: transparent;
+    border: 1px solid #cccccc;
+    font-size: 1rem;
+    border-radius: 0.3125rem;
+    padding: 0.625rem;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Stile per input non readonly */
+.inputrisparmiocolonna4boxgrigi:not([readonly]) {
+    border: 1px solid transparent; /* Bordo nero per input non readonly */
+    transition: border 0.3s ease; /* Animazione fluida per il bordo */
+    color: rgb(189, 189, 189);
+}
+.inputrisparmiocolonna4boxgrigi:not([readonly]):hover {
+    border: 1px solid #ffffff; /* Cambia il bordo a blu durante hover */
+    box-shadow: 0 0 5px #ffffff; /* Aggiunge un'ombra leggera */
+}
+
+.Logout {
+   /* Posiziona il pulsante rispetto al contenitore */
+    display: inline-flex;
+    justify-content: center;
+    background-color: #cbd0d6;
+    color: white;
+    padding: 3px 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 150rem;
+    max-width: 7%;
+}
+
+
+/* Stati Hover e Active */
+.Logout:hover {
+    background-color: #cbd0d6;
+}
+
+.Logout:active {
+    background-color: #cbd0d6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
+}
+
+.Log-out{
+    display: inline-flex;
+    justify-content: center;
+    background-color: #cbd0d6;
+    color: white;
+    padding: 3px 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+.Log-out:hover {
+    background-color: #cbd0d6;
+}
+
+.Log-out:active {
+    background-color: #cbd0d6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: scale(0.98);
 }
