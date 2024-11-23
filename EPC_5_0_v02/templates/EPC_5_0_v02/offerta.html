@@ -1,42 +1,93 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modulo Commerciale - Impianto Fotovoltaico</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{% static 'EPC_5_0_v02/styles.css' %}"> <!-- Collegamento al CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="/static/images/favicon.ico" type="image/x-icon">
+     <link rel="icon" href="{% static 'EPC_5_0_v02/favicon.ico' %}" type="image/x-icon">
 </head>
 
 <body>
-    <form method="POST">
+ <script type="text/javascript">
+        $(document).ready(function(){
+            // Ascolta la pressione di qualsiasi tasto sulla pagina
+            $(document).keypress(function(event){
+                if(event.key === "Enter") {  // Verifica che il tasto premuto sia "Invio"
+                    // Fai una richiesta AJAX al server per eseguire la funzione
+                    $.ajax({
+                        url: "{% url 'offerta' slug %}",  // URL della vista Django
+                        method: "POST",
+                        data: {
+                            'action': 'execute_function',  // Puoi inviare qualsiasi dato al server
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'  // Token CSRF per sicurezza
+                        },
+                        success: function(response) {
+                            console.log(response);  // Visualizza la risposta dalla vista Django
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+
+<form method="POST">
         {% csrf_token %}
-    <button type="submit" name="salva_modifiche">Salva modifiche</button>
     <div class="main-container">
          <!-- Draggable Container con i due nuovi box distinti -->
          <div class="draggable-container">
+            <div class="magic-box">
+                <div class="unicorn-name">
+                    <strong>{{ nome_cliente }}</strong>
+                </div>
+                <div class="dragon-id">
+                    <strong>{{ partita_iva }}</strong>
+                </div>
+            </div>
+
             <!-- Primo nuovo box -->
             <div class="draggable-box-1">
-                <p><strong class="barracuda">CONSUMI ANNUI CLIENTE</strong></p>
+                <p><strong class="barracuda">CONSUMI ANNUI ENERGIA ELETTRICA</strong></p>
                 <p> <input class="rubik" type="text" name="consumi_annui_cliente" value="{{ consumi_annui_cliente }}"></p>
             </div>
-            
+
             <!-- Secondo nuovo box -->
             <div class="draggable-box-2">
                 <p><strong class="barracuda">COSTI ANNUI ENERGIA ELETTRICA</strong></p>
                 <p><input class="rubik" type="text" name="costi_energia_cliente" value="{{ costi_energia_cliente }}"></p>
             </div>
-             
+
              <div class="draggable-box-2">
-                <p><strong class="barracuda">Tariffa acquisto energia corrente</strong></p>
+                <p><strong class="barracuda">TARIFFA ACQUISTO ENERGIA CORRENTE</strong></p>
                 <p><input class="rubik" type="text" name="tariffa_energia_cliente" value="{{ tariffa_energia_cliente }}" readonly></p>
             </div>
-             
+{#            <img src="{% static 'EPC_5_0_v02/Screenshot_2024-11-20_153614_resized.png' %}" alt="Descrizione immagine">#}
+
+             <div class="date-id">
+                <h5>Data ultima modifica</h5>
+                <strong>{{ date }}</strong>
+            </div>
+
+            <img src="{% static 'EPC_5_0_v02/iminnovationlogo_reduced_10_percent.png' %}" alt="Descrizione immagine" class="iminnovation">
+         </div>
+         <div class="salva_modifiche">
+            <button type="submit" name="salva_modifiche" class="btn-salva">Salva modifiche</button>
         </div>
+
+{#        <a href="{% url 'salva_modifiche' %}" class="download-button" onclick="downloadPDF()">Salva modifiche</a>#}
+        <a href="{% url 'inizializza_offerta' %}" class="download-button" onclick="downloadPDF()">Nuova Offerta</a>
+        <a  class="download-button"  href="{% url 'offerte' %}" >Tutte le offerte</a>
+
         <div class="container">
-        
+
             <!-- Riquadro 1 -->
             <div class="riquadro riquadro1" id="riquadro1">
 
@@ -48,7 +99,7 @@
                     <!-- Inizio del value-box -->
                     <div class="value-box-1">
                         <p>
-                            <strong class="coloretestoriquadroprincipale">IMPIANTO FOTOVOLTAICO</strong>
+                            <strong  class="coloretestoriquadroprincipale">IMPIANTO FOTOVOLTAICO</strong>
                             <input class="quantocosta" type="text" name="costo_fv"
                                    value="{{ costo_fv }}">
                         </p>
@@ -60,15 +111,15 @@
                             <strong class="coloretestoriquadroprincipale">BENE TRAINANTE:</strong>
                             <input class="quantocosta" type="text" name="costo_trainante" value="{{ costo_trainante }}">
                         </p>
-                        
+
                     </div>
-                </div>    
+                </div>
                 <!-- Fine del value-box -->
                 <!-- Box aggiuntivo 1 per Riquadro 1 con stile unico -->
                 <div class="boxneri">
                     <h4>COSTO IMPIANTO FOTOVOLTAICO + STORAGE +TRAINANTE</h4>
                     <input class="quantocostacentrale" type="text" name="costo_totale"
-                    value="{{ costo_totale}}" readonly style="font-size: 3rem">
+                    value="{{ costo_totale}}" readonly >
                 </div>
 
                 <!-- Box aggiuntivo 2 per Riquadro 1 con stile unico -->
@@ -76,21 +127,21 @@
                     <p><strong>POTENZA INSTALLATA</strong></p>
                     <input class="quantocosta" type="text" name="potenza_installata" value="{{potenza_installata}}">
                 </div>
-                
+
                 <div class="boxgriginonallineati riquadro1-color">
                     <p><strong>STORAGE INSTALLATO</strong></p>
                     <input class="quantocosta" type="text" name="storage_installato" value="{{ storage_installato }}">
                 </div>
-                
+
                                 <!-- Campo di input per PRODUZIONE ANNUA -->
                 <div class="boxgriginonallineati riquadro1-color">
                     <p><strong>PRODUCIBILITA' SPECIFICA</strong></p>
                     <input class="rubik" type="text" name="producibilità_specifica" value="{{ producibilità_specifica }}">
                 </div>
-            
+
                 <div class="boxgriginonallineati riquadro1-color">
                     <p><strong>PRODUZIONE ANNUA</strong></p>
-                    <input class="rubik" type="text" name="produzione_annua" value="{{ produzione_annua }}">
+                    <input class="rubik" type="text" name="produzione_annua" value="{{ produzione_annua }}" readonly>
                 </div>
 
                 <!-- Menu a tendina per TIPOLOGIA PANELLI -->
@@ -114,7 +165,7 @@
                         </p>
                         <p>
                             <strong class="coloretestoriquadroprincipale">CREDITI FISCALI DA STORAGE</strong>
-                            <input class="quantomaturi" type="text" name="contributo_storage" 
+                            <input class="quantomaturi" type="text" name="contributo_storage"
                                    value="{{ crediti_storage }}" readonly >
                         </p>
                         <p>
@@ -122,14 +173,14 @@
                             <input class="quantomaturi" type="text" name="bene_trainante_rosso" value="{{ crediti_trainante }}" readonly />
                         </p>
                     </div>
-                </div>    
+                </div>
                 <!-- Fine del value-box -->
 
                 <!-- Box aggiuntivo 1 per Riquadro 2 con stile unico -->
                 <div class="boxneri">
                     <h4>CREDITO FISCALE MATURATO CON 5.0</h4>
                     <input class="quantomaturi centrale" type="text" name="crediti_totale"
-                    value="{{ crediti_totale }}" readonly style="font-size: 3rem">
+                    value="{{ crediti_totale }}" readonly >
                 </div>
 
                 <!-- Box aggiuntivo 2 per Riquadro 2 con stile unico -->
@@ -137,10 +188,10 @@
 {#                    <p><strong>COSTO TRAINANTE</strong></p>#}
 {#                    <input class="quantomaturi" type="text" name="bene_trainante_rosso" value="{{ bene_trainante_blu }}" readonly>#}
 {#                </div>#}
-                
+
                 <div class="boxgriginonallineati riquadro2-color">
                     <p><strong>RISPARMIO ENERGETICO TRAINANTE</strong></p>
-                    <select class="quantomaturi" name="risparmio_energetico_trainante">
+                    <select class="tendinarossa" name="risparmio_energetico_trainante">
                         <option value="5" {% if risparmio_energetico_trainante == 0.05 %}selected{% endif %}>5%</option>
                         <option value="10" {% if risparmio_energetico_trainante == 0.10 %}selected{% endif %}>10%</option>
                         <option value="15" {% if risparmio_energetico_trainante == 0.15 %}selected{% endif %}>15%</option>
@@ -148,7 +199,7 @@
                 </div>
                 <div class="boxgriginonallineati riquadro1-color">
                     <p><strong>TIPOLOGIA MODULI FOTOVOLTAICI</strong></p>
-                    <select class="rubik" name="tipologia_moduli">
+                    <select class="tendinarossa" name="tipologia_moduli">
                         <option value="1.0" {% if tipologia_pannelli == '1.0' %}selected{% endif %}>100%</option>
                         <option value="1.2" {% if tipologia_pannelli == '1.2' %}selected{% endif %}>120%</option>
                         <option value="1.4" {% if tipologia_pannelli == '1.4' %}selected{% endif %}>140%</option>
@@ -156,7 +207,7 @@
                 </div>
                 <div class="boxgriginonallineati riquadro2-color">
                     <p><strong>ALIQUOTA CONCESSA</strong></p>
-                    <input class="quantomaturi" type="text" name="aliquota" 
+                    <input class="quantomaturi" type="text" name="aliquota"
                     value="{{ aliquota }}" readonly>
                 </div>
             </div>
@@ -180,34 +231,43 @@
                             value="{{ risparmio_bolletta_primo_anno }}" readonly>
                         </p>
 
-
+                        <p>
+                            <strong class="coloretestoriquadroprincipale"></strong>
+                            <input class="value-box-1-oscurare" type="text" name="" value="" readonly>
+                        </p>
                     </div>
                 </div>
                 <!-- Fine del value-box -->
 
                 <!-- Box aggiuntivo 1 per Riquadro 3 con stile unico -->
-                                
+
                 <div class="boxneri">
-                    <h4>RISPARMIO PRIMO ANNO </h4>
-                    <input class="verorisparmio centrale" type="text" name="risparmio_totale_primo_anno"   value="{{ risparmio_totale_primo_anno }}" readonly style="font-size: 3rem">
+                    <h4>RISPARMIO PRIMO ANNO</h4>
+                    <input class="verorisparmio centrale" type="text" name="risparmio_totale_primo_anno"   value="{{ risparmio_totale_primo_anno }}" readonly >
                 </div>
-            
+
+                <div class="titoli-leasing">
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="ANNO" readonly>
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="RISPARMIO" readonly>
+                </div>
                 {% for risparmio in risparmi_bolletta.itertuples %}
                     <div class="boxgrigicolonnaverde">
-                        <p><strong>RISPARMIO {{ risparmio.index }}° ANNO</strong></p>
-                        <input class="verorisparmio" type="text" value="{{ risparmio.valore }}" readonly>
+{#                        <p><strong>RISPARMIO {{ risparmio.index }}° ANNO</strong></p>#}
+{#                        <input class="verorisparmio" type="text" value="{{ risparmio.valore }}" readonly>#}
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_secondo_anno" value="{{risparmio.index}}° ANNO" readonly>
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_secondo_anno" value="{{risparmio.valore}}" readonly>
                     </div>
                 {%  endfor %}
-            
+
                 <div class="boxgriginonallineati riquadro3-color">
                     <p><strong>TOTALE RISPARMIO IN 10 ANNI</strong></p>
                     <input class="verorisparmio" type="text" name="risparmio_dieci_anni" value="{{ risparmio_dieci_anni }}" readonly>
                 </div>
             </div>
-        
+
             <!-- Riquadro 4 -->
             <div class="riquadro riquadro4" id="riquadro4">
-                <div class="riquadrosuperiore">
+                <div class="riquadrosuperiorebox4">
                     <div class="box-titolo">
                         <h2>LEASING</h2>
                     </div>
@@ -222,16 +282,16 @@
                             <input class="verorisparmio" type="text" name="anticipo_leasing"
                             value="{{ anticipo_leasing }}">
                         </p>
-                        
+
                         <p>
-                            <strong class="coloretestoriquadroprincipale">PRIMA RATA</strong>
-                            <input class="verorisparmio" type="text" name="prima_rata" 
+                            <strong class="coloretestoriquadroprincipale">PRIMO ANNO</strong>
+                            <input class="verorisparmio" type="text" name="prima_rata"
                             value="{{ prima_rata }}">
                         </p>
 
                         <p>
                             <strong class="coloretestoriquadroprincipale"></strong>
-                            <input class="value-box-1-oscurare" type="text" name="" value="">
+                            <input class="value-box-1-oscurare" type="text" name="" value="" readonly>
                         </p>
                     </div>
                 </div>
@@ -240,88 +300,52 @@
                 <!-- Box aggiuntivo 1 per Riquadro 3 con stile unico -->
 
                 <div class="boxneri">
-                    <h4>BILANCIO PRIMO ANNO</h4>
-                    <table style="font-size: 1rem"> {#OCIO!#}
-                        <tr><th>Importo leasing primo anno</th><th>Delta</th></tr>
-                        <tr>
-                        <td>
-                            <input class="verorisparmio centrale" type="text" name="leasing_primo_anno" value="{{ leasing_primo_anno }}" style="font-size: 1rem" readonly>
-                        </td>
-                        <td>
-{#                            OCIO!#}
-                            <input class="verorisparmio centrale" type="text" name="delta_leasing_primo_anno" value="{{ delta_leasing_primo_anno }}" style="font-size: 1rem" readonly>
-                        </td>
-                        </tr>
-                    </table>
-                </div>
-                    <div class="boxgrigicolonnaverde">
-                        <table style="font-size: 1rem" >
-                            <th>Anno</th><th>Importo leasing</th><th>Delta</th>
-                            <tr>
-                                <td>2° anno</td>
-                                <td><input type="text" name="leasing_secondo_anno" value="{{ leasing_secondo_anno }}" style="font-size: 1rem"></td>
-                                <td><input type="text" name="delta_leasing_secondo_anno" value="{{ delta_leasing_secondo_anno }}" style="font-size: 1rem" readonly></td>
-                            </tr>
-                            <tr>
-                                <td>3° anno</td>
-                                <td><input class="verorisparmio centrale" type="text" name="leasing_terzo_anno" value="{{ leasing_terzo_anno }}" style="font-size: 1rem"></td>
-                                <td><input class="verorisparmio centrale" type="text" name="delta_leasing_terzo_anno" value="{{ delta_leasing_terzo_anno }}" style="font-size: 1rem" readonly></td>
-
-                            </tr>
-                            <tr>
-                                <td>4° anno</td>
-                                <td><input class="verorisparmio centrale" type="text" name="leasing_quarto_anno" value="{{ leasing_quarto_anno }}" style="font-size: 1rem"></td>
-                                <td><input class="verorisparmio centrale" type="text" name="delta_leasing_quarto_anno" value="{{ delta_leasing_quarto_anno }}" style="font-size: 1rem" readonly></td>
-
-                            </tr>
-                            <tr>
-                                <td>5° anno</td>
-                                <td><input class="verorisparmio centrale" type="text" name="leasing_quinto_anno" value="{{ leasing_quinto_anno }}" style="font-size: 1rem"></td>
-                                <td><input class="verorisparmio centrale" type="text" name="delta_leasing_quinto_anno" value="{{ delta_leasing_quinto_anno }}" style="font-size: 1rem" readonly></td>
-
-                            </tr>
-                            <tr>
-                                <td>6° anno</td>
-                                <td><input class="verorisparmio centrale" type="text" name="leasing_sesto_anno" value="{{ leasing_sesto_anno }}" style="font-size: 1rem"></td>
-                                <td><input class="verorisparmio centrale" type="text" name="delta_leasing_sesto_anno" value="{{ delta_leasing_sesto_anno }}" style="font-size: 1rem" readonly></td>
-                            </tr>
-                            <tr>
-                                <td>7° anno</td>
-                                <td><input class="verorisparmio centrale" type="text" name="leasing_settimo_anno" value="{{ leasing_settimo_anno }}" style="font-size: 1rem"></td>
-                                <td><input class="verorisparmio centrale" type="text" name="delta_leasing_settimo_anno" value="{{ delta_leasing_settimo_anno }}" style="font-size: 1rem" readonly></td>
-                            </tr>
-                            <tr>
-                                <td>8° anno</td>
-                                <td><input class="verorisparmio centrale" type="text" name="leasing_ottavo_anno" value="{{ leasing_ottavo_anno }}" style="font-size: 1rem"></td>
-                                <td><input class="verorisparmio centrale" type="text" name="delta_leasing_ottavo_anno" value="{{ delta_leasing_ottavo_anno }}" style="font-size: 1rem" readonly></td>
-                            </tr>
-                            <tr>
-                                <td>9° anno</td>
-                                <td><input class="verorisparmio centrale" type="text" name="leasing_nono_anno" value="{{ leasing_nono_anno }}" style="font-size: 1rem"></td>
-                                <td><input class="verorisparmio centrale" type="text" name="delta_leasing_nono_anno" value="{{ delta_leasing_nono_anno }}" style="font-size: 1rem" readonly></td>
-                            </tr>
-                            <tr>
-                                <td>10° anno</td>
-                                <td><input class="verorisparmio centrale" type="text" name="leasing_decimo_anno" value="{{ leasing_decimo_anno }}" style="font-size: 1rem"></td>
-                                <td><input class="verorisparmio centrale" type="text" name="delta_leasing_decimo_anno" value="{{ delta_leasing_decimo_anno }}" style="font-size: 1rem" readonly></td>
-                            </tr>
-                            <tr>
-                                <td>Totale</td>
-                                <td><input class="verorisparmio centrale" type="text" name="totale_check" value="{{ totale_check }}" style="font-size: 1rem"></td>
-                                <td><input class="verorisparmio centrale" type="text" name="delta_totale_check" value="{{ delta_totale_check }}" style="font-size: 1rem" readonly></td>
-                            </tr>
-
-                        </table>
+                    <h3 class="h3boxneri">BILANCIO PRIMO ANNO</h3>
+                    <div class="row">
+                        <div class="column">
+                            <h4>IMPORTO</h4>
+                            <h7>ANTICIPO + PRIMO ANNO </h7>
+                            <input class="imputneribox4" type="text" name="leasing_primo_anno" value="{{ leasing_primo_anno }}" readonly>
+                        </div>
+                        <div class="column">
+                            <h4>CASSA ATTIVA</h4>
+                            <input class="imputneribox4" type="text" name="delta_leasing_primo_anno" value="{{ delta_leasing_primo_anno }}" readonly>
+                        </div>
                     </div>
                 </div>
+                <div class="titoli-leasing">
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="ANNO" readonly>
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="IMPORTO" readonly>
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="CASSA ATTIVA" readonly>
+                </div>
+                {% for leasing in leasing_tab.itertuples %}
+                    <div class="boxgrigicolonnagrigio">
+{#                        <p><strong>RISPARMIO {{ risparmio.index }}° ANNO</strong></p>#}
+{#                        <input class="verorisparmio" type="text" value="{{ risparmio.valore }}" readonly>#}
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="{{leasing.index}}° ANNO" readonly>
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_{{ leasing.index_anno }}_anno" value="{{leasing.valore|default:"da inserire"}}">
+                    <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_{{ leasing.index_anno }}_anno" value="{{leasing.delta}}" readonly>
+                    </div>
+                {%  endfor %}
+            <div class="boxgriginonallineati riquadro4-color">
+                    <p><strong>BILANCIO <br>
+                        10 ANNI</strong></p>
+                    <input class="verorisparmio" type="text" name="bilancio_dieci_anni" value="{{ bilancio_dieci_anni }}" readonly>
+                </div>
+                    </div>
+                </div>
+{#            <div class="Logout">#}
+{#                <button type="submit" name="logout" class="Log-out">Log Out</button>#}
+{#            </div>#}
         </div>
     </div>
-    <div><button type="submit" name="scarica_pdf">Scarica PDF</button></div>
     </form>
+     <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="login__button custom-button">Log out</button>
+    </form>
+
     <div class="footer">
     </div>
 </body>
 </html>
-
-
-

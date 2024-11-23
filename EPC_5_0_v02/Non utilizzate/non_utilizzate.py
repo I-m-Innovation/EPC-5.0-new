@@ -14,7 +14,7 @@ class GeneratePDFView(View):
             config = pdfkit.configuration(wkhtmltopdf=url)
 
             # Render the HTML template to a string
-            template = get_template('EPC_5_0_v02/offerta_v01.html')
+            template = get_template('EPC_5_0_v02/offerta.html')
             html = template(context)
 
             # Define the options for PDF generation
