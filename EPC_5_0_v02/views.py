@@ -190,7 +190,7 @@ def offerta_view(request, slug):
         return render(request, "registration/login.html", context=data)
 
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+# @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def inizializza_offerta_view(request):
     slug = slugify(request.POST['client_name'])
     offerta = Offerta(slug=slugify(slug))
@@ -202,7 +202,6 @@ def inizializza_offerta_view(request):
         return slug
     except Exception as err:
         print(err)
-
         return 'err'
 
 

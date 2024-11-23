@@ -14,7 +14,7 @@
 
 <body>
 
-{% if user.is_authenticated %}
+{#{% if user.is_authenticated %}#}
  <script type="text/javascript">
         $(document).ready(function(){
             // Ascolta la pressione di qualsiasi tasto sulla pagina
@@ -350,30 +350,30 @@
     <div class="footer">
     </div>
 
-{% else %}
-     <div class="login container grid" id="loginAccessRegister">
-        <div class="login__access">
-            <h1 class="login__title">Login</h1>
-            <div class="login__area">
-
-                {% if not data %}
-                <!-- Se 'data' non è presente -->
-                <form action="{% url 'login' %}" method="GET" class="login__form">
+{#{% else %}#}
+{#     <div class="login container grid" id="loginAccessRegister">#}
+{#        <div class="login__access">#}
+{#            <h1 class="login__title">Login</h1>#}
+{#            <div class="login__area">#}
+{##}
+{#                {% if not data %}#}
+{#                <!-- Se 'data' non è presente -->#}
+{#                <form action="{% url 'login' %}" method="GET" class="login__form">#}
 {#                    {% csrf_token %}#}
-                    <input type="hidden">
-                    <button type="submit" class="login__button custom-button">Accedi</button>
-                </form>
-                {% else %}
-                <!-- Se 'data' è presente -->
-                <form action="{% url 'login' %}" method="POST" class="login__form">
-                    {% csrf_token %}
-                    <input type="hidden" name="url" value="inizializza_offerta">
-                    <button type="submit" class="login__button custom-button">Accedi con dati</button>
-                </form>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-{% endif %}
+{#                    <input type="hidden">#}
+{#                    <button type="submit" class="login__button custom-button">Accedi</button>#}
+{#                </form>#}
+{#                {% else %}#}
+{#                <!-- Se 'data' è presente -->#}
+{#                <form action="{% url 'login' %}" method="POST" class="login__form">#}
+{#                    {% csrf_token %}#}
+{#                    <input type="hidden" name="url" value="inizializza_offerta">#}
+{#                    <button type="submit" class="login__button custom-button">Accedi con dati</button>#}
+{#                </form>#}
+{#                {% endif %}#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#{% endif %}#}
 </body>
 </html>

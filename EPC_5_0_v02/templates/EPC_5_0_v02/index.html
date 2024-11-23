@@ -48,6 +48,13 @@
             </div>
         </div>
     </div>
+    {% if url %}
+    <!--=============== MESSAGGIO OFFERTA ESISTENTE ===============-->
+    <div class="message-box" id="messageBox">
+        <p class="message-box__text">Offerta già esistente.</p>
+        <a class="login__button custom-button" href="{% url 'offerta' url %}">VEDI OFFERTA</a>
+    </div>
+    {% endif %}
     {% else %}
     <!--=============== SEZIONE PER UTENTI NON AUTENTICATI ===============-->
     <div class="login container grid" id="loginAccessRegister">
@@ -58,7 +65,7 @@
                 {% if not data %}
                 <!-- Se 'data' non è presente -->
                 <form action="{% url 'login' %}" method="GET" class="login__form">
-{#                    {% csrf_token %}#}
+                    {% csrf_token %}
                     <input type="hidden">
                     <button type="submit" class="login__button custom-button">Accedi</button>
                 </form>
@@ -73,14 +80,7 @@
             </div>
         </div>
     </div>
-    {% endif %}
 
-    {% if url %}
-    <!--=============== MESSAGGIO OFFERTA ESISTENTE ===============-->
-    <div class="message-box" id="messageBox">
-        <p class="message-box__text">Offerta già esistente.</p>
-        <a class="login__button custom-button" href="{% url 'offerta' url %}">VEDI OFFERTA</a>
-    </div>
     {% endif %}
     
 
