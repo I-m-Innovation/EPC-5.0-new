@@ -46,6 +46,7 @@ def login_view(request):
 
         return render(request, 'registration/login.html', data)
 
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def offerta_view(request, slug):
     risparmi_bolletta = None
