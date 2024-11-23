@@ -229,6 +229,7 @@ class IndexView(View):
                 return redirect(f"offerte/{slug}")
 
 
+
 def offerte_view(request):
     offerte = Offerta.objects.filter(user=request.user.username).order_by('-date')
 
