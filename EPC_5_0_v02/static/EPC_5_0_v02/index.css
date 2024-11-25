@@ -50,13 +50,14 @@ body {
   background-color: var(--body-color);
   color: var(--text-color);
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Centra il contenuto orizzontalmente */
+  align-items: center; /* Centra il contenuto verticalmente */
   height: 100vh;
   margin: 0;
+  position: relative; /* Necessario per posizionare elementi figli assoluti */
 
   /* Immagine di sfondo */
-  background-image: url('Cerveteri1-1-scaled.jpg'); /* Sostituisci con il percorso corretto */
+  background-image: url('acquabackground.png'); /* Sostituisci con il percorso corretto */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -278,3 +279,41 @@ img {
     max-width: 600px;
   }
 }
+
+.image-wrapper {
+  position: absolute; /* Per fissare la posizione */
+  bottom: 1rem; /* Distanza dal bordo inferiore */
+  right: 1rem; /* Distanza dal bordo destro */
+  display: flex; /* Dispone gli elementi in riga */
+  gap: 1rem; /* Spazio tra le immagini */
+  align-items: center; /* Allinea verticalmente al centro */
+}
+
+.iinnovation-containerm{
+  width: 200px; /* Larghezza dell'immagine */
+  height: 90px; /* Altezza dell'immagine */
+  background-image: url('iminnovationlogo_reduced_10_percent.png'); /* Percorso della tua immagine */
+  background-size: cover; /* Copri interamente il contenitore */
+  background-color: transparent; /* Sfondo trasparente */
+}
+
+.image-wrapper-bottom-left {
+  position: absolute; /* Posizione fissa rispetto alla pagina */
+  bottom: 1rem; /* Distanza dal bordo inferiore */
+  left: 1rem; /* Distanza dal bordo sinistro */
+  display: flex; /* Dispone gli elementi in riga */
+  gap: 1rem; /* Spazio tra le immagini */
+  align-items: center; /* Allinea verticalmente al centro */
+}
+
+.new-image-container {
+  width: 310px; /* Larghezza dell'immagine */
+  height: 95px; /* Altezza dell'immagine */
+  background-image: url('logozilio_resized_final_25percent.png');
+  border-radius: 3px;
+  background-size: cover; /* Copri interamente il contenitore */
+  background-color: transparent; /* Sfondo trasparente */
+
+}
+
+

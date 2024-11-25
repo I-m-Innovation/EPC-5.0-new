@@ -19,72 +19,85 @@
     <title>Iscrizione cliente</title>
 </head>
 <body>
-    {% if user.is_authenticated %}
-    <!--=============== SEZIONE PER UTENTI AUTENTICATI ===============-->
     <div class="login container grid" id="loginAccessRegister">
-        <div class="login__access">
-            <h1 class="login__title">Dati del cliente</h1>
-            <div class="login__area">
-                <form action="{% url 'inizializza_offerta' %}" method="POST" class="login__form" name="nome_offerta">
-                    {% csrf_token %}
-                    <div class="login__content grid">
-                        {% for field in form %}
-                        <div class="login__box {% if field.errors %}errors{% endif %}">
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {{ field.errors }}
-                        </div>
-                        {% endfor %}
+            {% if user.is_authenticated %}
+            <!--=============== SEZIONE PER UTENTI AUTENTICATI ===============-->
+            <div class="login container grid" id="loginAccessRegister">
+                <div class="login__access">
+                    <h1 class="login__title">Dati del cliente</h1>
+                    <div class="login__area">
+                        <form action="{% url 'inizializza_offerta' %}" method="POST" class="login__form" name="nome_offerta">
+                            {% csrf_token %}
+                            <div class="login__content grid">
+                                {% for field in form %}
+                                <div class="login__box {% if field.errors %}errors{% endif %}">
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                    {{ field.errors }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <button type="submit" class="login__button custom-button">Invia</button>
+                        </form>
+                        <p class="login__switch">
+                            Non è questo il tuo account?
+                        </p>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="login__button custom-button">Esci</button>
+                        </form>
                     </div>
-                    <button type="submit" class="login__button custom-button">Invia</button>
-                </form>
-                <p class="login__switch">
-                    Non è questo il tuo account?
-                </p>
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="login__button custom-button">Esci</button>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-    {% if url %}
-    <!--=============== MESSAGGIO OFFERTA ESISTENTE ===============-->
-    <div class="message-box" id="messageBox">
-        <p class="message-box__text">Offerta già esistente.</p>
-        <a class="login__button custom-button" href="{% url 'offerta' url %}">VEDI OFFERTA</a>
-    </div>
-    {% endif %}
-    {% else %}
-    <!--=============== SEZIONE PER UTENTI NON AUTENTICATI ===============-->
-    <div class="login container grid" id="loginAccessRegister">
-        <div class="login__access">
-            <h1 class="login__title">Login</h1>
-            <div class="login__area">
-
-                {% if not data %}
-                <!-- Se 'data' non è presente -->
-                <form action="{% url 'login' %}" method="GET" class="login__form">
-                    {% csrf_token %}
-                    <input type="hidden">
-                    <button type="submit" class="login__button custom-button">Accedi</button>
-                </form>
-                {% else %}
-                <!-- Se 'data' è presente -->
-                <form action="{% url 'login' %}" method="POST" class="login__form">
-                    {% csrf_token %}
-                    <input type="hidden" name="url" value="inizializza_offerta">
-                    <button type="submit" class="login__button custom-button">Accedi con dati</button>
-                </form>
-                {% endif %}
+            {% else %}
+            <!--=============== SEZIONE PER UTENTI NON AUTENTICATI ===============-->
+            <div class="login container grid" id="loginAccessRegister">
+                <div class="login__access">
+                    <h1 class="login__title">Login</h1>
+                    <div class="login__area">
+                        {% if not data %}
+                        <!-- Se 'data' non è presente -->
+                        <form action="{% url 'login' %}" method="GET" class="login__form">
+                            {% csrf_token %}
+                            <input type="hidden" name="url" value="inizializza_offerta">
+                            <button type="submit" class="login__button custom-button">Accedi</button>
+                        </form>
+                        {% else %}
+                        <!-- Se 'data' è presente -->
+                        <form action="{% url 'login' %}" method="POST" class="login__form">
+                            {% csrf_token %}
+                            <input type="hidden" name="url" value="inizializza_offerta">
+                            <button type="submit" class="login__button custom-button">Accedi con dati</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+            {% endif %}
 
-    {% endif %}
+            {% if url %}
+            <!--=============== MESSAGGIO OFFERTA ESISTENTE ===============-->
+            <div class="message-box" id="messageBox">
+                <p class="message-box__text">Offerta già esistente.</p>
+                <a class="login__button custom-button" href="{% url 'offerta' url %}">VEDI OFFERTA</a>
+            </div>
+            {% endif %}
     
+    </div>
+    <div class="image-wrapper">
+        <div class="iinnovation-containerm"></div>
+      </div>
+      
+      <div class="image-wrapper-bottom-left">
+        <div class="new-image-container"></div>
+      </div>
+      
+      
 
     <!--=============== MAIN JS ===============-->
-    <script src="{% static 'EPC_5_0_v02/javascriptfile/index.js' %}"></script>
+    <script src="{% static 'javascriptfile/index.js' %}"></script>
+
+    
 </body>
+    
 </html>

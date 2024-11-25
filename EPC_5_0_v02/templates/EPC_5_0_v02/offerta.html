@@ -14,7 +14,6 @@
 
 <body>
 
-{#{% if user.is_authenticated %}#}
  <script type="text/javascript">
         $(document).ready(function(){
             // Ascolta la pressione di qualsiasi tasto sulla pagina
@@ -57,7 +56,7 @@
 
             <!-- Primo nuovo box -->
             <div class="draggable-box-1">
-                <p><strong class="barracuda">CONSUMI ANNUI ENERGIA ELETTRICA</strong></p>
+                <p><strong class="barracuda">CONSUMI ANNUI CLIENTE</strong></p>
                 <p> <input class="rubik" type="text" name="consumi_annui_cliente" value="{{ consumi_annui_cliente }}"></p>
             </div>
 
@@ -71,15 +70,16 @@
                 <p><strong class="barracuda">TARIFFA ACQUISTO ENERGIA CORRENTE</strong></p>
                 <p><input class="rubik" type="text" name="tariffa_energia_cliente" value="{{ tariffa_energia_cliente }}" readonly></p>
             </div>
-{#            <img src="{% static 'EPC_5_0_v02/Screenshot_2024-11-20_153614_resized.png' %}" alt="Descrizione immagine">#}
-
-             <div class="date-id">
+            <div class="date-id">
                 <h5>Data ultima modifica</h5>
                 <strong>{{ date }}</strong>
             </div>
 
-            <img src="{% static 'EPC_5_0_v02/iminnovationlogo_reduced_10_percent.png' %}" alt="Descrizione immagine" class="iminnovation">
-         </div>
+            <img src="{% static 'EPC_5_0_v02/Logo abbreviato GRANDE FORMATO.png' %}" alt="Descrizione immagine" class="iminnovation">
+            
+
+        </div>
+
          <div class="salva_modifiche">
             <button type="submit" name="salva_modifiche" class="btn-salva">Salva modifiche</button>
         </div>
@@ -334,46 +334,24 @@
                         10 ANNI</strong></p>
                     <input class="verorisparmio" type="text" name="bilancio_dieci_anni" value="{{ bilancio_dieci_anni }}" readonly>
                 </div>
+
                     </div>
                 </div>
-{#            <div class="Logout">#}
-{#                <button type="submit" name="logout" class="Log-out">Log Out</button>#}
-{#            </div>#}
+            {% comment %} <div class="Logout">
+                <button type="submit" name="salva_modifiche" class="Log-out">Log Out</button>
+            </div> {% endcomment %}
         </div>
     </div>
     </form>
-     <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="login__button custom-button">Log out</button>
-    </form>
 
+
+    <div class="Logout">
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="Log-out">Log out</button>
+        </form>
+    </div>
     <div class="footer">
     </div>
-
-{#{% else %}#}
-{#     <div class="login container grid" id="loginAccessRegister">#}
-{#        <div class="login__access">#}
-{#            <h1 class="login__title">Login</h1>#}
-{#            <div class="login__area">#}
-{##}
-{#                {% if not data %}#}
-{#                <!-- Se 'data' non è presente -->#}
-{#                <form action="{% url 'login' %}" method="GET" class="login__form">#}
-{#                    {% csrf_token %}#}
-{#                    <input type="hidden">#}
-{#                    <button type="submit" class="login__button custom-button">Accedi</button>#}
-{#                </form>#}
-{#                {% else %}#}
-{#                <!-- Se 'data' è presente -->#}
-{#                <form action="{% url 'login' %}" method="POST" class="login__form">#}
-{#                    {% csrf_token %}#}
-{#                    <input type="hidden" name="url" value="inizializza_offerta">#}
-{#                    <button type="submit" class="login__button custom-button">Accedi con dati</button>#}
-{#                </form>#}
-{#                {% endif %}#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#{% endif %}#}
 </body>
 </html>

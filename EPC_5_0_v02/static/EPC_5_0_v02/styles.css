@@ -594,10 +594,10 @@ p input {
     vertical-align: middle;
 }
 
-.value-box-1 input:not([readonly]) {
+.value-box-1 input[readonly] {
     background-color: transparent;
     color: #000000;
-    border-color: white;
+    border-color: transparent;
     transition: all 0.3s ease; /* Per un'animazione fluida */
 }
 
