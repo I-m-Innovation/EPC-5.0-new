@@ -70,6 +70,8 @@
                 <p><strong class="barracuda">TARIFFA ACQUISTO ENERGIA CORRENTE</strong></p>
                 <p><input class="rubik" type="text" name="tariffa_energia_cliente" value="{{ tariffa_energia_cliente }}" readonly></p>
             </div>
+
+            
             <div class="date-id">
                 <h5>Data ultima modifica</h5>
                 <strong>{{ date }}</strong>
@@ -184,12 +186,6 @@
                     <input class="quantomaturi centrale" type="text" name="crediti_totale"
                     value="{{ crediti_totale }}" readonly >
                 </div>
-
-                <!-- Box aggiuntivo 2 per Riquadro 2 con stile unico -->
-{#                <div class="boxgriginonallineati riquadro2-color">#}
-{#                    <p><strong>COSTO TRAINANTE</strong></p>#}
-{#                    <input class="quantomaturi" type="text" name="bene_trainante_rosso" value="{{ bene_trainante_blu }}" readonly>#}
-{#                </div>#}
 
                 <div class="boxgriginonallineati riquadro2-color">
                     <p><strong>RISPARMIO ENERGETICO TRAINANTE</strong></p>
@@ -322,14 +318,13 @@
                 </div>
                 {% for leasing in leasing_tab.itertuples %}
                     <div class="boxgrigicolonnagrigio">
-{#                        <p><strong>RISPARMIO {{ risparmio.index }}° ANNO</strong></p>#}
-{#                        <input class="verorisparmio" type="text" value="{{ risparmio.valore }}" readonly>#}
+
                     <input class="inputrisparmiocolonna4boxgrigi" type="text"  value="{{leasing.index}}° ANNO" readonly>
                     <input class="inputrisparmiocolonna4boxgrigi" type="text" name="leasing_{{ leasing.index_anno }}_anno" value="{{leasing.valore|default:"da inserire"}}">
                     <input class="inputrisparmiocolonna4boxgrigi" type="text" name="delta_leasing_{{ leasing.index_anno }}_anno" value="{{leasing.delta}}" readonly>
                     </div>
                 {%  endfor %}
-            <div class="boxgriginonallineati riquadro4-color">
+                 <div class="boxgriginonallineati riquadro4-color">
                     <p><strong>BILANCIO <br>
                         10 ANNI</strong></p>
                     <input class="verorisparmio" type="text" name="bilancio_dieci_anni" value="{{ bilancio_dieci_anni }}" readonly>
@@ -337,20 +332,22 @@
 
                     </div>
                 </div>
-            {% comment %} <div class="Logout">
-                <button type="submit" name="salva_modifiche" class="Log-out">Log Out</button>
-            </div> {% endcomment %}
+
+                
+            <div class="Logout">
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="Log-out">Log out</button>
+                </form>
+            </div>
+         
+
         </div>
     </div>
     </form>
 
 
-    <div class="Logout">
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="Log-out">Log out</button>
-        </form>
-    </div>
+    
     <div class="footer">
     </div>
 </body>
