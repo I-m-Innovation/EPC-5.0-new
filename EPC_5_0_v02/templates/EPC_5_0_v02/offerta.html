@@ -39,7 +39,6 @@
         });
     </script>
 
-
 <form method="POST">
         {% csrf_token %}
     <div class="main-container">
@@ -333,21 +332,14 @@
                     </div>
                 </div>
 
-                
-            <div class="Logout">
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="Log-out">Log out</button>
-                </form>
-            </div>
-         
 
-        </div>
+    </div>
     </div>
     </form>
-
-
-    
+                 <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="login__button custom-button">Log out</button>
+                </form>
     <div class="footer">
     </div>
 </body>

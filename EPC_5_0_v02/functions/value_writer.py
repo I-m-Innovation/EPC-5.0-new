@@ -1,5 +1,5 @@
 import pandas as pd
-
+from ftplib import FTP
 
 def crea_tabella_leasing(offerta):
     leasing_list = [
@@ -53,3 +53,18 @@ def crea_tabella_leasing(offerta):
                                columns=["index", "index_anno", "valore", "delta"])
 
     return leasing_tab
+
+
+def store_db():
+    # ftp = FTP("192.168.10.211", timeout=10)
+    try:
+        ftp = FTP("93.33.192.68", timeout=10)
+    except:
+        ftp = FTP("192.168.10.211", timeout=10)
+
+    ftp.login('ftpdaticentzilio', 'Sd2PqAS.We8zBK')
+    ftp.cwd('/dati/db offerte 5.0')
+    file_name = "db.sqlite3"
+    file = open(file_name, "rb")
+    ftp.storbinary(f"STOR " + file_name, file)
+    ftp.close()

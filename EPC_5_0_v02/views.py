@@ -7,7 +7,7 @@ import platform
 from django.contrib.auth import authenticate, login, logout
 from .functions.value_reader import salva_modifiche
 from .functions.computations import calcola_tabella_risparmi
-from .functions.value_writer import crea_tabella_leasing
+from .functions.value_writer import crea_tabella_leasing, store_db
 from django.views.decorators.cache import cache_control
 
 os_platform = platform.system()
@@ -56,6 +56,7 @@ def offerta_view(request, slug):
     if offerta.user == request.user.username:
         if "salva_modifiche" in request.POST:
             risparmi_bolletta = salva_modifiche(request, offerta)
+            store_db()
 
         elif "logout" in request.POST:
             logout(request)
