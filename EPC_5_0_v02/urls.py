@@ -7,4 +7,5 @@ urlpatterns = [
     path('offerte/<slug:slug>', views.offerta_view, name='offerta'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
+    path('offerta/<slug:slug>/scarica-pdf/', views.scarica_pdf, name='scarica_pdf'),
 ]

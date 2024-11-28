@@ -1,18 +1,39 @@
-/* styles.css */
+/* Imposta il contenitore principale */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
+    background-image: url('acquabackground.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #ffffff;
     margin: 0;
-    padding: 20px;
-    line-height: 1.6;
-}
-
-ul {
-    list-style: none; /* Rimuove i puntini dalla lista */
     padding: 0;
+    display: flex;
+    flex-direction: column; /* Layout verticale */
+    min-height: 100vh; /* L'altezza del contenitore principale occupa tutta la finestra */
 }
 
+/* Center the <h1> element */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2rem;
+}
+
+/* Center the <ul> */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto; /* Center the entire list */
+    width: 80%; /* Match the width of the button */
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align items in the center */
+}
+
+/* Style for individual list items */
 li {
     background: #fff;
     margin: 10px 0;
@@ -20,8 +41,15 @@ li {
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%; /* Full width within the ul */
+    max-width: 800px;
+    display: flex;
+    justify-content: center; /* Center text horizontally */
+    align-items: center; /* Center text vertically */
+    text-align: center;
 }
 
+/* Style for links in the list items */
 li a {
     text-decoration: none;
     color: #000000;
@@ -32,38 +60,105 @@ li a:hover {
     color: #0056b3;
 }
 
+/* Hover effect for the list items */
 li:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-
-/* styles.css */
+/* Style for the "Nuova Offerta" button to EXACTLY match white bands */
 .nuovaofferta {
-    display: inline-block;
-    background-color: #008CBA; /* Blu brillante */
-    color: white;
-    padding: 12px 24px;
-    font-size: 14px;
-    font-weight: bold;
+    display: flex; /* Matches the flex behavior of <li> */
+    justify-content: center; /* Centers the button text horizontally */
+    align-items: center; /* Centers the button text vertically */
+    background-color: #008CBA; /* Keeps the original blue color */
+    color: white; /* Keeps the button text color */
+    padding: 10px 15px; /* Matches the padding of <li> */
+    font-size: 14px; /* Matches the font size */
+    font-weight: bold; /* Matches the font weight */
     text-align: center;
     text-decoration: none;
-    border-radius: 6px;
-    border: 2px solid #0079a1;
-    transition: all 0.3s ease-in-out;
+    border-radius: 5px; /* Matches the border radius of <li> */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Matches <li> shadow */
+    transition: transform 0.2s, box-shadow 0.2s; /* Matches <li> transitions */
     cursor: pointer;
+    width: 135%; /* Matches the width of <li> */
+    max-width: 820px;
+   
+    margin: 10px auto; /* Center the button below the list */
+    box-sizing: border-box; /* Includes padding and borders in dimensions */
 }
 
 .nuovaofferta:hover {
-    background-color: #ff3333; /* Blu più scuro */
+    background-color: #ff3333; /* Keeps hover color */
     border-color: #ff3333;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Matches hover shadow of <li> */
+    transform: translateY(-5px); /* Matches hover effect of <li> */
 }
 
 .nuovaofferta:active {
-    background-color: #ff3333; /* Blu ancora più scuro */
+    background-color: #ff3333; /* Keeps active color */
     border-color: #ff3333;
-    transform: scale(1);
-    box-shadow: none;
+    transform: scale(1); /* Removes scaling on active */
+    box-shadow: none; /* No shadow on active */
 }
+
+
+.logo65annibianco {
+    width: 230px; /* Larghezza fissa per l'immagine */
+    height: auto; /* Mantieni le proporzioni */
+    position: absolute; /* Permette il posizionamento */
+    left: 0; /* Allineata al bordo sinistro */
+    top: 50%; /* Centrata verticalmente */
+    transform: translateY(-50%); /* Regola la centratura verticale */
+    margin-left: 10px; /* Spazio dal bordo */
+    object-fit: contain; /* L'immagine si adatta alle dimensioni */
+}
+
+/* Immagine destra (iminnovation) */
+.iminnovation {
+    width: 230px; /* Larghezza fissa per l'immagine */
+    height: auto; /* Mantieni le proporzioni */
+    position: absolute; /* Permette il posizionamento */
+    right: 0; /* Allineata al bordo destro */
+    top: 50%; /* Centrata verticalmente */
+    transform: translateY(-50%); /* Regola la centratura verticale */
+    margin-right: 10px; /* Spazio dal bordo */
+    object-fit: contain; /* L'immagine si adatta alle dimensioni */
+}
+
+/* Posizionamento del pulsante in basso a destra */
+.logout-form {
+    position: fixed; /* Posizione fissa nella finestra */
+    bottom: 20px; /* Distanza dal bordo inferiore */
+    right: 20px; /* Distanza dal bordo destro */
+    z-index: 1000; /* Assicurati che sia sopra altri elementi */
+}
+
+/* Stile del pulsante */
+.login__button.custom-button {
+    background-color: #FF3333; /* Rosso brillante */
+    color: white; /* Testo bianco */
+    padding: 10px 20px; /* Spaziatura interna */
+    border: none; /* Rimuove i bordi */
+    border-radius: 5px; /* Angoli arrotondati */
+    font-size: 16px; /* Testo leggibile */
+    font-weight: bold; /* Testo in grassetto */
+    cursor: pointer; /* Indica che è cliccabile */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Leggera ombra */
+    transition: all 0.3s ease-in-out; /* Effetto di transizione morbida */
+}
+
+/* Hover del pulsante */
+.login__button.custom-button:hover {
+    background-color: #CC0000; /* Rosso più scuro */
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2); /* Ombra più pronunciata */
+    transform: scale(1.05); /* Leggero ingrandimento */
+}
+
+/* Stato attivo del pulsante */
+.login__button.custom-button:active {
+    transform: scale(0.95); /* Riduzione durante il click */
+    box-shadow: none; /* Nessuna ombra durante il click */
+}
+

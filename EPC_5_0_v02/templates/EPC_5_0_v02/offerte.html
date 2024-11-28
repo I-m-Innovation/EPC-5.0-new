@@ -14,9 +14,21 @@
     <ul>
         <li><a href="offerte/{{ offerta.slug }}">{{ offerta.date|date:"d/m/Y H:i" }} - {{ offerta.nome_cliente }}</a></li>
     </ul>
-    {% endfor %}
+        <img src="{% static 'EPC_5_0_v02/logo65annibianco.png' %}" alt="Left Image" class="logo65annibianco">
+        <img src="{% static 'EPC_5_0_v02/iminnovationlogo_reduced_10_percent.png' %}" alt="Right Image" class="iminnovation">
+        
+    
         <a href="{% url 'inizializza_offerta' %}" class="nuovaofferta" onclick="downloadPDF()">Nuova Offerta</a>
+
+        <form action="{% url 'logout' %}" method="post" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="login__button custom-button">Log out</button>
+        </form>
+        
+    {% endfor %}
+
 {% else %}
+
         <div class="login container grid" id="loginAccessRegister">
         <div class="login__access">
             <h1 class="login__title">Login</h1>
@@ -38,7 +50,9 @@
                 </form>
                 {% endif %}
             </div>
+           
         </div>
+        
     </div>
 {% endif %}
 </body>

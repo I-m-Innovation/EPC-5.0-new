@@ -136,3 +136,16 @@ CSRF_TRUSTED_ORIGINS = [
     'https://portale5-apb2b3eucjfdhbdf.canadacentral-01.azurewebsites.net',
     'https://epc5-gkhxh4h5bjfgapgu.italynorth-01.azurewebsites.net'
 ]
+
+import platform
+
+# Configura il percorso a wkhtmltopdf in base al sistema operativo
+if platform.system() == "Windows":
+    WKHTMLTOPDF_PATH = r"C:\Users\Giulio Lazzaro\Desktop\EPC-5.0-new\wkhtmltopdf\bin\wkhtmltopdf.exe"
+elif platform.system() == "Linux":
+    WKHTMLTOPDF_PATH = "/usr/bin/wkhtmltopdf"
+elif platform.system() == "Darwin":  # macOS
+    WKHTMLTOPDF_PATH = "/usr/local/bin/wkhtmltopdf"
+else:
+    raise EnvironmentError("Sistema operativo non supportato per wkhtmltopdf.")
+

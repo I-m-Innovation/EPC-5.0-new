@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modulo Commerciale - Impianto Fotovoltaico</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="{% static 'EPC_5_0_v02/styles.css' %}"> <!-- Collegamento al CSS -->
+    <link rel="stylesheet" href="{{ request.build_absolute_url }}{% static 'EPC_5_0_v02/styles.css' %}"> <!-- Collegamento al CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
      <link rel="icon" href="{% static 'EPC_5_0_v02/favicon.ico' %}" type="image/x-icon">
 </head>
@@ -45,7 +45,9 @@
     <div class="main-container">
          <!-- Draggable Container con i due nuovi box distinti -->
          <div class="draggable-container">
+            <img src="{% static 'EPC_5_0_v02/logo65anni.png' %}" alt="Descrizione immagine" class="image-top-left">
             <div class="magic-box">
+              
                 <div class="unicorn-name">
                     <strong>{{ nome_cliente }}</strong>
                 </div>
@@ -78,7 +80,7 @@
             </div>
 
             <img src="{% static 'EPC_5_0_v02/Logo abbreviato GRANDE FORMATO.png' %}" alt="Descrizione immagine" class="iminnovation">
-            
+          
 
         </div>
 
@@ -89,6 +91,8 @@
 {#        <a href="{% url 'salva_modifiche' %}" class="download-button" onclick="downloadPDF()">Salva modifiche</a>#}
         <a href="{% url 'inizializza_offerta' %}" class="download-button" onclick="downloadPDF()">Nuova Offerta</a>
         <a  class="download-button"  href="{% url 'offerte' %}" >Tutte le offerte</a>
+        <a href="{% url 'scarica_pdf' slug=slug %}" class="download-button">Scarica PDF</a>
+
 
         <div class="container">
 
@@ -334,18 +338,16 @@
                 </div>
 
                 
-            <div class="Logout">
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="Log-out">Log out</button>
-                </form>
-            </div>
+           
          
 
         </div>
     </div>
     </form>
-
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="login__button custom-button">Log out</button>
+        </form>
 
     
     <div class="footer">

@@ -240,3 +240,45 @@ def offerte_view(request):
     })
 
 
+
+import os
+import pdfkit
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.conf import settings
+
+def scarica_pdf(request, slug):
+    try:
+        # Percorso assoluto del file CSS
+        css_path = os.path.join(settings.BASE_DIR, 'EPC_5_0_v02', 'static', 'EPC_5_0_v02', 'styles.css')
+
+        # Verifica se il file CSS esiste
+        if not os.path.exists(css_path):
+            return HttpResponse(f"File CSS non trovato: {css_path}", status=404)
+
+        # Carica il CSS inline
+        with open(css_path, 'r') as css_file:
+            css_content = css_file.read()
+
+        # Genera l'HTML con il CSS inline
+        context = {}  # Inserisci qui il contesto necessario
+        html = render_to_string('EPC_5_0_v02/offerta.html', context)
+        html_with_css = f"<style>{css_content}</style>{html}"
+
+        # Configura pdfkit
+        config = pdfkit.configuration(wkhtmltopdf=settings.WKHTMLTOPDF_PATH)
+        options = {
+            'page-size': 'A4',
+            'enable-local-file-access': True,  # Consente l'accesso ai file locali
+        }
+
+        # Genera il PDF
+        pdf = pdfkit.from_string(html_with_css, False, configuration=config, options=options)
+
+        # Restituisce il PDF
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="offerta_{slug}.pdf"'
+        return response
+
+    except Exception as e:
+        return HttpResponse(f"Errore durante la generazione del PDF: {e}", status=500)

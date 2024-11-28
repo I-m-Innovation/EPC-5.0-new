@@ -37,7 +37,7 @@
 }
 
 body {
-  background-image: url("texture.png");
+  background-image: url("acquabackground.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -63,6 +63,8 @@ body {
   border-radius: 1rem;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15); /* Ombra delicata */
 }
+
+
 
 /* Titolo */
 .login__title {
@@ -152,19 +154,23 @@ body {
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
 }
 
-/*=============== BREAKPOINTS ===============*/
-/* Dispositivi piccoli */
-@media screen and (max-width: 480px) {
-  .login {
-    padding: 1.98rem; /* Aumentato del 20% */
-    max-width: 99%; /* Adatta la larghezza agli schermi piccoli */
-  }
 
-  .login__title {
-    font-size: 1.98rem; /* Aumentato del 20% */
-  }
+/* Stile per l'immagine in basso a sinistra */
+.image-bottom-left {
+  position: fixed;
+  bottom: 1rem; /* Distanza dal bordo inferiore */
+  left: 1rem; /* Distanza dal bordo sinistro */
+  width: 13rem; /* Regola la dimensione dell'immagine */
+  height: auto; /* Mantieni proporzioni */
+  z-index: var(--z-tooltip); /* Assicurati che sia sopra il contenuto */
+ 
+}
 
-  .login__button {
-    font-size: 1.155rem; /* Aumentato del 20% */
-  }
+.image-bottom-right {
+  position: fixed;
+  bottom: 1rem; /* Distanza dal bordo inferiore */
+  right: 1rem; /* Distanza dal bordo destro */
+  width: 13rem; /* Regola la dimensione dell'immagine */
+  height: auto; /* Mantieni proporzioni */
+  z-index: var(--z-tooltip); /* Assicurati che sia sopra il contenuto */
 }
