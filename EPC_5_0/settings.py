@@ -75,7 +75,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'EPC_5_0.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
