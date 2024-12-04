@@ -14,6 +14,7 @@ def leggi_valore(stringa):
 
 
 def salva_modifiche(request, offerta):
+
     # box giallo
     offerta.consumi_cliente = leggi_valore(request.POST['consumi_annui_cliente']) \
         if request.POST['consumi_annui_cliente'] else 0
