@@ -58,7 +58,7 @@ def crea_tabella_leasing(offerta):
 def store_db():
     # ftp = FTP("192.168.10.211", timeout=10)
     try:
-        ftp = FTP("93.33.192.68", timeout=10)
+        ftp = FTP("93.33.192.68", timeout=30)
     except:
         ftp = FTP("192.168.10.211", timeout=10)
 
