@@ -129,6 +129,7 @@ STATIC_ROOT = os.environ.get("DJANGO_STATIC_ROOT", "EPC_5_0_v02/static/")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS = [
+    'https://epc-5-0-djc6c3cfa6ccc5hu.italynorth-01.azurewebsites.net',
     'https://epc5-gkhxh4h5bjfgapgu.italynorth-01.azurewebsites.net',
     'https://test5-aveqa4b4h3cdfzeq.italynorth-01.azurewebsites.net',
     'https://testportale5-hgguhneegghwf8eq.italynorth-01.azurewebsites.net',
