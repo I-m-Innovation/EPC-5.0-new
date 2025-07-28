@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def calcola_risparmio(produzione_annua_val, perdita, tariffa_energia):
+def calcola_risparmio(produzione_annua_val, perdita, tariffa_energia, consumi):
     risparmio = []
     indexes = []
     for i in range(10):
@@ -9,7 +9,7 @@ def calcola_risparmio(produzione_annua_val, perdita, tariffa_energia):
         if produzione_annua_val != "INSERIRE DATI IMPIANTO":
             # print(produzione_annua_val)
             produzione = float(produzione_annua_val) * pow(1 - perdita, i)
-            risparmio.append(produzione * tariffa_energia/1000)
+            risparmio.append(min(produzione * tariffa_energia/1000, consumi* tariffa_energia/1000))
             totale_risparmio = sum(risparmio)
         else:
             produzione = "INSERIRE DATI IMPIANTO"

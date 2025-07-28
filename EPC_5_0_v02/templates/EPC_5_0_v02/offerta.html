@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="{% static 'EPC_5_0_v02/styles.css' %}"> <!-- Collegamento al CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-     <link rel="icon" href="{% static 'EPC_5_0_v02/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'EPC_5_0_v02/favicon.ico' %}" type="image/x-icon">
 </head>
 
 <body>
@@ -197,9 +197,9 @@
                 <div class="boxgriginonallineati riquadro1-color">
                     <p><strong>TIPOLOGIA MODULI FOTOVOLTAICI</strong></p>
                     <select class="tendinarossa" name="tipologia_moduli">
-                        <option value="1.0" {% if tipologia_pannelli == '1.0' %}selected{% endif %}>100%</option>
-                        <option value="1.2" {% if tipologia_pannelli == '1.2' %}selected{% endif %}>120%</option>
+                        <option value="1.3" {% if tipologia_pannelli == '1.3' %}selected{% endif %}>130%</option>
                         <option value="1.4" {% if tipologia_pannelli == '1.4' %}selected{% endif %}>140%</option>
+                        <option value="1.5" {% if tipologia_pannelli == '1.5' %}selected{% endif %}>150%</option>
                     </select>
                 </div>
                 <div class="boxgriginonallineati riquadro2-color">
@@ -223,7 +223,8 @@
                             <input class="verorisparmio" type="text" name="creditoFiscale" value="{{ crediti_totale }}" readonly>
                         </p>
                         <p>
-                            <strong class="coloretestoriquadroprincipale">RISPARMIO IN BOLLETTA PRIMO ANNO</strong>
+                            <strong class="coloretestoriquadroprincipale">RISPARMIO IN BOLLETTA PRIMO ANNO 
+                                (100% autoconsumata) </strong>
                             <input class="verorisparmio" type="text" name="risparmio_bolletta_primo_anno"
                             value="{{ risparmio_bolletta_primo_anno }}" readonly>
                         </p>

@@ -56,7 +56,7 @@ def salva_modifiche(request, offerta):
     offerta.aliquota = aliquota
 
     # box verde
-    risparmi_bolletta = calcola_risparmio(offerta.produzione_annua, 0.005, offerta.tariffa_energia_cliente)
+    risparmi_bolletta = calcola_risparmio(offerta.produzione_annua, 0.008, offerta.tariffa_energia_cliente, offerta.consumi_cliente)
     offerta.risparmi_bolletta = risparmi_bolletta
     offerta.risparmio_bolletta_primo_anno = risparmi_bolletta[0]
     offerta.risparmio_totale_primo_anno = offerta.risparmio_bolletta_primo_anno + offerta.crediti_totale

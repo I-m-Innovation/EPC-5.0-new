@@ -57,8 +57,9 @@ def crea_tabella_leasing(offerta):
 
 def store_db():
     # ftp = FTP("192.168.10.211", timeout=10)
+    print("Salvando db")
     try:
-        ftp = FTP("93.33.192.68", timeout=30)
+        ftp = FTP("104.167.29.244", timeout=10)
     except:
         ftp = FTP("192.168.10.211", timeout=10)
 
@@ -68,3 +69,5 @@ def store_db():
     file = open(file_name, "rb")
     ftp.storbinary(f"STOR " + file_name, file)
     ftp.close()
+    print("Db salvato")
+
