@@ -193,6 +193,7 @@ def offerta_view(request, slug):
 
 # @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def inizializza_offerta_view(request):
+    print("sono qui")
     slug = slugify(request.POST['client_name'])
     offerta = Offerta(slug=slugify(slug))
     offerta.nome_cliente = request.POST['client_name']
