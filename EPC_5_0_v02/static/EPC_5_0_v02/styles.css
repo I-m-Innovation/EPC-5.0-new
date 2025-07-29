@@ -786,6 +786,15 @@ p input {
     color: var(--white-color);
 }
 
+/* Sottotitolo sotto il titolo principale (es. "ANTICIPO + PRIMO ANNO") */
+.column .sottotitolo {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: var(--white-color);
+    margin-top: 0.2rem;
+}
+
 .imputneribox4 {
     width: 90%;
     border: 0.0625rem solid #ccc;
