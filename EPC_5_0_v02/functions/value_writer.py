@@ -59,10 +59,10 @@ def store_db():
     # ftp = FTP("192.168.10.211", timeout=10)
     print("Salvando db")
     try:
-        ftp = FTP("192.168.10.211", timeout=10)
-        
+        ftp = FTP("104.167.29.244", timeout=10)        
     except:
-        ftp = FTP("104.167.29.244", timeout=10)
+        ftp = FTP("192.168.10.211", timeout=10)
+
 
     ftp.login('ftpdaticentzilio', 'Sd2PqAS.We8zBK')
     ftp.cwd('/dati/db offerte 5.0')
